@@ -1,0 +1,88 @@
+{
+  "name": "parthiban",
+  "title": "Full Stack Developer",
+  "subtitle": "Building amazing digital experiences",
+  "description": "I'm a passionate developer who loves creating beautiful and functional web applications. With expertise in modern web technologies, I bring ideas to life.",
+  "email": "john.doe@example.com",
+  "phone": "+1 (555) 123-4567",
+  "location": "San Francisco, CA",
+  "github": "https://github.com/johndoe",
+  "linkedin": "https://linkedin.com/in/johndoe",
+  "twitter": "https://twitter.com/johndoe",
+  "website": "https://johndoe.dev",
+  "skills": [
+    "React",
+    "Next.js",
+    "TypeScript",
+    "Node.js",
+    "Python",
+    "Tailwind CSS",
+    {
+      "name": "React",
+      "icon": ""
+    },
+    {
+      "name": "Next.js",
+      "icon": ""
+    },
+    {
+      "name": "Tailwind CSS",
+      "icon": ""
+    }
+  ],
+  "projects": [
+    {
+      "title": "E-Commerce Platform",
+      "description": "A full-stack e-commerce solution with payment integration",
+      "tech": "Next.js, Stripe, MongoDB",
+      "link": "https://example.com",
+      "github": "https://github.com/johndoe/ecommerce",
+      "icon": "https://cdn-icons-png.flaticon.com/512/25/25231.png"
+    },
+    {
+      "title": "Task Management App",
+      "description": "Collaborative task management with real-time updates",
+      "tech": "React, Firebase, Tailwind",
+      "link": "https://example.com",
+      "github": "https://github.com/johndoe/tasks"
+    },
+    {
+      "title": "Weather Dashboard",
+      "description": "Beautiful weather dashboard with location-based forecasts",
+      "tech": "Vue.js, OpenWeather API",
+      "link": "https://example.com",
+      "github": "https://github.com/johndoe/weather"
+    }
+  ],
+  "experience": [
+    {
+      "company": "Tech Corp",
+      "position": "Senior Developer",
+      "duration": "2022 - Present",
+      "description": "Leading development of scalable web applications"
+    },
+    {
+      "company": "StartupXYZ",
+      "position": "Full Stack Developer",
+      "duration": "2020 - 2022",
+      "description": "Built and maintained multiple client projects"
+    }
+  ],
+  "education": [
+    {
+      "institution": "University of Technology",
+      "degree": "BS Computer Science",
+      "year": "2020"
+    }
+  ],
+  "theme": {
+    "primaryColor": "indigo",
+    "mode": "dark",
+    "autoTheme": false,
+    "primaryGradient": "from-fuchsia-600 to-purple-600",
+    "accent": "fuchsia-500",
+    "bg": "from-[#4a044e] via-[#1e1b4b] to-black",
+    "name": "Neon Nebula"
+  },
+  "customSections": []
+}
