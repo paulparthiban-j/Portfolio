@@ -202,6 +202,10 @@ export default function AdminDashboard() {
                                         <label className="block text-sm font-medium text-slate-400 mb-1">Location</label>
                                         <input type="text" value={data.location} onChange={(e) => setData({ ...data, location: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
                                     </div>
+                                    <div className="md:col-span-3">
+                                        <label className="block text-sm font-medium text-slate-400 mb-1">Resume URL (e.g. /resume.pdf)</label>
+                                        <input type="text" value={data.resumeUrl || ""} onChange={(e) => setData({ ...data, resumeUrl: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
+                                    </div>
                                 </div>
                             </div>
                         </section>
@@ -225,6 +229,15 @@ export default function AdminDashboard() {
                                     <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10">
                                         <span className="text-slate-300 font-medium">Auto Theme Detection</span>
                                         <input type="checkbox" className="toggle toggle-primary" checked={data.theme?.autoTheme} onChange={(e) => setData({ ...data, theme: { ...data.theme, autoTheme: e.target.checked } })} />
+                                    </div>
+                                    <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10">
+                                        <span className="text-slate-300 font-medium">Transition Animation</span>
+                                        <select value={data.theme?.animationStyle || "side"} onChange={(e) => setData({ ...data, theme: { ...data.theme, animationStyle: e.target.value } })} className="bg-slate-800 text-white rounded-lg px-4 py-2 outline-none border border-white/10">
+                                            <option value="side">Side Slide (Modern)</option>
+                                            <option value="git-push">Git Push (Vertical)</option>
+                                            <option value="fade">Smooth Fade</option>
+                                            <option value="scale">Original Scale</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div className="p-6 bg-indigo-500/5 border border-indigo-500/10 rounded-2xl">

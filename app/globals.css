@@ -4,6 +4,28 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Hide scrollbar for a more "app-like" feel, but keep scrolling functional */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
 /* Custom Properties */
 :root {
   --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -29,6 +51,36 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   overflow-x: hidden;
   background: #000;
+  cursor: none;
+  /* Hide default cursor if we use a custom one */
+}
+
+/* Custom Cursor */
+.custom-cursor {
+  width: 20px;
+  height: 20px;
+  border: 2px solid white;
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.1s ease, background 0.3s ease, width 0.3s ease, height 0.3s ease;
+  mix-blend-mode: difference;
+}
+
+.custom-cursor.hovering {
+  transform: scale(3);
+  background: white;
+}
+
+@media (max-width: 1024px) {
+  body {
+    cursor: auto;
+  }
+
+  .custom-cursor {
+    display: none;
+  }
 }
 
 h1,
@@ -294,46 +346,109 @@ body {
 /* Full Page Section System */
 .full-page-section {
   min-height: 100vh;
-  height: 100vh;
   width: 100vw;
+  position: sticky;
+  top: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  overflow: hidden;
-  will-change: transform, opacity;
-  opacity: 0;
-  transform: translateY(0) scale(1);
-  transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1),
-    transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  background: inherit;
   z-index: 1;
+  overflow: visible;
+}
+
+/* --- Animation Styles --- */
+
+/* Base Content State */
+.full-page-section-content {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+  will-change: transform, opacity, filter;
+  opacity: 0;
+  filter: blur(10px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
 }
 
-/* Initial state handled by JS classes */
-
-.full-page-section.section-visible {
+.full-page-section-content.section-visible {
   opacity: 1;
-  transform: translateY(0) scale(1) translateZ(0);
-  z-index: 20;
-  pointer-events: auto;
+  transform: none !important;
   filter: blur(0);
+  pointer-events: auto;
+  z-index: 20;
 }
 
-.full-page-section.section-prev {
-  opacity: 1;
-  transform: translateY(-100%);
-  z-index: 10;
-  pointer-events: none;
+/* Style: Side (Default) - Refined for "Feel Good" */
+.animation-side .full-page-section-content {
+  transform: translateX(150px) scale(0.95);
 }
 
-.full-page-section.section-next {
+.animation-side .full-page-section-content.section-prev {
+  transform: translateX(-150px) scale(0.95);
+}
+
+.animation-side .full-page-section-content.section-next {
+  transform: translateX(150px) scale(0.95);
+}
+
+/* Style: Git Push (Vertical Snappy - Extreme Snapping) */
+.animation-git-push .full-page-section-content {
+  transform: translateY(15vh) scale(0.98);
+  transition: opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+    filter 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.animation-git-push .full-page-section-content.section-visible {
   opacity: 1;
-  transform: translateY(100%);
-  z-index: 10;
-  pointer-events: none;
+  transform: translateY(0) scale(1) !important;
+}
+
+.animation-git-push .full-page-section-content.section-prev {
+  opacity: 0;
+  transform: translateY(-15vh) scale(1.02);
+}
+
+.animation-git-push .full-page-section-content.section-next {
+  opacity: 0;
+  transform: translateY(15vh) scale(0.98);
+}
+
+/* Style: Fade */
+.animation-fade .full-page-section-content {
+  transform: none;
+  transition: opacity 1s ease-in-out;
+}
+
+.animation-fade .full-page-section-content.section-prev,
+.animation-fade .full-page-section-content.section-next {
+  opacity: 0;
+  transform: none;
+}
+
+/* Style: Scale (Classic) */
+.animation-scale .full-page-section-content {
+  transform: scale(0.9);
+}
+
+.animation-scale .full-page-section-content.section-prev {
+  transform: scale(1.1);
+}
+
+.animation-scale .full-page-section-content.section-next {
+  transform: scale(0.9);
 }
 
 .full-page-section.section-exit {

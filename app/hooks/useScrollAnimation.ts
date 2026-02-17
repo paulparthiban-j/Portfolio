@@ -2,6 +2,18 @@
 
 import { useEffect, useRef, useState } from "react";
 
+// Throttle function to limit the number of times a function is called
+function throttle(func: Function, limit: number) {
+  let inThrottle: boolean;
+  return function (this: any, ...args: any[]) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
+}
+
 export function useScrollAnimation(options?: IntersectionObserverInit) {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -9,27 +21,23 @@ export function useScrollAnimation(options?: IntersectionObserverInit) {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        } else {
-          // Hide when out of view for reappear effect
-          setIsVisible(false);
-        }
+        setIsVisible(entry.isIntersecting);
       },
       {
-        threshold: 0.3,
+        threshold: 0.1,
         rootMargin: "0px 0px -50px 0px",
         ...options,
       }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
+    const currentRef = ref.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, [options]);
@@ -41,102 +49,57 @@ export function useSectionAnimation(isFirst: boolean = false, sectionIndex: numb
   const [isVisible, setIsVisible] = useState(isFirst);
   const [isExiting, setIsExiting] = useState(false);
   const [isPrev, setIsPrev] = useState(false);
-  const [isPrev2, setIsPrev2] = useState(false);
-  const [isPrev3, setIsPrev3] = useState(false);
   const [isNext, setIsNext] = useState(false);
-  const lastScrollY = useRef(0);
-  const [direction, setDirection] = useState<'up' | 'down'>('down');
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY || window.pageYOffset;
-      const viewportHeight = window.innerHeight || 1;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const { isIntersecting, boundingClientRect } = entry;
 
-      const newDirection = scrollY > lastScrollY.current ? 'down' : 'up';
-      setDirection(newDirection);
-      lastScrollY.current = scrollY;
+        setIsVisible(isIntersecting);
 
-      // Use a slightly more complex logic for visibility
-      // Current section index based on scroll position
-      const exactIndex = scrollY / viewportHeight;
-      const currentSectionIndex = Math.round(exactIndex);
-      const distanceFromCurrent = sectionIndex - currentSectionIndex;
-
-      // Precise progress within this section (0 is active, negative is above, positive is below)
-      const sectionTop = sectionIndex * viewportHeight;
-      const progressToSection = (scrollY - sectionTop) / viewportHeight;
-
-      // Section is active if it's the primary one being viewed
-      if (distanceFromCurrent === 0) {
-        setIsVisible(true);
-        setIsExiting(false);
-        setIsPrev(false);
-        setIsPrev2(false);
-        setIsPrev3(false);
-        setIsNext(false);
-      } else if (distanceFromCurrent === 1) {
-        // This section is NEXT (below current)
-        setIsNext(true);
-        setIsVisible(false);
-        setIsExiting(false);
-        setIsPrev(false);
-        setIsPrev2(false);
-        setIsPrev3(false);
-      } else if (distanceFromCurrent === -1) {
-        // This section is PREVIOUS (above current)
-        setIsPrev(true);
-        setIsVisible(false);
-        setIsExiting(false);
-        setIsNext(false);
-        setIsPrev2(false);
-        setIsPrev3(false);
-      } else if (distanceFromCurrent === -2) {
-        setIsPrev2(true);
-        setIsVisible(false);
-        setIsExiting(false);
-        setIsPrev(false);
-        setIsNext(false);
-        setIsPrev3(false);
-      } else if (distanceFromCurrent === -3) {
-        setIsPrev3(true);
-        setIsVisible(false);
-        setIsExiting(false);
-        setIsPrev(false);
-        setIsPrev2(false);
-        setIsNext(false);
-      } else if (distanceFromCurrent > 1) {
-        // Far below
-        setIsVisible(false);
-        setIsExiting(false);
-        setIsPrev(false);
-        setIsPrev2(false);
-        setIsPrev3(false);
-        setIsNext(false);
-      } else {
-        // Far above
-        setIsExiting(true);
-        setIsVisible(false);
-        setIsPrev(false);
-        setIsPrev2(false);
-        setIsPrev3(false);
-        setIsNext(false);
+        // Determine if it's above or below the viewport
+        if (boundingClientRect.top < 0 && !isIntersecting) {
+          setIsPrev(true);
+          setIsNext(false);
+          setIsExiting(true);
+        } else if (boundingClientRect.top > 0 && !isIntersecting) {
+          setIsNext(true);
+          setIsPrev(false);
+          setIsExiting(false);
+        } else {
+          setIsPrev(false);
+          setIsNext(false);
+          setIsExiting(false);
+        }
+      },
+      {
+        threshold: 0.1, // Trigger when 10% of the section is visible
+        rootMargin: "-10% 0px -10% 0px", // Add some margin for smoother triggers
       }
-    };
+    );
 
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll, { passive: true });
+    const currentRef = ref.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
     };
-  }, [sectionIndex, isFirst]);
+  }, [sectionIndex]);
 
-  return { ref, isVisible, isExiting, isPrev, isPrev2, isPrev3, isNext, progress: (window.scrollY - sectionIndex * window.innerHeight) / window.innerHeight };
+  return {
+    ref,
+    isVisible,
+    isExiting,
+    isPrev,
+    isNext
+  };
 }
-
 
 export function useStaggeredAnimation(count: number, delay: number = 100) {
   const [visibleCount, setVisibleCount] = useState(0);
@@ -144,7 +107,6 @@ export function useStaggeredAnimation(count: number, delay: number = 100) {
   const hasTriggered = useRef(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  // Restart or update animation if count changes and we've triggered
   useEffect(() => {
     if (isIntersecting && !hasTriggered.current && count > 0) {
       hasTriggered.current = true;
@@ -154,7 +116,6 @@ export function useStaggeredAnimation(count: number, delay: number = 100) {
         }, i * delay);
       }
     } else if (hasTriggered.current && count > visibleCount) {
-      // If items were added later, animate them too
       for (let i = visibleCount; i < count; i++) {
         setTimeout(() => {
           setVisibleCount((prev) => Math.max(prev, i + 1));
@@ -176,13 +137,14 @@ export function useStaggeredAnimation(count: number, delay: number = 100) {
       }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
+    const currentRef = ref.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, []);

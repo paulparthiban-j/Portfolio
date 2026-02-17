@@ -1,88 +1,90 @@
 {
-  "name": "parthiban",
-  "title": "Full Stack Developer",
-  "subtitle": "Building amazing digital experiences",
-  "description": "I'm a passionate developer who loves creating beautiful and functional web applications. With expertise in modern web technologies, I bring ideas to life.",
-  "email": "john.doe@example.com",
-  "phone": "+1 (555) 123-4567",
-  "location": "San Francisco, CA",
-  "github": "https://github.com/johndoe",
-  "linkedin": "https://linkedin.com/in/johndoe",
-  "twitter": "https://twitter.com/johndoe",
-  "website": "https://johndoe.dev",
+  "name": "Paul Parthiban J",
+  "title": "Backend / Full-Stack Developer",
+  "subtitle": "Building robust and scalable digital solutions",
+  "description": "Associate Software Developer with expertise in Node.js, Express.js, and Sequelize. Experienced in building supply chain management systems and integrating SAP APIs. Passionate about backend excellence and full-stack innovation.",
+  "email": "paulparthiban85085@gmail.com",
+  "phone": "6374178098",
+  "location": "Tirunelveli, India",
+  "github": "https://github.com/parthi25",
+  "linkedin": "https://linkedin.com/in/paul-parthiban-j",
+  "twitter": "",
+  "website": "",
+  "resumeUrl": "/resume.pdf",
   "skills": [
-    "React",
-    "Next.js",
-    "TypeScript",
     "Node.js",
+    "Express.js",
+    "Java",
+    "JavaScript",
+    "Sequelize",
+    "MySQL",
+    "React.js",
+    "Spring Boot",
     "Python",
-    "Tailwind CSS",
-    {
-      "name": "React",
-      "icon": ""
-    },
-    {
-      "name": "Next.js",
-      "icon": ""
-    },
-    {
-      "name": "Tailwind CSS",
-      "icon": ""
-    }
+    "AWS EC2",
+    "Linux"
   ],
   "projects": [
     {
-      "title": "E-Commerce Platform",
-      "description": "A full-stack e-commerce solution with payment integration",
-      "tech": "Next.js, Stripe, MongoDB",
-      "link": "https://example.com",
-      "github": "https://github.com/johndoe/ecommerce",
-      "icon": "https://cdn-icons-png.flaticon.com/512/25/25231.png"
+      "title": "P2P - Supply Chain Management System",
+      "description": "Architected end-to-end supply chain platform with procurement, logistics, and warehouse modules serving 100+ users. Reduced processing time by 40%.",
+      "tech": "Node.js, Express, Sequelize, MySQL",
+      "link": "",
+      "github": "",
+      "icon": ""
     },
     {
-      "title": "Task Management App",
-      "description": "Collaborative task management with real-time updates",
-      "tech": "React, Firebase, Tailwind",
-      "link": "https://example.com",
-      "github": "https://github.com/johndoe/tasks"
+      "title": "Purchase Request Management System",
+      "description": "Created role-based PR workflow with buyer head assignment and category access controls. Designed bundle tracking system with capacity monitoring.",
+      "tech": "PHP, MySQL, JavaScript",
+      "link": "",
+      "github": "",
+      "icon": ""
     },
     {
-      "title": "Weather Dashboard",
-      "description": "Beautiful weather dashboard with location-based forecasts",
-      "tech": "Vue.js, OpenWeather API",
-      "link": "https://example.com",
-      "github": "https://github.com/johndoe/weather"
+      "title": "Gesture-Controlled Video Player",
+      "description": "Developed a hands-free media control system using real-time computer vision techniques. Implemented gesture-based controls for play, pause, and seek.",
+      "tech": "Python, OpenCV, MediaPipe",
+      "link": "",
+      "github": "",
+      "icon": ""
     }
   ],
   "experience": [
     {
-      "company": "Tech Corp",
-      "position": "Senior Developer",
-      "duration": "2022 - Present",
-      "description": "Leading development of scalable web applications"
+      "company": "Jeyachandran Industries Pvt. Ltd",
+      "position": "Associate Software Developer",
+      "duration": "2025 - present",
+      "description": "Enhanced backend services using Node.js/Express.js, managed MySQL operations via Sequelize ORM, and integrated SAP APIs for enterprise synchronization."
     },
     {
-      "company": "StartupXYZ",
-      "position": "Full Stack Developer",
-      "duration": "2020 - 2022",
-      "description": "Built and maintained multiple client projects"
+      "company": "Ramachandran Retail Pvt. Ltd",
+      "position": "IT Support Engineer",
+      "duration": "2024 - 2025",
+      "description": "Provided support for Microsoft Dynamics AX, managed Linux/Windows servers, and ensured high availability of business-critical applications."
     }
   ],
   "education": [
     {
-      "institution": "University of Technology",
-      "degree": "BS Computer Science",
-      "year": "2020"
+      "institution": "St. Johns College",
+      "degree": "Master of Science",
+      "year": "2024"
+    },
+    {
+      "institution": "Manonmaniam Sundaranar University College",
+      "degree": "Bachelor of Science",
+      "year": "2022"
     }
   ],
   "theme": {
     "primaryColor": "indigo",
     "mode": "dark",
     "autoTheme": false,
-    "primaryGradient": "from-fuchsia-600 to-purple-600",
-    "accent": "fuchsia-500",
-    "bg": "from-[#4a044e] via-[#1e1b4b] to-black",
-    "name": "Neon Nebula"
+    "primaryGradient": "from-indigo-600 to-violet-600",
+    "accent": "indigo-500",
+    "bg": "from-[#0f172a] via-[#1e1b4b] to-black",
+    "name": "Midnight Galaxy",
+    "animationStyle": "git-push"
   },
   "customSections": []
 }
