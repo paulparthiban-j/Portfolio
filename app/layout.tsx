@@ -12,19 +12,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+import { getPortfolioData } from "@/lib/portfolio";
+
 export async function generateMetadata(): Promise<Metadata> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3006';
   try {
-    const response = await fetch(`${baseUrl}/api/portfolio`, { next: { revalidate: 60 } });
-    if (response.ok) {
-      const data = await response.json();
-      return {
-        title: `${data.name} | ${data.title}`,
-        description: data.description || "Full Stack Developer Portfolio",
-      };
-    }
+    const data = await getPortfolioData();
+    return {
+      title: `${data.name} | ${data.title}`,
+      description: data.description || "Full Stack Developer Portfolio",
+    };
   } catch (error) {
-    console.error("Failed to fetch metadata:", error);
+    console.error("Failed to generate metadata:", error);
   }
 
   return {
