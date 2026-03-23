@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { PortfolioContent } from "@/types/portfolio";
-import { GlobalLoader } from "@/components/ui/GlobalLoader";
 import { ParticleBackground } from "@/components/sections/ParticleBackground";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { AboutSection } from "@/components/sections/AboutSection";
@@ -13,7 +12,6 @@ import { EducationSection } from "@/components/sections/EducationSection";
 import { CustomSections } from "@/components/sections/CustomSections";
 import { Footer } from "@/components/sections/Footer";
 
-// Fallback content
 const fallbackContent: PortfolioContent = {
   name: "Paul Parthiban J",
   title: "Backend / Full-Stack Developer",
@@ -86,10 +84,6 @@ const fallbackContent: PortfolioContent = {
 export default function Home() {
   const [content, setContent] = useState<PortfolioContent>(fallbackContent);
   const [mounted, setMounted] = useState(false);
-  const [isReady, setIsReady] = useState(false);
-  const [showLoader, setShowLoader] = useState(true);
-  const [hideHeroContent, setHideHeroContent] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     setMounted(true);
@@ -99,119 +93,44 @@ export default function Home() {
         const res = await fetch("/api/portfolio");
         if (res.ok) {
           const portfolioData = await res.json();
-
           if (portfolioData.theme?.autoTheme) {
-            const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            portfolioData.theme.mode = isDarkMode ? 'dark' : 'light';
+            const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            portfolioData.theme.mode = isDarkMode ? "dark" : "light";
           }
-
           setContent(portfolioData);
         }
-      } catch (err) {
-      } finally {
-        setTimeout(() => {
-          setIsReady(true);
-          setTimeout(() => setShowLoader(false), 800);
-        }, 300);
+      } catch {
+        // use fallback silently
       }
     };
 
     fetchPortfolio();
-
-    const handleScroll = () => {
-      const scrollY = window.scrollY || window.pageYOffset;
-      setHideHeroContent(scrollY > 50);
-    };
-
-    // Intersection Observer to find the MOST visible section
-    const sectionObserver = new IntersectionObserver(
-      (entries) => {
-        // Find the entry with the largest intersection ratio
-        const mostVisible = entries.reduce((prev, current) => {
-          return (prev.intersectionRatio > current.intersectionRatio) ? prev : current;
-        });
-
-        if (mostVisible.intersectionRatio > 0.5) {
-          const index = parseInt(mostVisible.target.getAttribute('data-section-index') || '0');
-          setActiveIndex(index);
-        }
-      },
-      {
-        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
-      }
-    );
-
-    // Give it a small delay to ensure elements are in DOM
-    setTimeout(() => {
-      document.querySelectorAll('.full-page-section').forEach((el) => {
-        sectionObserver.observe(el);
-      });
-    }, 100);
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      sectionObserver.disconnect();
-    };
   }, []);
 
-  // Automatic Jump-to-Snap
-  useEffect(() => {
-    if (!mounted) return;
-
-    const section = document.querySelector(`[data-section-index="${activeIndex}"]`);
-    if (section) {
-      // Use smooth scroll to finish the snap automatically
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }, [activeIndex, mounted]);
-
-  if (!mounted || showLoader) {
+  if (!mounted) {
     return (
-      <div className={`transition-opacity duration-700 ${!isReady ? 'opacity-100' : 'opacity-0'}`}>
-        <GlobalLoader />
+      <div className="fixed inset-0 bg-[#0a0a0b] flex items-center justify-center z-50">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-10 h-10 border-2 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin" />
+          <span className="text-xs text-slate-500 tracking-widest uppercase font-bold">Loading</span>
+        </div>
       </div>
     );
   }
 
-  // Sections count
-  const customSectionsCount = (content.customSections || []).length;
-  const totalSections = 7 + customSectionsCount;
-  const footerIndex = totalSections - 1;
-
-  const renderSection = (Component: any, index: number, props = {}) => (
-    <div data-section-index={index} className="section-wrapper full-page-section relative">
-      <Component
-        content={content}
-        isActive={activeIndex === index}
-        sectionIndex={index}
-        {...props}
-      />
-    </div>
-  );
-
   return (
-    <div className={`min-h-screen relative selection:bg-indigo-500/30 hide-scrollbar animation-${content.theme?.animationStyle || 'side'} ${content.theme?.mode === 'light' ? 'bg-slate-50 text-slate-900' : 'bg-black text-white'}`}>
+    <div className={`min-h-screen relative ${content.theme?.mode === "light" ? "bg-slate-50 text-slate-900" : "bg-[#0a0a0b] text-white"}`}>
       <ParticleBackground theme={content.theme} />
-
-      <div className={`transition-opacity duration-1000 ease-out ${isReady ? 'opacity-100' : 'opacity-0'}`}>
-        <main className="relative z-10 antialiased overflow-x-hidden hide-scrollbar">
-        {renderSection(HeroSection, 0, { hideHeroContent })}
-        {renderSection(AboutSection, 1)}
-        {renderSection(SkillsSection, 2)}
-        {renderSection(ProjectsSection, 3)}
-        {renderSection(ExperienceSection, 4)}
-        {renderSection(EducationSection, 5)}
-        <CustomSections 
-          content={content} 
-          isActive={activeIndex >= 6 && activeIndex < 6 + (content.customSections?.length || 0)} 
-          sectionIndex={6} 
-        />
-        {renderSection(Footer, 6 + (content.customSections?.length || 0))}
-        </main>
-      </div>
+      <main className="relative z-10">
+        <HeroSection content={content} />
+        <AboutSection content={content} />
+        <SkillsSection content={content} />
+        <ProjectsSection content={content} />
+        <ExperienceSection content={content} />
+        <EducationSection content={content} />
+        <CustomSections content={content} />
+        <Footer content={content} />
+      </main>
     </div>
   );
 }

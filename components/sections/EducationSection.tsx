@@ -1,9 +1,8 @@
 "use client";
 
-import { PortfolioContent, Education } from "@/types/portfolio";
-import { AnimatedSection } from "@/components/ui/AnimatedSection";
+import { PortfolioContent } from "@/types/portfolio";
 import { ScrollSection } from "@/components/ui/ScrollSection";
-import { StaggeredItem } from "@/components/ui/StaggeredItem";
+import { motion } from "framer-motion";
 
 interface EducationSectionProps {
     content: PortfolioContent;
@@ -11,48 +10,62 @@ interface EducationSectionProps {
     sectionIndex?: number;
 }
 
-export function EducationSection({ content, isActive, sectionIndex }: EducationSectionProps) {
+export function EducationSection({ content }: EducationSectionProps) {
     if (!content) return null;
 
+    const education = content.education || [];
+
     return (
-        <AnimatedSection
-            sectionIndex={sectionIndex}
-            isActive={isActive}
-            className={`bg-gradient-to-br ${content.theme?.bg || 'from-[#0f172a] via-[#1e1b4b] to-black'} py-32 px-4 relative overflow-hidden`}
-        >
-            <div className="absolute inset-0 bg-black/80 backdrop-blur-3xl z-0" />
-            
-            <div className="container mx-auto max-w-7xl relative z-10">
-                <ScrollSection animationType="slide-down" className="mb-24 text-center">
-                    <h2 className="text-5xl md:text-8xl font-black tracking-tighter text-white mb-4 leading-[0.9]">
-                        {content.educationTitle || 'THE FOUNDATION'}
+        <section className="min-h-screen w-full bg-[#0d0d0f] py-24 md:py-32 px-6 md:px-12 flex items-center justify-center relative overflow-hidden">
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-violet-500/[0.04] rounded-full blur-[120px] pointer-events-none" />
+
+            <div className="container mx-auto max-w-5xl relative z-10 w-full">
+                <ScrollSection animationType="slide-down" className="mb-16 text-center">
+                    <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-white uppercase leading-none">
+                        {content.educationTitle || "EDUCATION"}
                     </h2>
+                    <div className="h-1 w-20 bg-indigo-600 rounded-full mt-6 mx-auto" />
                 </ScrollSection>
 
-                <div className="grid gap-12 md:grid-cols-2">
-                    {(content.education || []).map((edu: Education, index: number) => (
-                        <StaggeredItem key={index} index={index}>
-                            <div className="glass-premium rounded-[3rem] p-12 md:p-16 border-white/5 relative group hover:border-accent/30 transition-all duration-700 h-full flex flex-col justify-center">
-                                <div className="absolute top-10 right-10 flex flex-col items-end">
-                                    <div className="px-6 py-2 rounded-full glass border border-white/10 text-accent font-black text-sm tracking-widest mb-4">
+                {education.length === 0 ? (
+                    <p className="text-slate-500 text-center text-lg">No education listed yet.</p>
+                ) : (
+                    <div className="grid md:grid-cols-2 gap-6 md:gap-8">
+                        {education.map((edu, index) => (
+                            <motion.div
+                                key={index}
+                                initial={{ opacity: 0, y: 24 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1, duration: 0.5 }}
+                                whileHover={{ y: -4 }}
+                                whileTap={{ scale: 0.99 }}
+                                className="bg-white/[0.03] border border-white/10 rounded-2xl md:rounded-3xl p-8 md:p-10 hover:border-indigo-500/30 hover:bg-white/[0.05] hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-500 flex flex-col gap-4 relative"
+                            >
+                                {/* Year badge */}
+                                <div className="absolute top-6 right-6">
+                                    <span className="text-xs font-black text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full uppercase tracking-widest">
                                         {edu.year}
-                                    </div>
-                                    <div className="w-12 h-1 bg-accent/40 rounded-full" />
+                                    </span>
                                 </div>
-                                <h3 className="text-4xl md:text-5xl font-black text-white mb-6 leading-[0.9] tracking-tighter max-w-[80%]">
-                                    {edu.degree?.toUpperCase() || "DEGREE"}
-                                </h3>
-                                <p className="text-2xl font-bold text-slate-400">
-                                    {edu.institution}
-                                </p>
-                            </div>
-                        </StaggeredItem>
-                    ))}
-                </div>
-            </div>
 
-            {/* Background elements */}
-            <div className="absolute top-1/2 -left-20 w-80 h-80 bg-primary/10 rounded-full blur-[100px]" />
-        </AnimatedSection>
+                                {/* Degree */}
+                                <h3 className="text-xl md:text-2xl font-black text-white tracking-tight leading-snug pr-20">
+                                    {edu.degree}
+                                </h3>
+
+                                {/* Institution */}
+                                <div className="flex items-center gap-3">
+                                    <div className="w-1 h-4 bg-indigo-500 rounded-full" />
+                                    <p className="text-base text-slate-400 font-medium">
+                                        {edu.institution}
+                                    </p>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                )}
+            </div>
+        </section>
     );
 }

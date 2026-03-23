@@ -73,8 +73,8 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                     style={!isMobile ? { y, opacity, scale } : {}}
                     variants={containerVariants}
                     initial="hidden"
-                    animate={isActive ? "visible" : "hidden"}
-                    className={`container mx-auto px-6 relative z-10 text-center transition-all duration-700 ${hideHeroContent ? 'opacity-0 scale-95 blur-xl pointer-events-none' : 'opacity-100 scale-100 blur-0'}`}
+                    animate="visible"
+                    className="container mx-auto px-6 relative z-10 text-center"
                 >
                     <motion.div variants={itemVariants} className="inline-block mb-6 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
                         <span className="text-xs md:text-sm font-black tracking-[0.2em] text-indigo-400 uppercase">
@@ -118,16 +118,15 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                 </motion.div>
             )}
 
-            {/* Scroll Indicator */}
-            {mounted && !hideHeroContent && (
-                <motion.div 
+            {mounted && (
+                <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1.5 }}
                     className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
                 >
                     <div className="w-px h-16 bg-gradient-to-b from-indigo-500/50 to-transparent" />
-                    <span className="text-[10px] md:text-xs font-black tracking-widest text-slate-500 uppercase">Secure Connection Localized</span>
+                    <span className="text-[10px] md:text-xs font-black tracking-widest text-slate-500 uppercase">Scroll to explore</span>
                 </motion.div>
             )}
         </section>

@@ -4,7 +4,6 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
   overflow-y: scroll;
 }
 
@@ -399,45 +398,20 @@ html {
   transform: translate(0) scale(1) rotate(0);
 }
 
-
-
-html {
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
-}
-
-body {
-  overflow-x: hidden;
-}
-
-html {
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
-}
-
-body {
-  overflow-x: hidden;
-}
-
 /* Full Page Section System */
 .full-page-section {
   min-height: 100vh;
-  width: 100vw;
-  position: sticky;
-  top: 0;
+  width: 100%;
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  background: inherit;
-  z-index: 1;
-  overflow: visible;
+  overflow: hidden;
 }
 
 /* --- Animation Styles --- */
 
-/* Base Content State */
+/* Section content — always visible */
 .full-page-section-content {
   width: 100%;
   max-width: 1400px;
@@ -449,88 +423,20 @@ body {
   align-items: center;
   position: relative;
   z-index: 10;
-  will-change: transform, opacity, filter;
-  opacity: 0;
-  filter: blur(10px);
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  pointer-events: none;
-}
-
-.full-page-section-content.section-visible {
   opacity: 1;
-  transform: none !important;
-  filter: blur(0);
   pointer-events: auto;
-  z-index: 20;
 }
 
-/* Style: Side (Default) - Refined for "Feel Good" */
-.animation-side .full-page-section-content {
-  transform: translateX(150px) scale(0.95);
-}
-
-.animation-side .full-page-section-content.section-prev {
-  transform: translateX(-150px) scale(0.95);
-}
-
-.animation-side .full-page-section-content.section-next {
-  transform: translateX(150px) scale(0.95);
-}
-
-/* Style: Git Push (Vertical Snappy - Extreme Snapping) */
-.animation-git-push .full-page-section-content {
-  transform: translateY(15vh) scale(0.98);
-  transition: opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1),
-    transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
-    filter 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.animation-git-push .full-page-section-content.section-visible {
+/* Scroll-triggered element animations — triggered by useScrollAnimation().isVisible via .visible class */
+.scroll-slide-up.visible,
+.scroll-slide-down.visible,
+.scroll-slide-left.visible,
+.scroll-slide-right.visible,
+.scroll-scale-in.visible,
+.scroll-fade-in.visible,
+.scroll-rotate-in.visible {
   opacity: 1;
-  transform: translateY(0) scale(1) !important;
-}
-
-.animation-git-push .full-page-section-content.section-prev {
-  opacity: 0;
-  transform: translateY(-15vh) scale(1.02);
-}
-
-.animation-git-push .full-page-section-content.section-next {
-  opacity: 0;
-  transform: translateY(15vh) scale(0.98);
-}
-
-/* Style: Fade */
-.animation-fade .full-page-section-content {
   transform: none;
-  transition: opacity 1s ease-in-out;
-}
-
-.animation-fade .full-page-section-content.section-prev,
-.animation-fade .full-page-section-content.section-next {
-  opacity: 0;
-  transform: none;
-}
-
-/* Style: Scale (Classic) */
-.animation-scale .full-page-section-content {
-  transform: scale(0.9);
-}
-
-.animation-scale .full-page-section-content.section-prev {
-  transform: scale(1.1);
-}
-
-.animation-scale .full-page-section-content.section-next {
-  transform: scale(0.9);
-}
-
-.full-page-section.section-exit {
-  opacity: 0;
-  transform: translateY(-100%) scale(0.9);
-  z-index: 5;
 }
 
 /* Welcome Screen with Animated Gradient */
