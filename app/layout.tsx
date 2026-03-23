@@ -43,7 +43,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="custom" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased noise-overlay`}
       >
         <CustomCursor />
         {children}

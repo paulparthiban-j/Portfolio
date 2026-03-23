@@ -16,34 +16,45 @@ export function ExperienceSection({ content, isActive, sectionIndex }: Experienc
         <AnimatedSection
             sectionIndex={sectionIndex}
             isActive={isActive}
-            className={`bg-gradient-to-br ${content.theme?.bg || 'from-[#0f172a] via-[#1e1b4b] to-black'} py-20 px-4 relative`}
+            className={`bg-gradient-to-br ${content.theme?.bg || 'from-[#0f172a] via-[#1e1b4b] to-black'} py-32 px-4 relative overflow-hidden`}
         >
-            <div className="absolute inset-0 bg-black/70 backdrop-blur-md z-0"></div>
-            <div className="container mx-auto max-w-5xl relative z-10">
-                <ScrollSection animationType="slide-down">
-                    <h2 className={`mb-20 text-center text-5xl md:text-7xl font-black ${content.theme?.mode === 'light' ? 'text-slate-900' : 'text-white'} leading-tight`}>Journey</h2>
+            <div className="absolute inset-0 bg-black/80 backdrop-blur-3xl z-0" />
+            
+            <div className="container mx-auto max-w-7xl relative z-10">
+                <ScrollSection animationType="slide-down" className="mb-24 text-center">
+                    <h2 className="text-6xl md:text-9xl font-black tracking-tighter text-white">
+                        <span className="opacity-30">03.</span> THE JOURNEY
+                    </h2>
                 </ScrollSection>
-                <div className="timeline timeline-vertical" role="list">
+
+                <div className="space-y-16">
                     {content.experience.map((exp: Experience, index: number) => (
-                        <StaggeredItem key={index} index={index} delay={200}>
-                            <div className="timeline-item mb-12" role="listitem">
-                                <div className={`${content.theme?.mode === 'light' ? 'bg-white border-slate-200' : 'glass-dark border-white/10'} timeline-start timeline-box p-10 rounded-3xl w-full max-w-md ml-auto shadow-2xl relative`}>
-                                    <div className={`absolute -left-3 top-1/2 w-6 h-6 bg-${content.theme?.accent || 'indigo-500'} rounded-full blur-md`}></div>
-                                    <h3 className={`font-extrabold ${content.theme?.mode === 'light' ? 'text-slate-900' : 'text-white'} text-2xl mb-1`}>{exp.position}</h3>
-                                    <h4 className={`text-${content.theme?.accent || 'indigo-400'} text-xl font-bold mb-3`}>{exp.company}</h4>
-                                    <p className={`text-sm text-${content.theme?.accent || 'indigo-300'}/60 font-mono mb-4`}>{exp.duration}</p>
-                                    <p className="mt-4 text-slate-400 leading-relaxed">{exp.description}</p>
+                        <StaggeredItem key={index} index={index}>
+                            <div className="glass-premium rounded-[3rem] p-10 md:p-14 border-white/5 relative group hover:border-accent/30 transition-all duration-700">
+                                <div className="absolute -top-6 -left-6 w-20 h-20 flex items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-black text-2xl rotate-12 group-hover:rotate-0 transition-transform">
+                                    {index + 1}
                                 </div>
-                                <div className="timeline-middle mx-8">
-                                    <div className={`h-10 w-10 rounded-2xl bg-gradient-to-br ${content.theme?.primaryGradient || 'from-indigo-500 to-purple-600'} rotate-45 border-4 border-black flex items-center justify-center p-2`}>
-                                        <div className="w-full h-full bg-white rounded-full"></div>
+                                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 mt-4">
+                                    <div>
+                                        <h3 className="text-4xl font-black text-white tracking-tight mb-2">{exp.position}</h3>
+                                        <h4 className="text-2xl font-bold text-accent/80">{exp.company}</h4>
+                                    </div>
+                                    <div className="px-6 py-2 rounded-full glass border border-white/10 text-slate-400 font-mono text-sm tracking-widest uppercase">
+                                        {exp.duration}
                                     </div>
                                 </div>
+                                <p className="text-xl text-slate-400 font-light leading-relaxed max-w-4xl">
+                                    {exp.description}
+                                </p>
                             </div>
                         </StaggeredItem>
                     ))}
                 </div>
             </div>
+
+            {/* Background elements */}
+            <div className="absolute top-1/4 -right-40 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[150px] pointer-events-none" />
+            <div className="absolute bottom-1/4 -left-40 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px] pointer-events-none" />
         </AnimatedSection>
     );
 }

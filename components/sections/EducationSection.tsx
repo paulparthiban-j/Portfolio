@@ -16,33 +16,41 @@ export function EducationSection({ content, isActive, sectionIndex }: EducationS
         <AnimatedSection
             sectionIndex={sectionIndex}
             isActive={isActive}
-            className={`bg-gradient-to-br ${content.theme?.bg || 'from-[#0f172a] via-[#1e1b4b] to-black'} py-20 px-4 relative`}
+            className={`bg-gradient-to-br ${content.theme?.bg || 'from-[#0f172a] via-[#1e1b4b] to-black'} py-32 px-4 relative overflow-hidden`}
         >
-            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm z-0"></div>
-            <div className="container mx-auto max-w-6xl relative z-10">
-                <ScrollSection animationType="slide-down">
-                    <h2 className={`mb-20 text-center text-5xl md:text-7xl font-black ${content.theme?.mode === 'light' ? 'text-slate-900' : 'text-white'}`}>Foundation</h2>
+            <div className="absolute inset-0 bg-black/80 backdrop-blur-3xl z-0" />
+            
+            <div className="container mx-auto max-w-7xl relative z-10">
+                <ScrollSection animationType="slide-down" className="mb-24 text-center">
+                    <h2 className="text-6xl md:text-9xl font-black tracking-tighter text-white">
+                        <span className="opacity-30">04.</span> THE FOUNDATION
+                    </h2>
                 </ScrollSection>
-                <div className="grid gap-10 md:grid-cols-2" role="list">
+
+                <div className="grid gap-12 md:grid-cols-2">
                     {content.education.map((edu: Education, index: number) => (
-                        <StaggeredItem key={index} index={index} delay={150}>
-                            <div className="card card-premium glass border-white/5 rounded-[2rem] h-full overflow-hidden" role="listitem">
-                                <div className="card-body p-12 relative">
-                                    <div className={`absolute top-0 right-0 w-32 h-32 bg-${content.theme?.accent || 'indigo-500'}/10 rounded-bl-[100px]`}></div>
-                                    <div className={`badge badge-glow bg-${content.theme?.accent || 'indigo-500'}/20 text-${content.theme?.accent || 'indigo-400'} border-none mb-6 px-4 py-2 font-mono`}>{edu.year}</div>
-                                    <h3 className={`card-title ${content.theme?.mode === 'light' ? 'text-slate-900' : 'text-white'} text-4xl font-black mb-4 leading-tight`}>{edu.degree}</h3>
-                                    <p className={`text-${content.theme?.accent || 'indigo-300'} text-2xl font-semibold mb-2`}>{edu.institution}</p>
-                                    <div className="mt-8 flex gap-2">
-                                        <span className={`w-12 h-1 bg-${content.theme?.accent || 'indigo-500'} rounded-full`}></span>
-                                        <span className={`w-4 h-1 bg-${content.theme?.accent || 'indigo-500'}/30 rounded-full`}></span>
-                                        <span className={`w-2 h-1 bg-${content.theme?.accent || 'indigo-500'}/10 rounded-full`}></span>
+                        <StaggeredItem key={index} index={index}>
+                            <div className="glass-premium rounded-[3rem] p-12 md:p-16 border-white/5 relative group hover:border-accent/30 transition-all duration-700 h-full flex flex-col justify-center">
+                                <div className="absolute top-10 right-10 flex flex-col items-end">
+                                    <div className="px-6 py-2 rounded-full glass border border-white/10 text-accent font-black text-sm tracking-widest mb-4">
+                                        {edu.year}
                                     </div>
+                                    <div className="w-12 h-1 bg-accent/40 rounded-full" />
                                 </div>
+                                <h3 className="text-4xl md:text-5xl font-black text-white mb-6 leading-[0.9] tracking-tighter max-w-[80%]">
+                                    {edu.degree.toUpperCase()}
+                                </h3>
+                                <p className="text-2xl font-bold text-slate-400">
+                                    {edu.institution}
+                                </p>
                             </div>
                         </StaggeredItem>
                     ))}
                 </div>
             </div>
+
+            {/* Background elements */}
+            <div className="absolute top-1/2 -left-20 w-80 h-80 bg-primary/10 rounded-full blur-[100px] animate-pulse" />
         </AnimatedSection>
     );
 }
