@@ -78,6 +78,20 @@ const fallbackContent: PortfolioContent = {
     mode: "dark",
     autoTheme: true,
   },
+  stats: [
+    {
+      number: 5,
+      label: "Years Experience",
+    },
+    {
+      number: 50,
+      label: "Projects Completed",
+    },
+    {
+      number: 10,
+      label: "Technologies",
+    },
+  ],
   customSections: [],
 };
 
