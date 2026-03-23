@@ -4,7 +4,6 @@ import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PortfolioContent, Project, Theme } from "@/types/portfolio";
 import { ScrollSection } from "@/components/ui/ScrollSection";
-import { StaggeredItem } from "@/components/ui/StaggeredItem";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import Image from "next/image";
@@ -27,7 +26,7 @@ export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSec
         <AnimatedSection
             sectionIndex={sectionIndex}
             isActive={isActive}
-            className={`min-h-screen relative flex items-center justify-center py-24 md:py-32 px-6 md:px-12 overflow-hidden bg-black`}
+            className={`min-h-screen relative flex items-center justify-center py-16 md:py-24 px-6 md:px-12 overflow-hidden bg-black`}
         >
             <div className="absolute inset-0 bg-[#0a0a0b] z-0" />
             
@@ -41,16 +40,23 @@ export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSec
                     </p>
                 </ScrollSection>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 relative">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-8 relative">
                     {projects.map((project, index) => (
-                        <ProjectCard 
-                            key={index} 
-                            project={project} 
-                            index={index} 
-                            isMobile={isMobile}
-                            theme={content.theme}
-                            onClick={() => setSelectedProject(project)} 
-                        />
+                        <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: index * 0.1, duration: 0.5 }}
+                        >
+                            <ProjectCard 
+                                project={project} 
+                                index={index} 
+                                isMobile={isMobile}
+                                theme={content.theme}
+                                onClick={() => setSelectedProject(project)} 
+                            />
+                        </motion.div>
                     ))}
 
                     {projects.length === 0 && (
@@ -78,12 +84,11 @@ function ProjectCard({ project, index, isMobile, theme, onClick }: { project: Pr
     const techStack = useMemo(() => (project.tech || "").split(',').map(s => s.trim()), [project.tech]);
 
     return (
-        <StaggeredItem index={index}>
-            <motion.div
-                onClick={onClick}
-                whileTap={{ scale: 0.97 }}
-                className={`group h-full flex flex-col glass-premium border border-white/10 rounded-2xl md:rounded-3xl overflow-hidden cursor-pointer bg-white/[0.02] shadow-lg transition-all duration-500 ${!isMobile ? "hover:translate-y-[-10px] hover:border-indigo-500/30 hover:shadow-2xl hover:shadow-indigo-500/10" : ""}`}
-            >
+        <motion.div
+            onClick={onClick}
+            whileTap={{ scale: 0.97 }}
+            className={`group h-full flex flex-col glass-premium border border-white/10 rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 ${!isMobile ? "hover:translate-y-[-10px] hover:border-indigo-500/30 hover:shadow-2xl hover:shadow-indigo-500/10" : ""}`}
+        >
                 <div className="h-60 md:h-72 relative bg-slate-900 overflow-hidden">
                     <Image 
                         src={project.icon || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=80"}
@@ -119,7 +124,6 @@ function ProjectCard({ project, index, isMobile, theme, onClick }: { project: Pr
                     </div>
                 </div>
             </motion.div>
-        </StaggeredItem>
     );
 }
 

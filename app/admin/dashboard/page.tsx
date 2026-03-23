@@ -45,6 +45,7 @@ export default function AdminDashboard() {
                 if (!portfolioData.experience) portfolioData.experience = [];
                 if (!portfolioData.education) portfolioData.education = [];
                 if (!portfolioData.customSections) portfolioData.customSections = [];
+                if (!portfolioData.stats) portfolioData.stats = [];
 
                 setData(portfolioData);
             } catch (err) {
@@ -142,6 +143,7 @@ export default function AdminDashboard() {
                         { id: "general", label: "Identity", icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg> },
                         { id: "appearance", label: "Aesthetics", icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg> },
                         { id: "skills", label: "The Stack", icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg> },
+                        { id: "stats", label: "Metrics", icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg> },
                         { id: "projects", label: "Innovation", icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg> },
                         { id: "experience", label: "Journey", icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" /></svg> },
                         { id: "education", label: "Foundation", icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg> },
@@ -330,6 +332,65 @@ export default function AdminDashboard() {
                                         );
                                     })}
                                 </div>
+                            </div>
+                        </section>
+                    )}
+
+                    {activeTab === "stats" && (
+                        <section className="glass-dark p-8 rounded-[2rem] border border-white/5 animate-fade-in">
+                            <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+                                <h2 className="text-xl font-bold text-white flex items-center gap-3">
+                                    <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                                    Metrics
+                                </h2>
+                                <button onClick={() => setData({ ...data, stats: [...(data.stats || []), { number: 0, label: "", suffix: "" }] })} className="btn btn-sm btn-outline text-indigo-400 border-indigo-500/30 hover:bg-indigo-500/10">
+                                    + Add Stat
+                                </button>
+                            </div>
+                            <div className="space-y-6">
+                                {(data.stats || []).map((stat: any, idx: number) => (
+                                    <div key={idx} className="p-6 bg-white/5 rounded-2xl border border-white/10 relative group">
+                                        <button onClick={() => setData({ ...data, stats: data.stats.filter((_: any, i: number) => i !== idx) })} className="absolute top-4 right-4 text-red-500/50 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                        </button>
+                                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                            <div className="md:col-span-1">
+                                                <label className="block text-sm font-medium text-slate-400 mb-1">Number</label>
+                                                <input 
+                                                    type="number" 
+                                                    value={stat.number || 0} 
+                                                    onChange={(e) => { const newStats = [...data.stats]; newStats[idx].number = parseInt(e.target.value) || 0; setData({ ...data, stats: newStats }); }} 
+                                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none" 
+                                                />
+                                            </div>
+                                            <div className="md:col-span-2">
+                                                <label className="block text-sm font-medium text-slate-400 mb-1">Label</label>
+                                                <input 
+                                                    type="text" 
+                                                    value={stat.label || ""} 
+                                                    onChange={(e) => { const newStats = [...data.stats]; newStats[idx].label = e.target.value; setData({ ...data, stats: newStats }); }} 
+                                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none" 
+                                                    placeholder="e.g. Projects Completed"
+                                                />
+                                            </div>
+                                            <div className="md:col-span-1">
+                                                <label className="block text-sm font-medium text-slate-400 mb-1">Suffix (Optional)</label>
+                                                <input 
+                                                    type="text" 
+                                                    value={stat.suffix || ""} 
+                                                    onChange={(e) => { const newStats = [...data.stats]; newStats[idx].suffix = e.target.value; setData({ ...data, stats: newStats }); }} 
+                                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none" 
+                                                    placeholder="e.g. +"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                                {(!data.stats || data.stats.length === 0) && (
+                                    <div className="text-center py-10 text-slate-500 italic">
+                                        No stats yet. Add some impressive metrics to showcase your achievements!
+                                    </div>
+                                )}
                             </div>
                         </section>
                     )}

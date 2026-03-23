@@ -84,6 +84,7 @@ const fallbackContent: PortfolioContent = {
 export default function Home() {
   const [content, setContent] = useState<PortfolioContent>(fallbackContent);
   const [mounted, setMounted] = useState(false);
+  const [contentLoaded, setContentLoaded] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -98,8 +99,10 @@ export default function Home() {
             portfolioData.theme.mode = isDarkMode ? "dark" : "light";
           }
           setContent(portfolioData);
+          setContentLoaded(true);
         }
       } catch {
+        setContentLoaded(true);
         // use fallback silently
       }
     };
@@ -119,7 +122,7 @@ export default function Home() {
   }
 
   return (
-    <div className={`min-h-screen relative ${content.theme?.mode === "light" ? "bg-slate-50 text-slate-900" : "bg-[#0a0a0b] text-white"}`}>
+    <div className={`min-h-screen relative ${content.theme?.mode === "light" ? "bg-slate-50 text-slate-900" : "bg-[#0a0a0b] text-white"} transition-opacity duration-1000 ${contentLoaded ? 'opacity-100' : 'opacity-0'}`}>
       <ParticleBackground theme={content.theme} />
       <main className="relative z-10">
         <HeroSection content={content} />

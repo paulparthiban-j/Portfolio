@@ -31,6 +31,7 @@ export async function getPortfolioData(): Promise<PortfolioContent> {
             twitter: "",
             website: "",
             skills: [],
+            stats: [],
             projects: [],
             experience: [],
             education: [],

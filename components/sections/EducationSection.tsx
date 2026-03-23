@@ -16,7 +16,7 @@ export function EducationSection({ content }: EducationSectionProps) {
     const education = content.education || [];
 
     return (
-        <section className="min-h-screen w-full bg-[#0d0d0f] py-24 md:py-32 px-6 md:px-12 flex items-center justify-center relative overflow-hidden">
+        <section className="min-h-screen w-full bg-[#0d0d0f] py-16 md:py-24 px-6 md:px-12 flex items-center justify-center relative overflow-hidden">
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-violet-500/[0.04] rounded-full blur-[120px] pointer-events-none" />
 
             <div className="container mx-auto max-w-5xl relative z-10 w-full">
@@ -30,7 +30,7 @@ export function EducationSection({ content }: EducationSectionProps) {
                 {education.length === 0 ? (
                     <p className="text-slate-500 text-center text-lg">No education listed yet.</p>
                 ) : (
-                    <div className="grid md:grid-cols-2 gap-6 md:gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6">
                         {education.map((edu, index) => (
                             <motion.div
                                 key={index}
@@ -40,7 +40,7 @@ export function EducationSection({ content }: EducationSectionProps) {
                                 transition={{ delay: index * 0.1, duration: 0.5 }}
                                 whileHover={{ y: -4 }}
                                 whileTap={{ scale: 0.99 }}
-                                className="bg-white/[0.03] border border-white/10 rounded-2xl md:rounded-3xl p-8 md:p-10 hover:border-indigo-500/30 hover:bg-white/[0.05] hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-500 flex flex-col gap-4 relative"
+                                className="bg-white/[0.03] border border-white/10 rounded-2xl p-8 hover:border-indigo-500/30 hover:bg-white/[0.05] transition-all duration-300 flex flex-col gap-4 relative"
                             >
                                 {/* Year badge */}
                                 <div className="absolute top-6 right-6">

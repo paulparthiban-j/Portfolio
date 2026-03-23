@@ -16,7 +16,7 @@ export function ExperienceSection({ content }: ExperienceSectionProps) {
     const experience = content.experience || [];
 
     return (
-        <section className="min-h-screen w-full bg-[#0a0a0b] py-24 md:py-32 px-6 md:px-12 flex items-center justify-center relative overflow-hidden">
+        <section className="min-h-screen w-full bg-[#0a0a0b] py-16 md:py-24 px-6 md:px-12 flex items-center justify-center relative overflow-hidden">
             <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-indigo-500/[0.04] rounded-full blur-[120px] pointer-events-none" />
 
             <div className="container mx-auto max-w-5xl relative z-10 w-full">
@@ -30,7 +30,7 @@ export function ExperienceSection({ content }: ExperienceSectionProps) {
                 {experience.length === 0 ? (
                     <p className="text-slate-500 text-center text-lg">No experience listed yet.</p>
                 ) : (
-                    <div className="flex flex-col gap-6 md:gap-8">
+                    <div className="flex flex-col gap-8 md:gap-6 w-full">
                         {experience.map((exp, index) => (
                             <motion.div
                                 key={index}
@@ -40,7 +40,7 @@ export function ExperienceSection({ content }: ExperienceSectionProps) {
                                 transition={{ delay: index * 0.1, duration: 0.5 }}
                                 whileHover={{ y: -4 }}
                                 whileTap={{ scale: 0.99 }}
-                                className="bg-white/[0.03] border border-white/10 rounded-2xl md:rounded-3xl p-8 md:p-10 hover:border-indigo-500/30 hover:bg-white/[0.05] hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-500"
+                                className="bg-white/[0.03] border border-white/10 rounded-2xl p-8 hover:border-indigo-500/30 hover:bg-white/[0.05] transition-all duration-300"
                             >
                                 {/* Top row: company + duration */}
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">

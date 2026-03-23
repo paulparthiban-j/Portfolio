@@ -17,7 +17,7 @@ export function SkillsSection({ content }: SkillsSectionProps) {
     const skills = content.skills || [];
 
     return (
-        <section className="min-h-screen w-full bg-[#0d0d0f] py-24 md:py-32 px-6 md:px-12 flex items-center justify-center relative overflow-hidden">
+        <section className="min-h-screen w-full bg-[#0d0d0f] py-16 md:py-24 px-6 md:px-12 flex items-center justify-center relative overflow-hidden">
             {/* Background accent */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/[0.04] rounded-full blur-[120px] pointer-events-none" />
 
@@ -34,7 +34,7 @@ export function SkillsSection({ content }: SkillsSectionProps) {
                 </ScrollSection>
 
                 {/* Skills grid */}
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4 md:gap-6">
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-6 md:gap-8">
                     {skills.map((skill: string | Skill, index: number) => {
                         const name = typeof skill === "string" ? skill : skill.name;
                         const icon = typeof skill === "string" ? "" : (skill.icon || "");
@@ -47,18 +47,18 @@ export function SkillsSection({ content }: SkillsSectionProps) {
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.05, duration: 0.4 }}
                                 whileTap={{ scale: 0.95 }}
-                                className="flex flex-col items-center gap-3 group cursor-default"
+                                className="flex flex-col items-center gap-4 group cursor-default"
                             >
                                 {/* Icon card */}
-                                <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center group-hover:border-indigo-500/50 group-hover:bg-indigo-600/10 group-hover:-translate-y-1.5 group-hover:shadow-lg group-hover:shadow-indigo-500/10 transition-all duration-300 overflow-hidden">
+                                <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center group-hover:border-indigo-500/50 group-hover:bg-indigo-600/10 group-hover:scale-105 transition-all duration-300 overflow-hidden">
                                     <TechIcon
                                         name={name}
                                         icon={icon}
-                                        className="w-8 h-8 md:w-10 md:h-10"
+                                        className="w-10 h-10 md:w-12 md:h-12"
                                     />
                                 </div>
                                 {/* Label */}
-                                <span className="text-[10px] md:text-xs font-semibold text-slate-500 group-hover:text-white uppercase tracking-wider text-center transition-colors duration-300 leading-tight">
+                                <span className="text-xs md:text-sm font-semibold text-slate-500 group-hover:text-white uppercase tracking-wider text-center transition-colors duration-300 leading-tight">
                                     {name}
                                 </span>
                             </motion.div>

@@ -24,6 +24,12 @@
     "AWS EC2",
     "Linux"
   ],
+  "stats": [
+    { "number": 5, "label": "Projects Completed", "suffix": "+" },
+    { "number": 1, "label": "Years Experience", "suffix": "+" },
+    { "number": 5, "label": "Technologies", "suffix": "+" },
+    { "number": 20, "label": "Commits This Year", "suffix": "+" }
+  ],
   "projects": [
     {
       "title": "P2P - Supply Chain Management System",

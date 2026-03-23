@@ -25,6 +25,12 @@ export interface Education {
   year: string;
 }
 
+export interface Stat {
+  number: number;
+  label: string;
+  suffix?: string;
+}
+
 export interface CustomSection {
   title: string;
   content: string;
@@ -56,6 +62,7 @@ export interface PortfolioContent {
   projects: Project[];
   experience: Experience[];
   education: Education[];
+  stats: Stat[];
   theme: Theme;
   projectsTitle?: string;
   skillsTitle?: string;
