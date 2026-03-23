@@ -1,13 +1,13 @@
 "use client";
 
-import { PortfolioContent, Project } from "@/types/portfolio";
-import { AnimatedSection } from "@/components/ui/AnimatedSection";
+import { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { PortfolioContent, Project, Theme } from "@/types/portfolio";
 import { ScrollSection } from "@/components/ui/ScrollSection";
 import { StaggeredItem } from "@/components/ui/StaggeredItem";
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useState } from "react";
-import Image from "next/image";
+import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import Image from "next/image";
 
 interface ProjectsSectionProps {
     content: PortfolioContent;
@@ -15,211 +15,188 @@ interface ProjectsSectionProps {
     sectionIndex?: number;
 }
 
-const ProjectCard = ({ project, onClick }: { project: Project; onClick: () => void }) => {
-    const isMobile = useIsMobile();
-    const x = useMotionValue(0);
-    const y = useMotionValue(0);
-    const mouseXSpring = useSpring(x, { stiffness: 150, damping: 20 });
-    const mouseYSpring = useSpring(y, { stiffness: 150, damping: 20 });
-    const [hovering, setHovering] = useState(false);
-
-    const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
-    const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
-
-    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (isMobile) return;
-        const rect = e.currentTarget.getBoundingClientRect();
-        const width = rect.width;
-        const height = rect.height;
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
-        const xPct = (mouseX / width) - 0.5;
-        const yPct = (mouseY / height) - 0.5;
-        x.set(xPct);
-        y.set(yPct);
-    };
-
-    const handleMouseLeave = () => {
-        x.set(0);
-        y.set(0);
-        setHovering(false);
-    };
-
-    return (
-        <motion.div
-            style={!isMobile ? {
-                rotateX,
-                rotateY,
-                transformStyle: "preserve-3d",
-            } : {}}
-            onMouseMove={handleMouseMove}
-            onMouseEnter={() => !isMobile && setHovering(true)}
-            onMouseLeave={handleMouseLeave}
-            onClick={onClick}
-            layoutId={`card-${project.title}`}
-            className="group relative h-[450px] w-full cursor-pointer perspective-1000"
-        >
-            <div 
-                className={`glass-premium h-full w-full rounded-[2.5rem] overflow-hidden border border-white/5 group-hover:border-accent/30 transition-all duration-700 ${hovering && !isMobile ? 'ring-1 ring-accent/20' : ''}`}
-                style={hovering && !isMobile ? { willChange: 'transform' } : {}}
-            >
-                {/* Project Image */}
-                <div className="relative h-2/3 w-full bg-slate-900 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent z-10" />
-                    {project.icon ? (
-                        <Image 
-                            src={project.icon} 
-                            alt={project.title} 
-                            fill 
-                            className="object-cover group-hover:scale-110 transition-transform duration-700"
-                            sizes="(max-width: 768px) 100vw, 33vw"
-                        />
-                    ) : (
-                        <div className="h-full w-full flex items-center justify-center text-white/5 font-black text-8xl italic uppercase select-none">
-                            {project.title.substring(0, 2)}
-                        </div>
-                    )}
-                    
-                    {/* Hover Overlay */}
-                    <div className={`absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-accent/10 backdrop-blur-sm`}>
-                        <span className="px-8 py-3 bg-white text-black font-black uppercase text-xs tracking-[0.2em] rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform">
-                            View Mission
-                        </span>
-                    </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-8 relative z-30">
-                    <div className="mb-2 text-[10px] font-black tracking-[0.4em] uppercase text-accent/60">
-                        {project.tech?.split(',')[0] || 'Technology'}
-                    </div>
-                    <h3 className="text-3xl font-black text-white group-hover:text-accent transition-colors leading-tight">
-                        {project.title}
-                    </h3>
-                </div>
-            </div>
-        </motion.div>
-    );
-};
-
 export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSectionProps) {
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
     const isMobile = useIsMobile();
 
     if (!content) return null;
 
+    const projects = useMemo(() => content.projects || [], [content.projects]);
+
     return (
         <AnimatedSection
             sectionIndex={sectionIndex}
             isActive={isActive}
-            className={`bg-gradient-to-br ${content.theme?.bg || 'from-[#0f172a] via-[#1e1b4b] to-black'} py-32 px-4 relative overflow-hidden`}
+            className={`min-h-screen relative flex items-center justify-center py-32 px-4 md:px-8 overflow-hidden bg-black`}
         >
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-3xl z-0" />
+            <div className="absolute inset-0 bg-[#0a0a0b] z-0" />
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none" />
             
-            <div className="container mx-auto max-w-7xl relative z-10">
+            <div className="container mx-auto max-w-7xl relative z-10 w-full">
                 <ScrollSection animationType="slide-down" className="mb-24 text-center">
                     <h2 className="text-6xl md:text-9xl font-black tracking-tighter text-white">
-                        <span className="opacity-30">01.</span> PROJECTS
+                        <span className="opacity-30">03.</span> {content.projectsTitle || 'PROJECTS'}
                     </h2>
                 </ScrollSection>
 
-                {(!content.projects || content.projects.length === 0) ? (
-                    <div className="text-center py-20 glass-premium rounded-3xl">
-                        <p className="text-slate-500 font-black italic tracking-widest text-xl">NO MISSIONS DEPLOYED YET</p>
-                    </div>
-                ) : (
-                    <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
-                        {content.projects.map((project: Project, index: number) => (
-                            <StaggeredItem key={index} index={index}>
-                                <ProjectCard project={project} onClick={() => setSelectedProject(project)} />
-                            </StaggeredItem>
-                        ))}
-                    </div>
-                )}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {projects.map((project, index) => (
+                        <ProjectCard 
+                            key={index} 
+                            project={project} 
+                            index={index} 
+                            isMobile={isMobile}
+                            theme={content.theme}
+                            onClick={() => setSelectedProject(project)} 
+                        />
+                    ))}
+
+                    {projects.length === 0 && (
+                        <div className="col-span-full py-20 text-center glass-premium border border-white/5 rounded-4xl">
+                            <p className="text-slate-500 font-bold tracking-widest uppercase text-sm">No missions deployed yet.</p>
+                        </div>
+                    )}
+                </div>
             </div>
 
             <AnimatePresence>
                 {selectedProject && (
-                    <>
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            onClick={() => setSelectedProject(null)}
-                            className="fixed inset-0 bg-black/95 backdrop-blur-xl z-[100] cursor-zoom-out"
-                        />
-                        
-                        <motion.div
-                            layoutId={`card-${selectedProject.title}`}
-                            className="fixed inset-4 md:inset-10 lg:inset-20 z-[101] flex items-center justify-center pointer-events-none"
-                        >
-                            <div className="glass-premium w-full max-w-6xl max-h-full overflow-y-auto rounded-[3rem] border border-white/10 pointer-events-auto relative scrollbar-hide">
-                                <button 
-                                    onClick={() => setSelectedProject(null)}
-                                    className="absolute top-8 right-8 w-12 h-12 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-white z-50 hover:bg-white/10 transition-colors"
-                                >
-                                    ✕
-                                </button>
-                                
-                                <div className="grid lg:grid-cols-2 h-full min-h-[600px]">
-                                    <div className="relative h-80 lg:h-auto bg-slate-900">
-                                        {selectedProject.icon ? (
-                                            <Image 
-                                                src={selectedProject.icon} 
-                                                alt={selectedProject.title} 
-                                                fill 
-                                                className="object-cover"
-                                                sizes="(max-width: 768px) 100vw, 50vw"
-                                            />
-                                        ) : (
-                                            <div className="h-full w-full flex items-center justify-center text-white/5 font-black text-[12rem] italic uppercase select-none">
-                                                {selectedProject.title.substring(0, 2)}
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <div className="p-10 md:p-16 flex flex-col justify-center">
-                                        <div className="flex gap-3 mb-8 flex-wrap">
-                                            {selectedProject.tech?.split(',').map((tech, i) => (
-                                                <span key={i} className="px-4 py-1.5 rounded-full glass border border-white/10 text-accent font-black text-[10px] tracking-widest uppercase">
-                                                    {tech.trim()}
-                                                </span>
-                                            ))}
-                                        </div>
-
-                                        <h2 className="text-5xl md:text-7xl font-black text-white mb-8 leading-tight tracking-tighter">
-                                            {selectedProject.title}
-                                        </h2>
-                                        
-                                        <p className="text-xl md:text-2xl text-slate-400 font-light leading-relaxed mb-12">
-                                            {selectedProject.description}
-                                        </p>
-
-                                        <div className="flex flex-wrap gap-6 pt-8 border-t border-white/10">
-                                            <a 
-                                                href={selectedProject.link} 
-                                                target="_blank" 
-                                                rel="noopener noreferrer"
-                                                className="px-10 py-5 bg-white text-black font-black uppercase text-xs tracking-[0.2em] rounded-2xl hover:bg-accent hover:text-white transition-all"
-                                            >
-                                                Launch Application
-                                            </a>
-                                            <a 
-                                                href={selectedProject.github} 
-                                                target="_blank" 
-                                                rel="noopener noreferrer"
-                                                className="px-10 py-5 glass border border-white/10 text-white font-black uppercase text-xs tracking-[0.2em] rounded-2xl hover:bg-white/10 transition-all"
-                                            >
-                                                Source Code
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </motion.div>
-                    </>
+                    <ProjectModal 
+                        project={selectedProject} 
+                        onClose={() => setSelectedProject(null)} 
+                        theme={content.theme}
+                    />
                 )}
             </AnimatePresence>
         </AnimatedSection>
+    );
+}
+
+function ProjectCard({ project, index, isMobile, theme, onClick }: { project: Project; index: number; isMobile: boolean; theme: Theme; onClick: () => void }) {
+    const techStack = useMemo(() => (project.tech || "").split(',').map(s => s.trim()), [project.tech]);
+
+    return (
+        <StaggeredItem index={index}>
+            <motion.div
+                onClick={onClick}
+                className={`group glass-premium border border-white/5 rounded-4xl overflow-hidden cursor-pointer h-full flex flex-col transition-all duration-700 active:scale-95 ${!isMobile ? "hover:scale-[1.02] hover:border-indigo-500/40 hover:shadow-2xl hover:shadow-indigo-500/10" : ""}`}
+            >
+                {/* Image-First Layout */}
+                <div className="h-64 relative bg-slate-900 overflow-hidden">
+                    <Image 
+                        src={project.icon || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=60"}
+                        alt={project.title}
+                        fill
+                        className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent flex items-end p-8">
+                         <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-indigo-600 group-hover:border-indigo-400 group-hover:-translate-y-2 transition-all">
+                             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                         </div>
+                    </div>
+                </div>
+
+                <div className="p-8 flex-1 flex flex-col">
+                    <h3 className="text-2xl font-black text-white uppercase tracking-tighter mb-3 leading-none group-hover:text-indigo-400 transition-colors">
+                        {project.title}
+                    </h3>
+                    <p className="text-slate-400 text-sm mb-6 line-clamp-2 leading-relaxed font-medium">
+                        {project.description}
+                    </p>
+                    
+                    <div className="mt-auto flex flex-wrap gap-2">
+                        {techStack.slice(0, 3).map((t, idx) => (
+                            <span key={idx} className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold text-slate-300 uppercase tracking-widest">
+                                {t}
+                            </span>
+                        ))}
+                        {techStack.length > 3 && (
+                            <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold text-slate-300 uppercase tracking-widest">
+                                +{techStack.length - 3}
+                            </span>
+                        )}
+                    </div>
+                </div>
+            </motion.div>
+        </StaggeredItem>
+    );
+}
+
+function ProjectModal({ project, onClose, theme }: { project: Project; onClose: () => void; theme: Theme }) {
+    const techStack = useMemo(() => (project.tech || "").split(',').map(s => s.trim()), [project.tech]);
+
+    return (
+        <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-10 backdrop-blur-2xl bg-black/80"
+            onClick={onClose}
+        >
+            <motion.div 
+                initial={{ scale: 0.9, y: 20 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.9, y: 20 }}
+                className="glass-premium border border-white/10 rounded-5xl w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col md:flex-row shadow-5xl shadow-black shadow-glow group"
+                onClick={e => e.stopPropagation()}
+                style={{ "--tw-shadow-color": "rgba(99, 102, 241, 0.1)" } as any}
+            >
+                {/* Modal Layout */}
+                <div className="w-full md:w-[55%] relative h-64 md:h-auto overflow-hidden bg-slate-900">
+                    <Image 
+                        src={project.icon || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&auto=format&fit=crop&q=80"}
+                        alt={project.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 55vw"
+                    />
+                    <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black to-transparent pointer-events-none" />
+                </div>
+
+                <div className="w-full md:w-[45%] p-10 md:p-16 flex flex-col bg-white/[0.02]">
+                    <div className="flex justify-between items-start mb-10">
+                        <div className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-black tracking-widest text-indigo-400 uppercase">
+                            Mission Log
+                        </div>
+                        <button onClick={onClose} className="w-12 h-12 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors">
+                             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                    </div>
+
+                    <h2 className="text-4xl md:text-5xl font-black text-white mb-6 uppercase tracking-tighter leading-none">
+                        {project.title}
+                    </h2>
+                    
+                    <p className="text-slate-400 text-lg leading-relaxed mb-10 font-medium">
+                        {project.description}
+                    </p>
+
+                    <div className="mb-10">
+                        <h4 className="text-[10px] font-black tracking-widest text-slate-500 uppercase mb-4">Tech Stack</h4>
+                        <div className="flex flex-wrap gap-2">
+                            {techStack.map((t, i) => (
+                                <span key={i} className="px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-[11px] font-bold text-white uppercase tracking-wider">
+                                    {t}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="mt-auto flex flex-col sm:flex-row gap-4">
+                        {project.link && (
+                            <a href={project.link} target="_blank" className="flex-1 py-4 bg-indigo-600 hover:bg-indigo-500 rounded-2xl text-center text-white font-bold transition-all shadow-xl shadow-indigo-500/20 active:scale-95">
+                                Live Preview
+                            </a>
+                        )}
+                        {project.github && (
+                            <a href={project.github} target="_blank" className="flex-1 py-4 bg-white/5 border border-white/10 hover:bg-white/10 rounded-2xl text-center text-white font-bold transition-all active:scale-95">
+                                Code Repository
+                            </a>
+                        )}
+                    </div>
+                </div>
+            </motion.div>
+        </motion.div>
     );
 }

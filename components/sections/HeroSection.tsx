@@ -1,174 +1,133 @@
 "use client";
 
+import { useEffect, useState, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { PortfolioContent } from "@/types/portfolio";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
-import { AnimatedSection } from "@/components/ui/AnimatedSection";
-import { ScrollSection } from "@/components/ui/ScrollSection";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 interface HeroSectionProps {
     content: PortfolioContent;
-    hideHeroContent: boolean;
+    hideHeroContent?: boolean;
     isActive?: boolean;
     sectionIndex?: number;
 }
 
-const MagneticButton = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => {
-    const ref = useRef<HTMLDivElement>(null);
-    const x = useMotionValue(0);
-    const y = useMotionValue(0);
-    const springX = useSpring(x, { stiffness: 150, damping: 15 });
-    const springY = useSpring(y, { stiffness: 150, damping: 15 });
-
-    const handleMouseMove = (e: React.MouseEvent) => {
-        const { clientX, clientY } = e;
-        const { left, top, width, height } = ref.current?.getBoundingClientRect() || { left: 0, top: 0, width: 0, height: 0 };
-        const centerX = left + width / 2;
-        const centerY = top + height / 2;
-        const distanceX = clientX - centerX;
-        const distanceY = clientY - centerY;
-        x.set(distanceX * 0.35);
-        y.set(distanceY * 0.35);
-    };
-
-    const handleMouseLeave = () => {
-        x.set(0);
-        y.set(0);
-    };
-
-    return (
-        <motion.div
-            ref={ref}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            style={{ x: springX, y: springY }}
-            className={className}
-        >
-            {children}
-        </motion.div>
-    );
-};
-
-import { useIsMobile } from "@/hooks/useIsMobile";
-
 export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }: HeroSectionProps) {
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [mounted, setMounted] = useState(false);
     const isMobile = useIsMobile();
+    const containerRef = useRef<HTMLDivElement>(null);
     
+    // Always call hooks
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start start", "end start"]
+    });
+
+    const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+    const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+    const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
+
     useEffect(() => {
         setMounted(true);
-        if (isMobile) return;
-
-        const handleMouseMove = (e: MouseEvent) => {
-            const { clientX, clientY } = e;
-            const x = (clientX / window.innerWidth - 0.5) * 40;
-            const y = (clientY / window.innerHeight - 0.5) * 40;
-            setMousePosition({ x, y });
-        };
-        window.addEventListener("mousemove", handleMouseMove);
-        return () => window.removeEventListener("mousemove", handleMouseMove);
-    }, [isMobile]);
+    }, []);
 
     if (!content) return null;
 
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.2,
+            },
+        },
+    };
+
+    const itemVariants = {
+        hidden: { y: 20, opacity: 0 },
+        visible: {
+            y: 0,
+            opacity: 1,
+            transition: { type: "spring" as const, stiffness: 100 },
+        },
+    };
+
     return (
-        <AnimatedSection
-            isFirst={true}
-            sectionIndex={sectionIndex}
-            isActive={isActive}
-            className={`bg-gradient-to-br ${content.theme?.bg || 'from-[#0f172a] via-[#1e1b4b] to-black'} relative overflow-hidden`}
+        <section 
+            ref={containerRef}
+            className={`relative min-h-screen flex items-center justify-center overflow-hidden h-full ${content.theme?.bg || 'bg-black'}`}
         >
-            {/* Background Texture & Floating Shapes - Disabled on Mobile if heavy */}
-            {!isMobile && (
-                <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#ffffff11_1px,transparent_1px)] [background-size:20px_20px]" />
-            )}
-            
-            {/* Soft Ambient Blobs - Static/Reduced on Mobile */}
-            <div className={`absolute top-1/4 -left-20 w-64 h-64 bg-primary/10 rounded-full blur-[100px] ${!isMobile ? 'animate-pulse' : 'opacity-50'}`} />
-            <div className={`absolute bottom-1/4 -right-20 w-80 h-80 bg-accent/10 rounded-full blur-[120px] ${!isMobile ? 'animate-pulse delay-700' : 'opacity-50'}`} />
-            
-            <div 
-                className={`hero-content text-center w-full transition-all duration-1000 ${hideHeroContent ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}
-                style={!isMobile && mounted ? {
-                    transform: `translate3d(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px, 0)`,
-                    willChange: 'transform'
-                } : {}}
-            >
-                <div className="max-w-5xl mx-auto px-6 relative z-10 flex flex-col items-center justify-center min-h-[80vh]">
-                    <ScrollSection animationType="slide-down" className="mb-4">
-                        <span className="px-4 py-2 rounded-full border border-white/10 glass-dark text-xs font-bold tracking-[0.3em] uppercase opacity-70">
-                            Digital Architect
+            {/* Background Layer: Mobile = Static, Desktop = Particles */}
+            <div className="absolute inset-0 z-0">
+                <div className={`absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black pointer-events-none`} />
+                {!isMobile && mounted && (
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] opacity-20 pointer-events-none">
+                         <div className="w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-from)_0%,_transparent_70%)] from-indigo-500/20" />
+                    </div>
+                )}
+            </div>
+
+            {mounted && (
+                <motion.div
+                    style={!isMobile ? { y, opacity, scale } : {}}
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate={isActive ? "visible" : "hidden"}
+                    className={`container mx-auto px-6 relative z-10 text-center transition-all duration-700 ${hideHeroContent ? 'opacity-0 scale-95 blur-xl pointer-events-none' : 'opacity-100 scale-100 blur-0'}`}
+                >
+                    <motion.div variants={itemVariants} className="inline-block mb-4 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+                        <span className="text-xs font-bold tracking-widest text-indigo-400 uppercase">
+                            {content.title || "Full Stack Developer"}
                         </span>
-                    </ScrollSection>
+                    </motion.div>
 
-                    <ScrollSection animationType="slide-up">
-                        <h1 className="mb-8 text-7xl font-black md:text-[9rem] leading-[0.9] tracking-tighter text-center perspective-1000">
-                            <span className={`inline-block animate-gradient bg-gradient-to-r ${content.theme?.primaryGradient || 'from-indigo-400 via-purple-400 to-indigo-400'} bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(var(--accent-rgb),0.3)]`}>
-                                I&apos;m {content.name}
-                            </span>
-                        </h1>
-                    </ScrollSection>
+                    <motion.h1 
+                        variants={itemVariants}
+                        className="text-6xl md:text-9xl font-black mb-6 tracking-tighter leading-none"
+                    >
+                        <span className={`block bg-clip-text text-transparent bg-gradient-to-r ${content.theme?.primaryGradient || 'from-white via-indigo-200 to-indigo-400'}`}>
+                            {content.name}
+                        </span>
+                    </motion.h1>
 
-                    <ScrollSection animationType="slide-up" className="delay-200">
-                        <p className="mb-8 text-2xl md:text-5xl font-extralight text-slate-300/90 tracking-tight">
-                            {content.title}
-                        </p>
-                    </ScrollSection>
+                    <motion.p 
+                        variants={itemVariants}
+                        className="text-lg md:text-2xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed font-medium"
+                    >
+                        {content.subtitle || content.description}
+                    </motion.p>
 
-                    <ScrollSection animationType="fade-in" className="delay-500">
-                        <p className="mb-12 text-lg md:text-xl text-slate-400 max-w-2xl mx-auto font-light leading-relaxed">
-                            {content.description}
-                        </p>
-                    </ScrollSection>
+                    <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-4">
+                        <a 
+                            href="#projects"
+                            className="group relative px-8 py-4 bg-indigo-600 rounded-2xl text-white font-bold transition-all hover:bg-indigo-500 hover:shadow-indigo-500/25 hover:scale-105 active:scale-95 shadow-xl"
+                        >
+                            View Projects
+                        </a>
+                        <a 
+                            href={content.resumeUrl || "#"}
+                            target="_blank"
+                            className="px-8 py-4 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl text-white font-bold hover:bg-white/10 transition-all active:scale-95"
+                        >
+                            Resume
+                        </a>
+                    </motion.div>
+                </motion.div>
+            )}
 
-                    <ScrollSection animationType="scale-in" className="delay-700">
-                        <div className="flex flex-wrap justify-center gap-12">
-                            <MagneticButton>
-                                <a
-                                    href={`mailto:${content.email}`}
-                                    className="group relative px-12 py-6 rounded-full overflow-hidden transition-all duration-500 hover:scale-105 active:scale-95 block"
-                                    aria-label="Send an email to hire me"
-                                >
-                                    <div className={`absolute inset-0 bg-gradient-to-r ${content.theme?.primaryGradient || 'from-indigo-600 to-violet-600'} transition-transform duration-500 group-hover:scale-110`} />
-                                    <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                    <span className="relative text-white font-black text-xl tracking-wider flex items-center gap-3">
-                                        Initiate Project <span className="group-hover:translate-x-1 transition-transform">→</span>
-                                    </span>
-                                </a>
-                            </MagneticButton>
-
-                            <MagneticButton>
-                                <a
-                                    href={content.github}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="group px-12 py-6 rounded-full border border-white/10 glass-premium hover:bg-white/10 transition-all duration-500 hover:scale-105 active:scale-95 block"
-                                    aria-label="View my GitHub profile"
-                                >
-                                    <span className="text-white font-bold text-xl tracking-wider">
-                                        Explore Lab
-                                    </span>
-                                </a>
-                            </MagneticButton>
-                        </div>
-                    </ScrollSection>
-                </div>
-            </div>
-
-            <div
-                className={`absolute bottom-12 left-1/2 transform -translate-x-1/2 transition-opacity duration-1000 ${hideHeroContent ? 'opacity-0' : 'opacity-100'}`}
-                aria-hidden="true"
-            >
-                <div className="flex flex-col items-center gap-4">
-                    <span className="text-[10px] tracking-[0.5em] text-slate-500 uppercase font-black">Gravity Defied</span>
-                    <div className="w-[1px] h-20 bg-gradient-to-b from-white/20 via-white/40 to-transparent animate-shimmer" />
-                </div>
-            </div>
-
-            {/* Float-up Wow Moment Elements */}
-            <div className="absolute top-[15%] right-[10%] w-12 h-12 border border-white/5 glass-dark rounded-xl rotate-45 animate-float opacity-20 pointer-events-none" />
-            <div className="absolute bottom-[20%] left-[5%] w-8 h-8 bg-accent/20 rounded-full blur-md animate-float-up delay-1000 pointer-events-none" />
-        </AnimatedSection >
+            {/* Scroll Indicator */}
+            {mounted && !hideHeroContent && (
+                <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.5 }}
+                    className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
+                >
+                    <div className="w-px h-12 bg-gradient-to-b from-indigo-500/50 to-transparent" />
+                    <span className="text-[10px] font-bold tracking-widest text-slate-500 uppercase">Scroll</span>
+                </motion.div>
+            )}
+        </section>
     );
 }
