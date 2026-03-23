@@ -3,19 +3,29 @@
 import { PortfolioContent } from "@/types/portfolio";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { ScrollSection } from "@/components/ui/ScrollSection";
+import { useState } from "react";
 
 interface FooterProps {
     content: PortfolioContent;
-    sectionIndex: number;
     isActive?: boolean;
+    sectionIndex?: number;
 }
 
 export function Footer({ content, isActive, sectionIndex }: FooterProps) {
+    const [formStatus, setFormStatus] = useState<"idle" | "sending" | "sent">("idle");
+    if (!content) return null;
+
     const socialLinks = [
-        { platform: 'GitHub', url: content.github, icon: '🐙' },
-        { platform: 'LinkedIn', url: content.linkedin, icon: '💼' },
-        { platform: 'Twitter', url: content.twitter, icon: '🐦' }
-    ].filter(link => link.url);
+        { label: "LinkedIn", url: content.linkedin || "#", icon: "in" },
+        { label: "GitHub", url: content.github || "#", icon: "gh" },
+        { label: "Twitter", url: content.twitter || "#", icon: "tw" }
+    ];
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        setFormStatus("sending");
+        setTimeout(() => setFormStatus("sent"), 2000);
+    };
 
     return (
         <AnimatedSection
@@ -23,83 +33,81 @@ export function Footer({ content, isActive, sectionIndex }: FooterProps) {
             isActive={isActive}
             className={`bg-gradient-to-br ${content.theme?.bg || 'from-[#0f172a] via-[#1e1b4b] to-black'} py-32 px-4 relative overflow-hidden`}
         >
-            <div className="absolute inset-0 bg-black/80 backdrop-blur-3xl z-0" />
+            <div className="absolute inset-0 bg-black/90 backdrop-blur-3xl z-0" />
             
             <div className="container mx-auto max-w-7xl relative z-10">
-                <div className="grid gap-16 lg:grid-cols-2">
-                    <ScrollSection animationType="slide-right">
-                        <div>
-                            <h2 className="text-6xl md:text-8xl font-black tracking-tighter text-white mb-12">
-                                LET&apos;S <span className="text-accent underline decoration-accent/30 underline-offset-8">SYNC.</span>
+                <div className="grid lg:grid-cols-2 gap-20 items-start">
+                    {/* Contact Info */}
+                    <div className="space-y-12">
+                        <ScrollSection animationType="slide-right">
+                            <h2 className="text-6xl md:text-9xl font-black text-white tracking-tighter leading-none mb-10">
+                                SAY<br />HELLO.
                             </h2>
-                            <p className="text-2xl text-slate-400 font-light max-w-xl mb-16 leading-relaxed">
-                                Currently accepting new projects and consulting opportunities for {new Date().getFullYear()}.
+                            <p className="text-2xl text-slate-500 font-light max-w-md leading-relaxed mb-12">
+                                Looking for a digital architect to bring your next vision to life? Let's connect.
                             </p>
                             
-                            <div className="flex gap-8 mb-20 overflow-visible">
+                            <div className="flex gap-4">
                                 {socialLinks.map((social, i) => (
                                     <a 
                                         key={i} 
                                         href={social.url} 
                                         target="_blank" 
                                         rel="noopener noreferrer"
-                                        className="group relative w-16 h-16 flex items-center justify-center rounded-2xl glass-premium border-white/5 hover:border-accent/40 transition-all duration-500 hover:-translate-y-2"
+                                        className="w-16 h-16 rounded-2xl glass border border-white/5 flex items-center justify-center text-white font-black hover:bg-accent hover:border-accent transition-all duration-500 group"
                                     >
-                                        <div className="absolute inset-0 bg-accent/20 blur-xl rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                                        <span className="text-2xl grayscale group-hover:grayscale-0 transition-all duration-500">
-                                            {social.icon}
-                                        </span>
+                                        <span className="group-hover:scale-110 transition-transform">{social.icon}</span>
                                     </a>
                                 ))}
                             </div>
+                        </ScrollSection>
+                    </div>
 
-                            <div className="pt-12 border-t border-white/10 text-slate-500 font-black text-xs tracking-[0.4em] uppercase">
-                                Inspired by the Cosmos &copy; {new Date().getFullYear()} {content.name}
-                            </div>
-                        </div>
-                    </ScrollSection>
-
+                    {/* Contact Form */}
                     <ScrollSection animationType="slide-left">
-                        <div className="glass-premium rounded-[3rem] p-10 md:p-14 border-white/5 relative">
-                            <form className="space-y-8">
-                                <div className="space-y-3">
-                                    <label className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 ml-2">Commander Name</label>
-                                    <input 
-                                        type="text" 
-                                        placeholder="Enter your name"
-                                        className="w-full bg-white/5 border border-white/5 rounded-2xl px-10 py-5 text-white focus:outline-none focus:border-accent/50 focus:bg-white/10 transition-all"
-                                    />
+                        <div className="glass-premium rounded-[3rem] p-8 md:p-14 border-white/5 relative overflow-hidden">
+                            <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 ml-4">Full Identity</label>
+                                        <input required type="text" placeholder="Your Name" className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-accent transition-all" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 ml-4">Terminal Address</label>
+                                        <input required type="email" placeholder="email@address.com" className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-accent transition-all" />
+                                    </div>
                                 </div>
-                                <div className="space-y-3">
-                                    <label className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 ml-2">Transmission Frequency</label>
-                                    <input 
-                                        type="email" 
-                                        placeholder="your@email.com"
-                                        className="w-full bg-white/5 border border-white/5 rounded-2xl px-10 py-5 text-white focus:outline-none focus:border-accent/50 focus:bg-white/10 transition-all"
-                                    />
-                                </div>
-                                <div className="space-y-3">
-                                    <label className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 ml-2">Protocol Details</label>
-                                    <textarea 
-                                        placeholder="How can we collaborate?"
-                                        rows={4}
-                                        className="w-full bg-white/5 border border-white/5 rounded-2xl px-10 py-5 text-white focus:outline-none focus:border-accent/50 focus:bg-white/10 transition-all resize-none"
-                                    />
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 ml-4">Mission Brief</label>
+                                    <textarea required rows={4} placeholder="Tell me about your project..." className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-accent transition-all resize-none" />
                                 </div>
                                 
-                                <button type="button" className="group relative w-full py-6 rounded-2xl overflow-hidden active:scale-[0.98] transition-all duration-300">
-                                    <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary animate-gradient" />
-                                    <span className="relative text-white font-black text-lg tracking-[0.1em] uppercase group-hover:tracking-[0.2em] transition-all">Send Transmission</span>
+                                <button 
+                                    disabled={formStatus !== "idle"}
+                                    type="submit" 
+                                    className="w-full py-6 rounded-2xl bg-white text-black font-black uppercase text-xs tracking-[0.3em] hover:bg-accent hover:text-white transition-all transform active:scale-[0.98] disabled:opacity-50"
+                                >
+                                    {formStatus === "idle" ? "DEPLOY TRANSMISSION" : formStatus === "sending" ? "UPLOADING..." : "TRANSMISSION RECEIVED"}
                                 </button>
                             </form>
+                            
+                            {/* Decorative background glow */}
+                            <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-accent/20 rounded-full blur-[100px] pointer-events-none" />
                         </div>
                     </ScrollSection>
                 </div>
-            </div>
 
-            {/* Float-up background elements */}
-            <div className="absolute bottom-[-5%] left-[20%] w-32 h-32 border border-accent/10 rounded-full animate-float pointer-events-none" />
-            <div className="absolute top-[10%] right-[5%] w-16 h-16 glass-premium rounded-full blur-md animate-pulse pointer-events-none" />
+                <div className="mt-40 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 opacity-40">
+                    <p className="text-sm font-mono tracking-widest text-slate-500 uppercase">
+                        © {new Date().getFullYear()} {content.name} — ALL SYSTEMS OPERATIONAL
+                    </p>
+                    <div className="flex gap-10">
+                        <span className="text-xs font-black uppercase tracking-widest text-white/50">Next.js 16</span>
+                        <span className="text-xs font-black uppercase tracking-widest text-white/50">Framer Motion</span>
+                        <span className="text-xs font-black uppercase tracking-widest text-white/50">PostgreSQL</span>
+                    </div>
+                </div>
+            </div>
         </AnimatedSection>
     );
 }

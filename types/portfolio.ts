@@ -57,6 +57,10 @@ export interface PortfolioContent {
   experience: Experience[];
   education: Education[];
   theme: Theme;
+  projectsTitle?: string;
+  skillsTitle?: string;
+  experienceTitle?: string;
+  educationTitle?: string;
   customSections: CustomSection[];
   resumeUrl?: string;
 }

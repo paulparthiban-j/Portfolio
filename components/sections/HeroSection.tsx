@@ -49,10 +49,17 @@ const MagneticButton = ({ children, className = "" }: { children: React.ReactNod
     );
 };
 
+import { useIsMobile } from "@/hooks/useIsMobile";
+
 export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }: HeroSectionProps) {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [mounted, setMounted] = useState(false);
+    const isMobile = useIsMobile();
     
     useEffect(() => {
+        setMounted(true);
+        if (isMobile) return;
+
         const handleMouseMove = (e: MouseEvent) => {
             const { clientX, clientY } = e;
             const x = (clientX / window.innerWidth - 0.5) * 40;
@@ -61,27 +68,32 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
         };
         window.addEventListener("mousemove", handleMouseMove);
         return () => window.removeEventListener("mousemove", handleMouseMove);
-    }, []);
+    }, [isMobile]);
+
+    if (!content) return null;
 
     return (
         <AnimatedSection
             isFirst={true}
             sectionIndex={sectionIndex}
             isActive={isActive}
-            className={`bg-gradient-to-br ${content.theme?.bg || 'from-[#0f172a] via-[#1e1b4b] to-black'} ${content.theme?.mode === 'light' ? 'text-slate-900' : 'text-white'} relative overflow-hidden`}
+            className={`bg-gradient-to-br ${content.theme?.bg || 'from-[#0f172a] via-[#1e1b4b] to-black'} relative overflow-hidden`}
         >
-            {/* Background Texture & Floating Shapes */}
-            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 pointer-events-none"></div>
+            {/* Background Texture & Floating Shapes - Disabled on Mobile if heavy */}
+            {!isMobile && (
+                <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#ffffff11_1px,transparent_1px)] [background-size:20px_20px]" />
+            )}
             
-            {/* Soft Ambient Shapes */}
-            <div className="absolute top-1/4 -left-20 w-64 h-64 bg-primary/10 rounded-full blur-[100px] animate-pulse" />
-            <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-accent/10 rounded-full blur-[120px] animate-pulse delay-700" />
+            {/* Soft Ambient Blobs - Static/Reduced on Mobile */}
+            <div className={`absolute top-1/4 -left-20 w-64 h-64 bg-primary/10 rounded-full blur-[100px] ${!isMobile ? 'animate-pulse' : 'opacity-50'}`} />
+            <div className={`absolute bottom-1/4 -right-20 w-80 h-80 bg-accent/10 rounded-full blur-[120px] ${!isMobile ? 'animate-pulse delay-700' : 'opacity-50'}`} />
             
             <div 
                 className={`hero-content text-center w-full transition-all duration-1000 ${hideHeroContent ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}
-                style={{
-                    transform: `translate3d(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px, 0)`
-                }}
+                style={!isMobile && mounted ? {
+                    transform: `translate3d(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px, 0)`,
+                    willChange: 'transform'
+                } : {}}
             >
                 <div className="max-w-5xl mx-auto px-6 relative z-10 flex flex-col items-center justify-center min-h-[80vh]">
                     <ScrollSection animationType="slide-down" className="mb-4">

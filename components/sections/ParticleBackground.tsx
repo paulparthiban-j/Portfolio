@@ -1,20 +1,25 @@
 "use client";
 
 import { Theme } from "@/types/portfolio";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 interface ParticleBackgroundProps {
     theme?: Theme;
 }
 
-export function ParticleBackground({ theme }: ParticleBackgroundProps) {
-    return (
-        <div className="particle-bg fixed inset-0 z-0 overflow-hidden">
-            {/* Soft Glowing Blobs */}
-            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] animate-[soft-blob_15s_infinite]" />
-            <div className="absolute bottom-[10%] right-[-5%] w-[35%] h-[35%] bg-secondary/15 rounded-full blur-[100px] animate-[soft-blob_20s_infinite_reverse]" />
-            <div className="absolute top-[20%] right-[10%] w-[25%] h-[25%] bg-accent/10 rounded-full blur-[80px] animate-[soft-blob_12s_infinite]" />
+export function ParticleBackground({ theme }: { theme: any }) {
+    const isMobile = useIsMobile();
+    const particleCount = isMobile ? 8 : 25;
 
-            {[...Array(25)].map((_, i) => {
+    return (
+        <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+            {/* Soft Ambient Blobs - Primary UI Depth */}
+            <div className={`absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/10 rounded-full blur-[120px] ${!isMobile ? "animate-soft-blob" : ""}`} />
+            <div className={`absolute bottom-[-10%] right-[-10%] w-[45%] h-[45%] bg-purple-500/10 rounded-full blur-[120px] ${!isMobile ? "animate-soft-blob animation-delay-2000" : ""}`} />
+            <div className={`absolute top-[20%] right-[-5%] w-[30%] h-[30%] bg-blue-500/5 rounded-full blur-[100px] ${!isMobile ? "animate-soft-blob animation-delay-4000" : ""}`} />
+
+            {/* Particles */}
+            {[...Array(particleCount)].map((_, i) => {
                 const left = (i * 7 + 13) % 100;
                 const top = (i * 11 + 17) % 100;
                 const size = ((i * 3 + 4) % 4) + 1;

@@ -12,6 +12,8 @@ interface EducationSectionProps {
 }
 
 export function EducationSection({ content, isActive, sectionIndex }: EducationSectionProps) {
+    if (!content) return null;
+
     return (
         <AnimatedSection
             sectionIndex={sectionIndex}
@@ -28,7 +30,7 @@ export function EducationSection({ content, isActive, sectionIndex }: EducationS
                 </ScrollSection>
 
                 <div className="grid gap-12 md:grid-cols-2">
-                    {content.education.map((edu: Education, index: number) => (
+                    {(content.education || []).map((edu: Education, index: number) => (
                         <StaggeredItem key={index} index={index}>
                             <div className="glass-premium rounded-[3rem] p-12 md:p-16 border-white/5 relative group hover:border-accent/30 transition-all duration-700 h-full flex flex-col justify-center">
                                 <div className="absolute top-10 right-10 flex flex-col items-end">
@@ -38,7 +40,7 @@ export function EducationSection({ content, isActive, sectionIndex }: EducationS
                                     <div className="w-12 h-1 bg-accent/40 rounded-full" />
                                 </div>
                                 <h3 className="text-4xl md:text-5xl font-black text-white mb-6 leading-[0.9] tracking-tighter max-w-[80%]">
-                                    {edu.degree.toUpperCase()}
+                                    {edu.degree?.toUpperCase() || "DEGREE"}
                                 </h3>
                                 <p className="text-2xl font-bold text-slate-400">
                                     {edu.institution}
@@ -50,7 +52,7 @@ export function EducationSection({ content, isActive, sectionIndex }: EducationS
             </div>
 
             {/* Background elements */}
-            <div className="absolute top-1/2 -left-20 w-80 h-80 bg-primary/10 rounded-full blur-[100px] animate-pulse" />
+            <div className="absolute top-1/2 -left-20 w-80 h-80 bg-primary/10 rounded-full blur-[100px]" />
         </AnimatedSection>
     );
 }

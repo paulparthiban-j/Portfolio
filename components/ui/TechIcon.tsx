@@ -22,16 +22,36 @@ export function TechIcon({ name, icon, className = "", theme }: TechIconProps) {
         );
     }
 
-    // Otherwise, try to get it from Simple Icons
-    // Slugify the name (e.g., "Next.js" -> "nextdotjs", "Tailwind CSS" -> "tailwindcss")
-    const slug = (icon || name)
+    // 1. Initial normalization and generic slugification
+    const baseSlug = (icon || name)
         .toLowerCase()
-        .replace(/\.js/g, 'dotjs')
+        .trim()
+        .replace(/\.js/g, '') // remove .js
         .replace(/\+/g, 'plus')
-        .replace(/\s+/g, '')
-        .replace(/[^\w]/g, '');
+        .replace(/\s+/g, '') // remove spaces
+        .replace(/[^\w]/g, ''); // remove special chars
 
-    const iconUrl = `https://cdn.simpleicons.org/${slug}/${theme?.mode === 'light' ? '333' : 'fff'}`;
+    // 2. Map to the final correct Simple Icon slugs
+    const corrections: { [key: string]: string } = {
+        "java": "openjdk",
+        "awsec2": "amazonec2",
+        "aws": "amazonaws",
+        "react": "react",
+        "express": "express",
+        "tailwind": "tailwindcss",
+        "node": "nodedotjs",
+        "next": "nextdotjs",
+        "springboot": "springboot",
+        "mysql": "mysql",
+        "postgresql": "postgresql",
+        "mongodb": "mongodb",
+        "sequelize": "sequelize",
+        "opencv": "opencv"
+    };
+
+    const slug = corrections[baseSlug] || baseSlug;
+    const color = theme?.mode === 'light' ? '333333' : 'FFFFFF';
+    const iconUrl = `https://cdn.simpleicons.org/${slug}/${color}`;
 
     if (error) {
         return (

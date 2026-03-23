@@ -6,42 +6,47 @@ import { ScrollSection } from "@/components/ui/ScrollSection";
 
 interface CustomSectionsProps {
     content: PortfolioContent;
-    activeIndex: number;
+    isActive?: boolean;
+    sectionIndex?: number;
 }
 
-export function CustomSections({ content, activeIndex }: CustomSectionsProps) {
+export function CustomSections({ content, isActive, sectionIndex }: CustomSectionsProps) {
+    if (!content || !content.customSections || content.customSections.length === 0) return null;
+
     return (
         <>
-            {(content.customSections || []).map((section: CustomSection, sIdx: number) => {
-                const index = 6 + sIdx;
+            {content.customSections.map((section: CustomSection, sIdx: number) => {
+                const currentIdx = (sectionIndex || 0) + sIdx;
+                
                 return (
-                    <div key={sIdx} data-section-index={index} className="section-wrapper full-page-section">
-                        <AnimatedSection
-                            sectionIndex={index}
-                            isActive={activeIndex === index}
-                            className={`bg-gradient-to-br ${content.theme?.bg || 'from-[#0f172a] via-[#1e1b4b] to-black'} py-32 px-4 relative overflow-hidden`}
-                        >
-                            <div className="absolute inset-0 bg-black/60 backdrop-blur-[100px] z-0" />
-                            
-                            {/* Accent Blobs */}
-                            <div className="absolute top-1/4 -right-20 w-80 h-80 bg-accent/5 rounded-full blur-[100px] animate-pulse" />
-                            <div className="absolute bottom-1/4 -left-20 w-80 h-80 bg-primary/5 rounded-full blur-[100px] animate-pulse delay-1000" />
+                    <AnimatedSection
+                        key={sIdx}
+                        sectionIndex={currentIdx}
+                        isActive={isActive}
+                        className={`bg-gradient-to-br ${content.theme?.bg || 'from-[#0f172a] via-[#1e1b4b] to-black'} py-32 px-4 relative overflow-hidden`}
+                    >
+                        <div className="absolute inset-0 bg-black/80 backdrop-blur-3xl z-0" />
+                        
+                        <div className="container mx-auto max-w-7xl relative z-10">
+                            <ScrollSection animationType="slide-down" className="mb-24 text-center">
+                                <h2 className="text-6xl md:text-9xl font-black tracking-tighter text-white uppercase">
+                                    {section.title}
+                                </h2>
+                            </ScrollSection>
 
-                            <div className="container mx-auto max-w-4xl relative z-10 text-center">
-                                <ScrollSection animationType="slide-down" className="mb-20">
-                                    <h2 className="text-6xl md:text-8xl font-black tracking-tighter text-white">
-                                        <span className="opacity-20 mr-4">{(index + 1).toString().padStart(2, '0')}.</span>
-                                        {section.title.toUpperCase()}
-                                    </h2>
-                                </ScrollSection>
-                                <ScrollSection animationType="slide-up">
-                                    <div className="glass-premium rounded-[3rem] p-12 md:p-20 border-white/5 text-2xl font-light leading-relaxed text-slate-300">
+                            <div className="max-w-4xl mx-auto">
+                                <div className="glass-premium rounded-[3rem] p-10 md:p-20 border-white/5 relative group">
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-[150px] pointer-events-none" />
+                                    <div className="text-2xl md:text-3xl text-slate-400 font-light leading-relaxed whitespace-pre-wrap">
                                         {section.content}
                                     </div>
-                                </ScrollSection>
+                                </div>
                             </div>
-                        </AnimatedSection>
-                    </div>
+                        </div>
+
+                        {/* Background elements */}
+                        <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-accent/5 rounded-full blur-[150px]" />
+                    </AnimatedSection>
                 );
             })}
         </>

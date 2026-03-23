@@ -12,6 +12,8 @@ interface ExperienceSectionProps {
 }
 
 export function ExperienceSection({ content, isActive, sectionIndex }: ExperienceSectionProps) {
+    if (!content) return null;
+
     return (
         <AnimatedSection
             sectionIndex={sectionIndex}
@@ -28,7 +30,7 @@ export function ExperienceSection({ content, isActive, sectionIndex }: Experienc
                 </ScrollSection>
 
                 <div className="space-y-16">
-                    {content.experience.map((exp: Experience, index: number) => (
+                    {(content.experience || []).map((exp: Experience, index: number) => (
                         <StaggeredItem key={index} index={index}>
                             <div className="glass-premium rounded-[3rem] p-10 md:p-14 border-white/5 relative group hover:border-accent/30 transition-all duration-700">
                                 <div className="absolute -top-6 -left-6 w-20 h-20 flex items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-black text-2xl rotate-12 group-hover:rotate-0 transition-transform">

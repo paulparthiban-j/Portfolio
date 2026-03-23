@@ -1,54 +1,65 @@
 import fs from 'fs';
 import path from 'path';
-import { sql } from '@vercel/postgres';
+import { PortfolioContent } from '@/types/portfolio';
 
 const DATA_FILE = path.join(process.cwd(), 'data', 'portfolio.json');
 
-async function initDb() {
+/**
+ * Fetches portfolio data from the local JSON file.
+ * This file is the single source of truth.
+ */
+export async function getPortfolioData(): Promise<PortfolioContent> {
     try {
-        if (!process.env.POSTGRES_URL) return;
-        
-        await sql`
-            CREATE TABLE IF NOT EXISTS portfolio_data (
-                id SERIAL PRIMARY KEY,
-                content JSONB NOT NULL,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            );
-        `;
-
-        const { rows } = await sql`SELECT COUNT(*) FROM portfolio_data`;
-        if (parseInt(rows[0].count) === 0) {
-            const localData = fs.readFileSync(DATA_FILE, 'utf8');
-            await sql`
-                INSERT INTO portfolio_data (content)
-                VALUES (${localData})
-            `;
-            console.log('Database seeded from local portfolio.json');
+        if (!fs.existsSync(DATA_FILE)) {
+            throw new Error(`Data file not found at ${DATA_FILE}`);
         }
-    } catch (error) {
-        console.error('Database initialization failed:', error);
-    }
-}
-
-export async function getPortfolioData() {
-    try {
-        if (process.env.POSTGRES_URL) {
-            await initDb();
-            const { rows } = await sql`SELECT content FROM portfolio_data ORDER BY id DESC LIMIT 1`;
-            if (rows.length > 0) {
-                return rows[0].content;
-            }
-        }
-
         const data = fs.readFileSync(DATA_FILE, 'utf8');
         return JSON.parse(data);
     } catch (error) {
-        console.error('Error fetching portfolio data:', error);
-        // Fallback to a very minimal structure if everything fails
+        console.error('Error fetching portfolio data from file:', error);
+        // Minimal fallback structure
         return {
             name: "Paul Parthiban J",
             title: "Backend Developer",
-            description: "Full Stack Developer Portfolio"
+            subtitle: "Building digital solutions",
+            description: "Portfolio data unavailable",
+            email: "",
+            phone: "",
+            location: "",
+            github: "",
+            linkedin: "",
+            twitter: "",
+            website: "",
+            skills: [],
+            projects: [],
+            experience: [],
+            education: [],
+            theme: {
+                primaryColor: "indigo",
+                primaryGradient: "from-indigo-600 to-violet-600",
+                accent: "indigo-500",
+                bg: "from-[#0f172a] via-[#1e1b4b] to-black",
+                mode: "dark"
+            },
+            customSections: []
         };
+    }
+}
+
+/**
+ * Saves portfolio data to the local JSON file.
+ */
+export async function savePortfolioData(content: PortfolioContent): Promise<boolean> {
+    try {
+        const directory = path.dirname(DATA_FILE);
+        if (!fs.existsSync(directory)) {
+            fs.mkdirSync(directory, { recursive: true });
+        }
+        
+        fs.writeFileSync(DATA_FILE, JSON.stringify(content, null, 2), 'utf8');
+        return true;
+    } catch (error) {
+        console.error('Error saving portfolio data to file:', error);
+        return false;
     }
 }

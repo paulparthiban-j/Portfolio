@@ -204,8 +204,12 @@ export default function Home() {
         {renderSection(ProjectsSection, 3)}
         {renderSection(ExperienceSection, 4)}
         {renderSection(EducationSection, 5)}
-        <CustomSections content={content} activeIndex={activeIndex} />
-        {renderSection(Footer, footerIndex)}
+        <CustomSections 
+          content={content} 
+          isActive={activeIndex >= 6 && activeIndex < 6 + (content.customSections?.length || 0)} 
+          sectionIndex={6} 
+        />
+        {renderSection(Footer, 6 + (content.customSections?.length || 0))}
       </main>
     </div>
   );

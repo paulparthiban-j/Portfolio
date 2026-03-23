@@ -254,6 +254,10 @@ export default function AdminDashboard() {
                                 <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
                                 The Stack
                             </h2>
+                            <div className="mb-8 p-6 bg-white/5 rounded-2xl border border-white/5">
+                                <label className="block text-sm font-medium text-slate-400 mb-2">Display Section Title (e.g. THE STACK)</label>
+                                <input type="text" placeholder="THE STACK" value={data.skillsTitle || ""} onChange={(e) => setData({ ...data, skillsTitle: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
+                            </div>
                             <div className="space-y-6">
                                 <div className="flex gap-4 items-end">
                                     <div className="flex-1">
@@ -337,6 +341,10 @@ export default function AdminDashboard() {
                                     + Add Project
                                 </button>
                             </div>
+                            <div className="mb-8 p-6 bg-white/5 rounded-2xl border border-white/5">
+                                <label className="block text-sm font-medium text-slate-400 mb-2">Display Section Title (e.g. PROJECTS)</label>
+                                <input type="text" placeholder="PROJECTS" value={data.projectsTitle || ""} onChange={(e) => setData({ ...data, projectsTitle: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
+                            </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {(data.projects || []).map((proj: any, idx: number) => (
                                     <div key={idx} className="p-6 bg-white/5 rounded-2xl border border-white/10 relative group">
@@ -370,6 +378,10 @@ export default function AdminDashboard() {
                                     + Add Experience
                                 </button>
                             </div>
+                            <div className="mb-8 p-6 bg-white/5 rounded-2xl border border-white/5">
+                                <label className="block text-sm font-medium text-slate-400 mb-2">Display Section Title (e.g. THE JOURNEY)</label>
+                                <input type="text" placeholder="THE JOURNEY" value={data.experienceTitle || ""} onChange={(e) => setData({ ...data, experienceTitle: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
+                            </div>
                             <div className="space-y-4">
                                 {(data.experience || []).map((exp: any, idx: number) => (
                                     <div key={idx} className="p-6 bg-white/5 rounded-2xl border border-white/10 relative">
@@ -396,6 +408,10 @@ export default function AdminDashboard() {
                                 <button onClick={() => setData({ ...data, education: [...(data.education || []), { institution: "", degree: "", year: "" }] })} className="btn btn-sm btn-outline text-indigo-400 border-indigo-500/30 hover:bg-indigo-500/10">
                                     + Add Education
                                 </button>
+                            </div>
+                            <div className="mb-8 p-6 bg-white/5 rounded-2xl border border-white/5">
+                                <label className="block text-sm font-medium text-slate-400 mb-2">Display Section Title (e.g. THE FOUNDATION)</label>
+                                <input type="text" placeholder="THE FOUNDATION" value={data.educationTitle || ""} onChange={(e) => setData({ ...data, educationTitle: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {(data.education || []).map((edu: any, idx: number) => (
