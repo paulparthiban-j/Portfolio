@@ -56,7 +56,7 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
     return (
         <section 
             ref={containerRef}
-            className={`relative min-h-screen flex items-center justify-center overflow-hidden h-full ${content.theme?.bg || 'bg-black'}`}
+            className={`relative min-h-screen flex items-center justify-center overflow-hidden h-full ${content.theme?.bg || 'bg-black'} py-20`}
         >
             {/* Background Layer: Mobile = Static, Desktop = Particles */}
             <div className="absolute inset-0 z-0">
@@ -76,15 +76,15 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                     animate={isActive ? "visible" : "hidden"}
                     className={`container mx-auto px-6 relative z-10 text-center transition-all duration-700 ${hideHeroContent ? 'opacity-0 scale-95 blur-xl pointer-events-none' : 'opacity-100 scale-100 blur-0'}`}
                 >
-                    <motion.div variants={itemVariants} className="inline-block mb-4 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
-                        <span className="text-xs font-bold tracking-widest text-indigo-400 uppercase">
+                    <motion.div variants={itemVariants} className="inline-block mb-6 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+                        <span className="text-xs md:text-sm font-black tracking-[0.2em] text-indigo-400 uppercase">
                             {content.title || "Full Stack Developer"}
                         </span>
                     </motion.div>
 
                     <motion.h1 
                         variants={itemVariants}
-                        className="text-6xl md:text-9xl font-black mb-6 tracking-tighter leading-none"
+                        className="text-6xl md:text-9xl font-black mb-8 tracking-tighter leading-[0.85]"
                     >
                         <span className={`block bg-clip-text text-transparent bg-gradient-to-r ${content.theme?.primaryGradient || 'from-white via-indigo-200 to-indigo-400'}`}>
                             {content.name}
@@ -93,25 +93,27 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
 
                     <motion.p 
                         variants={itemVariants}
-                        className="text-lg md:text-2xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed font-medium"
+                        className="text-lg md:text-3xl text-slate-400 max-w-3xl mx-auto mb-12 leading-relaxed font-medium md:font-semibold"
                     >
                         {content.subtitle || content.description}
                     </motion.p>
 
-                    <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-4">
-                        <a 
+                    <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-4 md:gap-6">
+                        <motion.a 
                             href="#projects"
-                            className="group relative px-8 py-4 bg-indigo-600 rounded-2xl text-white font-bold transition-all hover:bg-indigo-500 hover:shadow-indigo-500/25 hover:scale-105 active:scale-95 shadow-xl"
+                            whileTap={{ scale: 0.95 }}
+                            className="group relative px-10 py-5 bg-indigo-600 rounded-2xl text-white text-sm md:text-base font-black transition-all hover:bg-indigo-500 hover:shadow-[0_0_30px_rgba(79,70,229,0.4)] hover:scale-105 active:scale-95 shadow-2xl"
                         >
-                            View Projects
-                        </a>
-                        <a 
+                            Explore Projects
+                        </motion.a>
+                        <motion.a 
                             href={content.resumeUrl || "#"}
                             target="_blank"
-                            className="px-8 py-4 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl text-white font-bold hover:bg-white/10 transition-all active:scale-95"
+                            whileTap={{ scale: 0.95 }}
+                            className="px-10 py-5 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl text-white text-sm md:text-base font-black hover:bg-white/10 transition-all hover:scale-105 active:scale-95"
                         >
-                            Resume
-                        </a>
+                            View Resume
+                        </motion.a>
                     </motion.div>
                 </motion.div>
             )}
@@ -124,8 +126,8 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                     transition={{ delay: 1.5 }}
                     className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
                 >
-                    <div className="w-px h-12 bg-gradient-to-b from-indigo-500/50 to-transparent" />
-                    <span className="text-[10px] font-bold tracking-widest text-slate-500 uppercase">Scroll</span>
+                    <div className="w-px h-16 bg-gradient-to-b from-indigo-500/50 to-transparent" />
+                    <span className="text-[10px] md:text-xs font-black tracking-widest text-slate-500 uppercase">Secure Connection Localized</span>
                 </motion.div>
             )}
         </section>

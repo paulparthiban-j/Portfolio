@@ -15,7 +15,7 @@ export function StaggeredItem({
 }: StaggeredItemProps) {
     return (
         <div
-            className="stagger-item"
+            className="stagger-item relative"
             style={{ transitionDelay: `${index * delay}ms` }}
         >
             {children}

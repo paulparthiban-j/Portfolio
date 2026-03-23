@@ -26,7 +26,7 @@ export function AnimatedSection({
     return (
         <section
             ref={ref}
-            className={`full-page-section-content ${isVisible ? "section-visible" : ""} ${isExiting ? "section-exit" : ""} ${isPrev ? "section-prev" : ""} ${isNext ? "section-next" : ""} ${className}`}
+            className={`full-page-section-content relative ${isVisible ? "section-visible" : ""} ${isExiting ? "section-exit" : ""} ${isPrev ? "section-prev" : ""} ${isNext ? "section-next" : ""} ${className}`}
         >
             {children}
         </section>

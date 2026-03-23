@@ -34,7 +34,7 @@ export function TechIcon({ name, icon, className = "", theme }: TechIconProps) {
     // 2. Map to the final correct Simple Icon slugs
     const corrections: { [key: string]: string } = {
         "java": "openjdk",
-        "awsec2": "amazonec2",
+        "awsec2": "amazonaws",
         "aws": "amazonaws",
         "react": "react",
         "express": "express",

@@ -182,6 +182,10 @@ export default function AdminDashboard() {
                                         <label className="block text-sm font-medium text-slate-400 mb-1">Subtitle</label>
                                         <input type="text" value={data.subtitle} onChange={(e) => setData({ ...data, subtitle: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
                                     </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-400 mb-1">About Section Title</label>
+                                        <input type="text" placeholder="WHO AM I" value={data.aboutTitle || ""} onChange={(e) => setData({ ...data, aboutTitle: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
+                                    </div>
                                 </div>
                                 <div className="space-y-4 col-span-1">
                                     <div>

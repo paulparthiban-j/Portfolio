@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { PortfolioContent } from "@/types/portfolio";
-import { WelcomeScreen } from "@/components/sections/WelcomeScreen";
+import { GlobalLoader } from "@/components/ui/GlobalLoader";
 import { ParticleBackground } from "@/components/sections/ParticleBackground";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { AboutSection } from "@/components/sections/AboutSection";
@@ -86,7 +86,8 @@ const fallbackContent: PortfolioContent = {
 export default function Home() {
   const [content, setContent] = useState<PortfolioContent>(fallbackContent);
   const [mounted, setMounted] = useState(false);
-  const [showWelcome, setShowWelcome] = useState(true);
+  const [isReady, setIsReady] = useState(false);
+  const [showLoader, setShowLoader] = useState(true);
   const [hideHeroContent, setHideHeroContent] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -107,15 +108,15 @@ export default function Home() {
           setContent(portfolioData);
         }
       } catch (err) {
-        console.error("Failed to fetch portfolio data", err);
+      } finally {
+        setTimeout(() => {
+          setIsReady(true);
+          setTimeout(() => setShowLoader(false), 800);
+        }, 300);
       }
     };
 
     fetchPortfolio();
-
-    const welcomeTimer = setTimeout(() => {
-      setShowWelcome(false);
-    }, 3000);
 
     const handleScroll = () => {
       const scrollY = window.scrollY || window.pageYOffset;
@@ -151,7 +152,6 @@ export default function Home() {
     handleScroll();
 
     return () => {
-      clearTimeout(welcomeTimer);
       window.removeEventListener('scroll', handleScroll);
       sectionObserver.disconnect();
     };
@@ -168,10 +168,10 @@ export default function Home() {
     }
   }, [activeIndex, mounted]);
 
-  if (!mounted) {
+  if (!mounted || showLoader) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-black">
-        <span className="loading loading-spinner loading-lg text-indigo-500"></span>
+      <div className={`transition-opacity duration-700 ${!isReady ? 'opacity-100' : 'opacity-0'}`}>
+        <GlobalLoader />
       </div>
     );
   }
@@ -182,7 +182,7 @@ export default function Home() {
   const footerIndex = totalSections - 1;
 
   const renderSection = (Component: any, index: number, props = {}) => (
-    <div data-section-index={index} className="section-wrapper full-page-section">
+    <div data-section-index={index} className="section-wrapper full-page-section relative">
       <Component
         content={content}
         isActive={activeIndex === index}
@@ -195,9 +195,9 @@ export default function Home() {
   return (
     <div className={`min-h-screen relative selection:bg-indigo-500/30 hide-scrollbar animation-${content.theme?.animationStyle || 'side'} ${content.theme?.mode === 'light' ? 'bg-slate-50 text-slate-900' : 'bg-black text-white'}`}>
       <ParticleBackground theme={content.theme} />
-      <WelcomeScreen name={content.name} title={content.title} showWelcome={showWelcome} theme={content.theme} />
 
-      <main className="relative z-10 antialiased overflow-x-hidden hide-scrollbar">
+      <div className={`transition-opacity duration-1000 ease-out ${isReady ? 'opacity-100' : 'opacity-0'}`}>
+        <main className="relative z-10 antialiased overflow-x-hidden hide-scrollbar">
         {renderSection(HeroSection, 0, { hideHeroContent })}
         {renderSection(AboutSection, 1)}
         {renderSection(SkillsSection, 2)}
@@ -210,7 +210,8 @@ export default function Home() {
           sectionIndex={6} 
         />
         {renderSection(Footer, 6 + (content.customSections?.length || 0))}
-      </main>
+        </main>
+      </div>
     </div>
   );
 }

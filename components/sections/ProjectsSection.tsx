@@ -27,19 +27,21 @@ export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSec
         <AnimatedSection
             sectionIndex={sectionIndex}
             isActive={isActive}
-            className={`min-h-screen relative flex items-center justify-center py-32 px-4 md:px-8 overflow-hidden bg-black`}
+            className={`min-h-screen relative flex items-center justify-center py-24 md:py-32 px-6 md:px-12 overflow-hidden bg-black`}
         >
             <div className="absolute inset-0 bg-[#0a0a0b] z-0" />
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none" />
             
             <div className="container mx-auto max-w-7xl relative z-10 w-full">
-                <ScrollSection animationType="slide-down" className="mb-24 text-center">
-                    <h2 className="text-6xl md:text-9xl font-black tracking-tighter text-white">
-                        <span className="opacity-30">03.</span> {content.projectsTitle || 'PROJECTS'}
+                <ScrollSection animationType="slide-down" className="mb-20 text-center">
+                    <h2 className="text-5xl md:text-8xl font-black tracking-tighter text-white mb-4 leading-[0.9]">
+                        {content.projectsTitle || 'PROJECTS'}
                     </h2>
+                    <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-medium">
+                        Solving complex problems with elegant code and innovative solutions.
+                    </p>
                 </ScrollSection>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 relative">
                     {projects.map((project, index) => (
                         <ProjectCard 
                             key={index} 
@@ -52,7 +54,7 @@ export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSec
                     ))}
 
                     {projects.length === 0 && (
-                        <div className="col-span-full py-20 text-center glass-premium border border-white/5 rounded-4xl">
+                        <div className="col-span-full py-20 text-center glass-premium border border-white/5 rounded-2xl md:rounded-3xl">
                             <p className="text-slate-500 font-bold tracking-widest uppercase text-sm">No missions deployed yet.</p>
                         </div>
                     )}
@@ -79,43 +81,41 @@ function ProjectCard({ project, index, isMobile, theme, onClick }: { project: Pr
         <StaggeredItem index={index}>
             <motion.div
                 onClick={onClick}
-                className={`group glass-premium border border-white/5 rounded-4xl overflow-hidden cursor-pointer h-full flex flex-col transition-all duration-700 active:scale-95 ${!isMobile ? "hover:scale-[1.02] hover:border-indigo-500/40 hover:shadow-2xl hover:shadow-indigo-500/10" : ""}`}
+                whileTap={{ scale: 0.97 }}
+                className={`group h-full flex flex-col glass-premium border border-white/10 rounded-2xl md:rounded-3xl overflow-hidden cursor-pointer bg-white/[0.02] shadow-lg transition-all duration-500 ${!isMobile ? "hover:translate-y-[-10px] hover:border-indigo-500/30 hover:shadow-2xl hover:shadow-indigo-500/10" : ""}`}
             >
-                {/* Image-First Layout */}
-                <div className="h-64 relative bg-slate-900 overflow-hidden">
+                <div className="h-60 md:h-72 relative bg-slate-900 overflow-hidden">
                     <Image 
-                        src={project.icon || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=60"}
+                        src={project.icon || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=80"}
                         alt={project.title}
                         fill
                         className="object-cover transition-transform duration-1000 group-hover:scale-110"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent flex items-end p-8">
-                         <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-indigo-600 group-hover:border-indigo-400 group-hover:-translate-y-2 transition-all">
+                         <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-indigo-600 group-hover:border-indigo-400 transition-all duration-300">
                              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                          </div>
                     </div>
                 </div>
 
-                <div className="p-8 flex-1 flex flex-col">
-                    <h3 className="text-2xl font-black text-white uppercase tracking-tighter mb-3 leading-none group-hover:text-indigo-400 transition-colors">
-                        {project.title}
-                    </h3>
-                    <p className="text-slate-400 text-sm mb-6 line-clamp-2 leading-relaxed font-medium">
+                <div className="p-8 md:p-10 flex-1 flex flex-col">
+                    <div className="flex justify-between items-start mb-4">
+                        <h3 className="text-2xl md:text-3xl font-black text-white uppercase tracking-tighter leading-tight group-hover:text-indigo-400 transition-colors">
+                            {project.title}
+                        </h3>
+                    </div>
+                    
+                    <p className="text-slate-400 text-sm md:text-base mb-8 line-clamp-3 leading-relaxed font-medium">
                         {project.description}
                     </p>
                     
-                    <div className="mt-auto flex flex-wrap gap-2">
-                        {techStack.slice(0, 3).map((t, idx) => (
-                            <span key={idx} className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold text-slate-300 uppercase tracking-widest">
+                    <div className="mt-auto pt-6 border-t border-white/5 flex flex-wrap gap-2">
+                        {techStack.slice(0, 4).map((t, idx) => (
+                            <span key={idx} className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-[10px] font-black text-slate-300 uppercase tracking-widest group-hover:text-indigo-300 group-hover:bg-indigo-500/5 transition-all">
                                 {t}
                             </span>
                         ))}
-                        {techStack.length > 3 && (
-                            <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold text-slate-300 uppercase tracking-widest">
-                                +{techStack.length - 3}
-                            </span>
-                        )}
                     </div>
                 </div>
             </motion.div>
@@ -131,36 +131,34 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-10 backdrop-blur-2xl bg-black/80"
+            className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-8 backdrop-blur-2xl bg-black/80"
             onClick={onClose}
         >
             <motion.div 
-                initial={{ scale: 0.9, y: 20 }}
-                animate={{ scale: 1, y: 0 }}
-                exit={{ scale: 0.9, y: 20 }}
-                className="glass-premium border border-white/10 rounded-5xl w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col md:flex-row shadow-5xl shadow-black shadow-glow group"
+                initial={{ scale: 0.9, opacity: 0, y: 30 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.9, opacity: 0, y: 30 }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className="glass-premium border border-white/15 rounded-3xl md:rounded-5xl w-full max-w-6xl max-h-[92vh] overflow-hidden flex flex-col md:flex-row shadow-2xl shadow-indigo-500/10"
                 onClick={e => e.stopPropagation()}
-                style={{ "--tw-shadow-color": "rgba(99, 102, 241, 0.1)" } as any}
             >
-                {/* Modal Layout */}
-                <div className="w-full md:w-[55%] relative h-64 md:h-auto overflow-hidden bg-slate-900">
+                <div className="w-full md:w-[60%] relative h-64 md:h-auto overflow-hidden bg-slate-900 border-b md:border-b-0 md:border-r border-white/10">
                     <Image 
-                        src={project.icon || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&auto=format&fit=crop&q=80"}
+                        src={project.icon || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&auto=format&fit=crop&q=90"}
                         alt={project.title}
                         fill
                         className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 55vw"
+                        sizes="(max-width: 1024px) 100vw, 60vw"
                     />
-                    <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black to-transparent pointer-events-none" />
                 </div>
 
-                <div className="w-full md:w-[45%] p-10 md:p-16 flex flex-col bg-white/[0.02]">
+                <div className="w-full md:w-[40%] p-10 md:p-14 md:py-20 flex flex-col bg-slate-950/20">
                     <div className="flex justify-between items-start mb-10">
-                        <div className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-black tracking-widest text-indigo-400 uppercase">
-                            Mission Log
+                        <div className="px-3 py-1.5 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-[10px] font-black tracking-widest text-indigo-400 uppercase">
+                            Case Study
                         </div>
-                        <button onClick={onClose} className="w-12 h-12 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors">
-                             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        <button onClick={onClose} className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/5 border border-white/10 transition-all active:scale-90">
+                             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
                         </button>
                     </div>
 
@@ -168,30 +166,30 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                         {project.title}
                     </h2>
                     
-                    <p className="text-slate-400 text-lg leading-relaxed mb-10 font-medium">
+                    <p className="text-slate-400 text-lg leading-relaxed mb-10 font-medium overflow-y-auto max-h-[25vh] hide-scrollbar">
                         {project.description}
                     </p>
 
                     <div className="mb-10">
-                        <h4 className="text-[10px] font-black tracking-widest text-slate-500 uppercase mb-4">Tech Stack</h4>
+                        <h4 className="text-[10px] font-black tracking-widest text-slate-500 uppercase mb-4">Core Avionics</h4>
                         <div className="flex flex-wrap gap-2">
                             {techStack.map((t, i) => (
-                                <span key={i} className="px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-[11px] font-bold text-white uppercase tracking-wider">
+                                <span key={i} className="px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-[11px] font-black text-white uppercase tracking-wider">
                                     {t}
                                 </span>
                             ))}
                         </div>
                     </div>
 
-                    <div className="mt-auto flex flex-col sm:flex-row gap-4">
+                    <div className="mt-auto flex flex-col sm:flex-row gap-4 pt-10 border-t border-white/5">
                         {project.link && (
-                            <a href={project.link} target="_blank" className="flex-1 py-4 bg-indigo-600 hover:bg-indigo-500 rounded-2xl text-center text-white font-bold transition-all shadow-xl shadow-indigo-500/20 active:scale-95">
+                            <a href={project.link} target="_blank" className="flex-1 py-4 bg-indigo-600 hover:bg-indigo-500 rounded-2xl text-center text-white text-sm font-black transition-all shadow-xl shadow-indigo-500/20 active:scale-95">
                                 Live Preview
                             </a>
                         )}
                         {project.github && (
-                            <a href={project.github} target="_blank" className="flex-1 py-4 bg-white/5 border border-white/10 hover:bg-white/10 rounded-2xl text-center text-white font-bold transition-all active:scale-95">
-                                Code Repository
+                            <a href={project.github} target="_blank" className="flex-1 py-4 bg-white/5 border border-white/10 hover:bg-white/10 rounded-2xl text-center text-white text-sm font-black transition-all active:scale-95">
+                                Code Base
                             </a>
                         )}
                     </div>

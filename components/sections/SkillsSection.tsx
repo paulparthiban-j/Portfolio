@@ -21,52 +21,39 @@ export function SkillsSection({ content, isActive, sectionIndex }: SkillsSection
         <AnimatedSection
             sectionIndex={sectionIndex}
             isActive={isActive}
-            className={`bg-gradient-to-br ${content.theme?.bg || 'from-[#0f172a] via-[#1e1b4b] to-black'} py-32 md:py-44 px-6 md:px-12 relative overflow-hidden`}
+            className={`bg-black py-24 md:py-32 px-6 md:px-12 relative overflow-hidden`}
         >
-            <div className="absolute inset-0 bg-[#0a0a0b]/90 backdrop-blur-3xl z-0" />
+            <div className="absolute inset-0 bg-[#0a0a0b] z-0" />
             
             <div className="container mx-auto max-w-7xl relative z-10 w-full">
-                <ScrollSection animationType="slide-down" className="mb-24 text-center">
-                    <h2 className="text-6xl md:text-9xl font-black tracking-tighter text-white">
-                        <span className="opacity-30">02.</span> {content.skillsTitle || 'THE STACK'}
+                <ScrollSection animationType="slide-down" className="mb-20 text-center">
+                    <h2 className="text-5xl md:text-8xl font-black tracking-tighter text-white mb-4 leading-[0.9]">
+                        {content.skillsTitle || 'THE STACK'}
                     </h2>
+                    <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-medium">
+                        Crafting digital excellence with a modern and scalable tech stack.
+                    </p>
                 </ScrollSection>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8">
                     {(content.skills || []).map((skill: string | Skill, index: number) => {
                         const skillName = typeof skill === 'string' ? skill : skill.name;
                         const skillIcon = typeof skill === 'string' ? "" : skill.icon;
                         
                         return (
                             <StaggeredItem key={index} index={index}>
-                                <div className={`glass-premium rounded-5xl p-10 border border-white/5 relative group transition-all duration-700 active:scale-95 ${!isMobile ? "hover:border-indigo-500/40 hover:-translate-y-2 hover:shadow-2xl hover:shadow-indigo-500/10" : ""}`}>
-                                    <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-bl-[100px] pointer-events-none" />
-                                    
-                                    <div className={`w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-10 group-hover:bg-indigo-600 transition-all duration-500 relative z-10 ${!isMobile ? "animate-float" : ""}`}
-                                        style={!isMobile ? { animationDelay: `${index * 150}ms` } : {}}
-                                    >
+                                <div className={`flex flex-col items-center group transition-all duration-500 active:scale-95`}>
+                                    <div className={`w-20 h-20 md:w-28 md:h-28 rounded-2xl md:rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center mb-4 group-hover:bg-indigo-600/20 group-hover:border-indigo-500/50 group-hover:shadow-[0_0_30px_-5px_rgba(99,102,241,0.3)] group-hover:-translate-y-2 transition-all duration-300 relative overflow-hidden backdrop-blur-sm`}>
+                                        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                                         <TechIcon 
                                             name={skillName} 
                                             icon={skillIcon} 
-                                            className="w-8 h-8 opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all" 
+                                            className="w-10 h-10 md:w-14 md:h-14 opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300 relative z-10" 
                                         />
                                     </div>
-                                    
-                                    <h3 className="text-2xl font-black text-white uppercase tracking-tighter leading-none mb-6">
+                                    <span className="text-xs md:text-sm font-bold text-slate-400 group-hover:text-white uppercase tracking-widest text-center transition-colors">
                                         {skillName}
-                                    </h3>
-
-                                    <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
-                                        <div 
-                                            className="h-full bg-gradient-to-r from-indigo-500 to-violet-500 transition-all duration-1000 delay-500"
-                                            style={{ width: `${60 + (index % 4) * 10}%` }}
-                                        />
-                                    </div>
-                                    
-                                    <div className="mt-4 flex justify-between items-center opacity-40 group-hover:opacity-100 transition-opacity">
-                                        <span className="text-[10px] font-black tracking-widest text-slate-500 uppercase">Expertise Level</span>
-                                        <span className="text-xs font-bold text-white tracking-widest leading-none">{70 + (index % 4) * 10}%</span>
-                                    </div>
+                                    </span>
                                 </div>
                             </StaggeredItem>
                         );
@@ -74,9 +61,8 @@ export function SkillsSection({ content, isActive, sectionIndex }: SkillsSection
                 </div>
             </div>
 
-            {/* Background elements */}
-            <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-violet-500/5 rounded-full blur-[160px] pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-[500px] h-64 bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none" />
+            {/* Subtle background light */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/5 rounded-full blur-[120px] pointer-events-none" />
         </AnimatedSection>
     );
 }

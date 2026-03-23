@@ -24,8 +24,8 @@ export function EducationSection({ content, isActive, sectionIndex }: EducationS
             
             <div className="container mx-auto max-w-7xl relative z-10">
                 <ScrollSection animationType="slide-down" className="mb-24 text-center">
-                    <h2 className="text-6xl md:text-9xl font-black tracking-tighter text-white">
-                        <span className="opacity-30">04.</span> THE FOUNDATION
+                    <h2 className="text-5xl md:text-8xl font-black tracking-tighter text-white mb-4 leading-[0.9]">
+                        {content.educationTitle || 'THE FOUNDATION'}
                     </h2>
                 </ScrollSection>
 

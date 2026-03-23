@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -38,8 +36,10 @@ body {
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
   --shadow-xl: 0 16px 64px rgba(0, 0, 0, 0.25);
   --shadow-glow: 0 0 40px rgba(102, 126, 234, 0.4);
-  --accent-rgb: 99, 102, 241; /* Indigo */
-  --primary-rgb: 139, 92, 246; /* Purple */
+  --accent-rgb: 99, 102, 241;
+  /* Indigo */
+  --primary-rgb: 139, 92, 246;
+  /* Purple */
 }
 
 /* Glassmorphism Refined */
@@ -71,7 +71,8 @@ body {
 /* Reduced Motion & Mobile Performance */
 @media (max-width: 768px) {
   .noise-overlay::before {
-    display: none; /* Hide on mobile to save battery/perf */
+    display: none;
+    /* Hide on mobile to save battery/perf */
   }
 }
 
@@ -100,14 +101,17 @@ body {
   ::-webkit-scrollbar {
     width: 10px;
   }
+
   ::-webkit-scrollbar-track {
     background: #0a0a0b;
   }
+
   ::-webkit-scrollbar-thumb {
     background: #1e293b;
     border: 2px solid #0a0a0b;
     border-radius: 10px;
   }
+
   ::-webkit-scrollbar-thumb:hover {
     background: #334155;
   }
@@ -237,24 +241,53 @@ html {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.2); }
-  50% { box-shadow: 0 0 40px rgba(var(--accent-rgb), 0.5); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(var(--accent-rgb), 0.5);
+  }
 }
 
 @keyframes float-up {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes text-reveal {
-  from { clip-path: inset(0 100% 0 0); }
-  to { clip-path: inset(0 0 0 0); }
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  to {
+    clip-path: inset(0 0 0 0);
+  }
 }
 
 @keyframes soft-blob {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30px, -50px) scale(1.1); }
-  66% { transform: translate(-20px, 20px) scale(0.9); }
+
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
 }
 
 @keyframes shimmer {

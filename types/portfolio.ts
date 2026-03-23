@@ -61,6 +61,7 @@ export interface PortfolioContent {
   skillsTitle?: string;
   experienceTitle?: string;
   educationTitle?: string;
+  aboutTitle?: string;
   customSections: CustomSection[];
   resumeUrl?: string;
 }
