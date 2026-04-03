@@ -56,7 +56,7 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
     return (
         <section 
             ref={containerRef}
-            className={`relative min-h-screen flex items-center justify-center overflow-hidden h-full ${content.theme?.bg || 'bg-black'} py-20`}
+            className={`relative min-h-screen flex items-center justify-center overflow-hidden h-full ${content.theme?.bg || 'bg-black'} py-10 sm:py-16 md:py-20`}
         >
             {/* Background Layer: Mobile = Static, Desktop = Particles */}
             <div className="absolute inset-0 z-0">
@@ -74,7 +74,7 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
-                    className="container mx-auto px-6 relative z-10 text-center"
+                    className="container mx-auto px-4 sm:px-6 md:px-10 relative z-10 text-center"
                 >
                     <motion.div variants={itemVariants} className="flex flex-col items-center mb-8">
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 backdrop-blur-md mb-4 group cursor-pointer hover:bg-indigo-500/20 transition-all duration-300">
@@ -93,7 +93,7 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
 
                     <motion.h1 
                         variants={itemVariants}
-                        className="text-6xl md:text-[10rem] font-black mb-10 tracking-tighter leading-[0.8] mix-blend-lighten"
+                        className="text-4xl sm:text-6xl md:text-[8rem] lg:text-[10rem] font-black mb-10 tracking-tighter leading-[0.8] mix-blend-lighten"
                     >
                         <span className={`block bg-clip-text text-transparent bg-gradient-to-r ${content.theme?.primaryGradient || 'from-white via-indigo-200 to-indigo-400'} drop-shadow-[0_0_30px_rgba(99,102,241,0.3)]`}>
                             {content.name.split(' ')[0]}<br/>
@@ -103,7 +103,7 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
 
                     <motion.p 
                         variants={itemVariants}
-                        className="text-xl md:text-4xl text-slate-300 max-w-4xl mx-auto mb-16 leading-tight font-bold tracking-tight"
+                        className="text-lg sm:text-2xl md:text-3xl lg:text-4xl text-slate-300 max-w-4xl mx-auto mb-16 leading-tight font-bold tracking-tight"
                     >
                         {content.subtitle || content.description}
                     </motion.p>
@@ -113,7 +113,7 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                             href="#projects"
                             whileHover={{ scale: 1.05, y: -5 }}
                             whileTap={{ scale: 0.95 }}
-                            className="group relative px-12 py-6 bg-indigo-600 rounded-2xl text-white text-base md:text-lg font-black transition-all hover:bg-indigo-500 hover:shadow-[0_20px_50px_rgba(79,70,229,0.4)] shadow-2xl active:scale-95 flex items-center gap-3"
+                            className="group relative px-8 py-4 sm:px-10 sm:py-5 md:px-12 md:py-6 bg-indigo-600 rounded-2xl text-white text-sm sm:text-base md:text-lg font-black transition-all hover:bg-indigo-500 hover:shadow-[0_20px_50px_rgba(79,70,229,0.4)] shadow-2xl active:scale-95 flex items-center gap-3"
                         >
                             <span>DEPLOYED PROJECTS</span>
                             <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
@@ -123,7 +123,7 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                             target="_blank"
                             whileHover={{ scale: 1.05, y: -5 }}
                             whileTap={{ scale: 0.95 }}
-                            className="px-12 py-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl text-white text-base md:text-lg font-black hover:bg-white/10 transition-all hover:border-white/20 active:scale-95"
+                            className="px-8 py-4 sm:px-10 sm:py-5 md:px-12 md:py-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl text-white text-sm sm:text-base md:text-lg font-black hover:bg-white/10 transition-all hover:border-white/20 active:scale-95"
                         >
                             SECURE RESUME
                         </motion.a>

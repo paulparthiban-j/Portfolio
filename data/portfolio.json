@@ -1,8 +1,8 @@
 {
   "name": "Paul Parthiban J",
-  "title": "Java | JavaScript | Node.js | Full-Stack Developer",
-  "subtitle": "Building scalable backend services and high-performance enterprise applications.",
-  "description": "Associate Software Developer with experience in building end-to-end supply chain platforms and enterprise-grade web applications. Expert in Node.js, Express.js, and SAP integrations, focused on delivering measurable business impact and operational efficiency.",
+  "title": "Software Developer | React & Node.js Architecture",
+  "subtitle": "I build scalable React systems with focus on performance and state architecture.",
+  "description": "Associate Software Developer specializing in high-performance enterprise ecosystems and scalable architecture. Expert in Node.js, React, and SAP integrations, focused on delivering measurable business impact.",
   "email": "paulparthiban85085@gmail.com",
   "phone": "6374178098",
   "location": "Tirunelveli, India",
@@ -10,8 +10,8 @@
   "linkedin": "https://linkedin.com/in/paul-parthiban-j",
   "twitter": "",
   "website": "",
-  "resumeUrl": "/paul_parthiban_associate_Software_developer.pdf",
-  "boldStatement": "I build robust backend systems that solve complex industrial challenges.",
+  "resumeUrl": "/resume.pdf",
+  "boldStatement": "I don't just write code; I architect systems that solve real business bottlenecks.",
   "currentWork": "Enhancing P2P supply chain modules and integrating SAP APIs at Jeyachandran Industries.",
   "skills": [
     "Node.js",

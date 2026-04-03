@@ -46,6 +46,8 @@ export default function AdminDashboard() {
                 if (!portfolioData.education) portfolioData.education = [];
                 if (!portfolioData.customSections) portfolioData.customSections = [];
                 if (!portfolioData.stats) portfolioData.stats = [];
+                if (!portfolioData.testimonials) portfolioData.testimonials = [];
+                if (!portfolioData.certifications) portfolioData.certifications = [];
 
                 setData(portfolioData);
             } catch (err) {
@@ -147,6 +149,7 @@ export default function AdminDashboard() {
                         { id: "projects", label: "Innovation", icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg> },
                         { id: "experience", label: "Journey", icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" /></svg> },
                         { id: "education", label: "Foundation", icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg> },
+                        { id: "credibility", label: "Social Proof", icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg> },
                         { id: "custom", label: "Extensions", icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg> },
                     ].map((tab) => (
                         <button
@@ -194,6 +197,14 @@ export default function AdminDashboard() {
                                         <label className="block text-sm font-medium text-slate-400 mb-1">Description</label>
                                         <textarea value={data.description} onChange={(e) => setData({ ...data, description: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none h-44" />
                                     </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-400 mb-1">Bold Statement (Impact Headline)</label>
+                                        <input type="text" value={data.boldStatement || ""} onChange={(e) => setData({ ...data, boldStatement: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="I build scalable React systems..." />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-400 mb-1">Current Work (Live Status)</label>
+                                        <input type="text" value={data.currentWork || ""} onChange={(e) => setData({ ...data, currentWork: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Architecting performance-first React systems..." />
+                                    </div>
                                 </div>
                                 <div className="space-y-4 md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-white/5 pt-6">
                                     <div>
@@ -207,6 +218,18 @@ export default function AdminDashboard() {
                                     <div>
                                         <label className="block text-sm font-medium text-slate-400 mb-1">Location</label>
                                         <input type="text" value={data.location} onChange={(e) => setData({ ...data, location: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-400 mb-1">GitHub URL</label>
+                                        <input type="text" value={data.github || ""} onChange={(e) => setData({ ...data, github: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-400 mb-1">LinkedIn URL</label>
+                                        <input type="text" value={data.linkedin || ""} onChange={(e) => setData({ ...data, linkedin: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-400 mb-1">X (Twitter) URL</label>
+                                        <input type="text" value={data.twitter || ""} onChange={(e) => setData({ ...data, twitter: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
                                     </div>
                                     <div className="md:col-span-3">
                                         <label className="block text-sm font-medium text-slate-400 mb-1">Resume URL (e.g. /resume.pdf)</label>
@@ -409,26 +432,64 @@ export default function AdminDashboard() {
                             <div className="mb-8 p-6 bg-white/5 rounded-2xl border border-white/5">
                                 <label className="block text-sm font-medium text-slate-400 mb-2">Display Section Title (e.g. PROJECTS)</label>
                                 <input type="text" placeholder="PROJECTS" value={data.projectsTitle || ""} onChange={(e) => setData({ ...data, projectsTitle: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {(data.projects || []).map((proj: any, idx: number) => (
-                                    <div key={idx} className="p-6 bg-white/5 rounded-2xl border border-white/10 relative group">
-                                        <button onClick={() => setData({ ...data, projects: data.projects.filter((_: any, i: number) => i !== idx) })} className="absolute top-4 right-4 text-red-500/50 hover:text-red-500">Remove</button>
-                                        <div className="space-y-3">
-                                            <input placeholder="Project Title" className="w-full bg-transparent border-b border-white/10 py-1 text-white font-bold outline-none focus:border-indigo-500" value={proj.title} onChange={(e) => { const newProj = [...data.projects]; newProj[idx].title = e.target.value; setData({ ...data, projects: newProj }); }} />
-                                            <textarea placeholder="Short description" className="w-full bg-transparent border-b border-white/10 py-1 text-slate-400 text-sm outline-none focus:border-indigo-500 h-20" value={proj.description} onChange={(e) => { const newProj = [...data.projects]; newProj[idx].description = e.target.value; setData({ ...data, projects: newProj }); }} />
-                                            <div className="flex gap-4">
-                                                <input placeholder="Tech Stack" className="flex-1 bg-transparent border-b border-white/10 py-1 text-xs text-indigo-300 outline-none focus:border-indigo-500" value={proj.tech} onChange={(e) => { const newProj = [...data.projects]; newProj[idx].tech = e.target.value; setData({ ...data, projects: newProj }); }} />
-                                                <input placeholder="Project Image/Icon URL" className="flex-1 bg-transparent border-b border-white/10 py-1 text-xs text-emerald-400 outline-none focus:border-indigo-500" value={proj.icon || ''} onChange={(e) => { const newProj = [...data.projects]; newProj[idx].icon = e.target.value; setData({ ...data, projects: newProj }); }} />
-                                            </div>
-                                            <div className="flex gap-2">
-                                                <input placeholder="Demo Link" className="flex-1 bg-transparent border-b border-white/10 py-1 text-xs text-indigo-400 outline-none focus:border-indigo-500" value={proj.link} onChange={(e) => { const newProj = [...data.projects]; newProj[idx].link = e.target.value; setData({ ...data, projects: newProj }); }} />
-                                                <input placeholder="GitHub" className="flex-1 bg-transparent border-b border-white/10 py-1 text-xs text-indigo-400 outline-none focus:border-indigo-500" value={proj.github} onChange={(e) => { const newProj = [...data.projects]; newProj[idx].github = e.target.value; setData({ ...data, projects: newProj }); }} />
+                                </div>
+                                <div className="space-y-6">
+                                    {(data.projects || []).map((proj: any, idx: number) => (
+                                        <div key={idx} className="p-8 bg-white/5 rounded-3xl border border-white/10 relative group">
+                                            <button onClick={() => setData({ ...data, projects: data.projects.filter((_: any, i: number) => i !== idx) })} className="absolute top-6 right-8 text-red-500 font-bold p-2 hover:bg-red-500/10 rounded-lg transition-all">Remove Project</button>
+                                            <div className="grid md:grid-cols-2 gap-8">
+                                                <div className="space-y-4">
+                                                    <div>
+                                                        <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1">Headline</label>
+                                                        <input placeholder="Project Title" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white font-bold outline-none focus:border-indigo-500" value={proj.title} onChange={(e) => { const newProj = [...data.projects]; newProj[idx].title = e.target.value; setData({ ...data, projects: newProj }); }} />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1">Short Mission Description</label>
+                                                        <textarea placeholder="Briefly describe the project..." className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-slate-300 text-sm outline-none focus:border-indigo-500 h-24" value={proj.description} onChange={(e) => { const newProj = [...data.projects]; newProj[idx].description = e.target.value; setData({ ...data, projects: newProj }); }} />
+                                                    </div>
+                                                    <div className="grid grid-cols-2 gap-4">
+                                                        <div>
+                                                            <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1">Tech Stack</label>
+                                                            <input placeholder="React, Node.js..." className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-indigo-300 outline-none focus:border-indigo-500" value={proj.tech} onChange={(e) => { const newProj = [...data.projects]; newProj[idx].tech = e.target.value; setData({ ...data, projects: newProj }); }} />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1">Banner Image URL</label>
+                                                            <input placeholder="https://..." className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-emerald-400 outline-none focus:border-indigo-500" value={proj.icon || ''} onChange={(e) => { const newProj = [...data.projects]; newProj[idx].icon = e.target.value; setData({ ...data, projects: newProj }); }} />
+                                                        </div>
+                                                    </div>
+                                                    <div className="grid grid-cols-2 gap-4">
+                                                        <div>
+                                                            <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1">Live Mission Link</label>
+                                                            <input placeholder="https://..." className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-indigo-400 outline-none focus:border-indigo-500" value={proj.link} onChange={(e) => { const newProj = [...data.projects]; newProj[idx].link = e.target.value; setData({ ...data, projects: newProj }); }} />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1">Source Repository</label>
+                                                            <input placeholder="https://github..." className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-indigo-400 outline-none focus:border-indigo-500" value={proj.github} onChange={(e) => { const newProj = [...data.projects]; newProj[idx].github = e.target.value; setData({ ...data, projects: newProj }); }} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="space-y-4">
+                                                    <div>
+                                                        <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1">The Critical Problem</label>
+                                                        <textarea placeholder="What business problem did this solve?" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-red-300 text-xs outline-none focus:border-red-500 h-20" value={proj.problem || ""} onChange={(e) => { const newProj = [...data.projects]; newProj[idx].problem = e.target.value; setData({ ...data, projects: newProj }); }} />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1">The Engineering Solution</label>
+                                                        <textarea placeholder="How did you solve it technically?" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-emerald-300 text-xs outline-none focus:border-emerald-500 h-20" value={proj.solution || ""} onChange={(e) => { const newProj = [...data.projects]; newProj[idx].solution = e.target.value; setData({ ...data, projects: newProj }); }} />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1">Technical Architecture Deep Dive</label>
+                                                        <textarea placeholder="Microservices, state machines, etc..." className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-slate-300 text-xs outline-none focus:border-indigo-500 h-20" value={proj.architecture || ""} onChange={(e) => { const newProj = [...data.projects]; newProj[idx].architecture = e.target.value; setData({ ...data, projects: newProj }); }} />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1">Measurable Impact (Enter each impact on a new line)</label>
+                                                        <textarea placeholder="e.g. 40% reduction in latency" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-xs outline-none focus:border-indigo-500 h-20" value={(proj.impact || []).join('\n')} onChange={(e) => { const newProj = [...data.projects]; newProj[idx].impact = e.target.value.split('\n').filter(Boolean); setData({ ...data, projects: newProj }); }} />
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
-                            </div>
+                                    ))}
+                                </div>
                         </section>
                     )}
 
@@ -484,9 +545,60 @@ export default function AdminDashboard() {
                                         <button onClick={() => setData({ ...data, education: data.education.filter((_: any, i: number) => i !== idx) })} className="absolute top-4 right-4 text-red-500/50 hover:text-red-500">Remove</button>
                                         <input placeholder="Institution" className="w-full bg-transparent border-b border-white/10 py-1 text-white font-bold outline-none focus:border-indigo-500 mb-2" value={edu.institution} onChange={(e) => { const newEdu = [...data.education]; newEdu[idx].institution = e.target.value; setData({ ...data, education: newEdu }); }} />
                                         <input placeholder="Degree" className="w-full bg-transparent border-b border-white/10 py-1 text-slate-300 outline-none focus:border-indigo-500 mb-2" value={edu.degree} onChange={(e) => { const newEdu = [...data.education]; newEdu[idx].degree = e.target.value; setData({ ...data, education: newEdu }); }} />
-                                        <input placeholder="Year" className="w-full bg-transparent border-b border-white/10 py-1 text-indigo-400 outline-none focus:border-indigo-500" value={edu.year} onChange={(e) => { const newEdu = [...data.education]; newEdu[idx].year = e.target.value; setData({ ...data, education: newEdu }); }} />
+                                        <div className="flex gap-4">
+                                            <input placeholder="Year" className="flex-1 bg-transparent border-b border-white/10 py-1 text-indigo-400 outline-none focus:border-indigo-500" value={edu.year} onChange={(e) => { const newEdu = [...data.education]; newEdu[idx].year = e.target.value; setData({ ...data, education: newEdu }); }} />
+                                            <input placeholder="GPA / Percentage" className="flex-1 bg-transparent border-b border-white/10 py-1 text-emerald-400 outline-none focus:border-indigo-500" value={edu.gpa || ""} onChange={(e) => { const newEdu = [...data.education]; newEdu[idx].gpa = e.target.value; setData({ ...data, education: newEdu }); }} />
+                                        </div>
                                     </div>
                                 ))}
+                            </div>
+                        </section>
+                    )}
+
+                    {activeTab === "credibility" && (
+                        <section className="glass-dark p-8 rounded-[2rem] border border-white/5 animate-fade-in space-y-12">
+                            <div>
+                                <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+                                    <h2 className="text-xl font-bold text-white flex items-center gap-3">
+                                        <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" /></svg>
+                                        Testimonials
+                                    </h2>
+                                    <button onClick={() => setData({ ...data, testimonials: [...(data.testimonials || []), { name: "", role: "", text: "" }] })} className="btn btn-sm btn-outline text-indigo-400 border-indigo-500/30 hover:bg-indigo-500/10">
+                                        + Add Testimonial
+                                    </button>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    {(data.testimonials || []).map((t: any, idx: number) => (
+                                        <div key={idx} className="p-6 bg-white/5 rounded-2xl border border-white/10 relative">
+                                            <button onClick={() => setData({ ...data, testimonials: data.testimonials.filter((_: any, i: number) => i !== idx) })} className="absolute top-4 right-4 text-red-500/50 hover:text-red-500">Remove</button>
+                                            <input placeholder="Person Name" className="w-full bg-transparent border-b border-white/10 py-1 text-white font-bold outline-none focus:border-indigo-500 mb-2" value={t.name} onChange={(e) => { const newT = [...data.testimonials]; newT[idx].name = e.target.value; setData({ ...data, testimonials: newT }); }} />
+                                            <input placeholder="Current Professional Role" className="w-full bg-transparent border-b border-white/10 py-1 text-slate-400 text-sm outline-none focus:border-indigo-500 mb-2" value={t.role} onChange={(e) => { const newT = [...data.testimonials]; newT[idx].role = e.target.value; setData({ ...data, testimonials: newT }); }} />
+                                            <textarea placeholder="Their recommendation/feedback..." className="w-full bg-transparent border-b border-white/10 py-1 text-slate-300 text-sm outline-none focus:border-indigo-500 h-24 italic" value={t.text} onChange={(e) => { const newT = [...data.testimonials]; newT[idx].text = e.target.value; setData({ ...data, testimonials: newT }); }} />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div>
+                                <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+                                    <h2 className="text-xl font-bold text-white flex items-center gap-3">
+                                        <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                                        Certifications
+                                    </h2>
+                                    <button onClick={() => setData({ ...data, certifications: [...(data.certifications || []), { name: "", issuer: "", year: "" }] })} className="btn btn-sm btn-outline text-indigo-400 border-indigo-500/30 hover:bg-indigo-500/10">
+                                        + Add Certification
+                                    </button>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    {(data.certifications || []).map((c: any, idx: number) => (
+                                        <div key={idx} className="p-6 bg-white/5 rounded-2xl border border-white/10 relative">
+                                            <button onClick={() => setData({ ...data, certifications: data.certifications.filter((_: any, i: number) => i !== idx) })} className="absolute top-4 right-4 text-red-500/50 hover:text-red-500">Remove</button>
+                                            <input placeholder="Certification Name" className="w-full bg-transparent border-b border-white/10 py-1 text-white font-bold outline-none focus:border-indigo-500 mb-2" value={c.name} onChange={(e) => { const newC = [...data.certifications]; newC[idx].name = e.target.value; setData({ ...data, certifications: newC }); }} />
+                                            <input placeholder="Issuer (e.g. Meta, Google)" className="w-full bg-transparent border-b border-white/10 py-1 text-slate-400 text-sm outline-none focus:border-indigo-500 mb-2" value={c.issuer} onChange={(e) => { const newC = [...data.certifications]; newC[idx].issuer = e.target.value; setData({ ...data, certifications: newC }); }} />
+                                            <input placeholder="Year" className="w-full bg-transparent border-b border-white/10 py-1 text-indigo-400 outline-none focus:border-indigo-500" value={c.year} onChange={(e) => { const newC = [...data.certifications]; newC[idx].year = e.target.value; setData({ ...data, certifications: newC }); }} />
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </section>
                     )}

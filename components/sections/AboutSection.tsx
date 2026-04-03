@@ -24,14 +24,14 @@ export function AboutSection({ content }: AboutSectionProps) {
     ];
 
     return (
-        <section className="min-h-screen w-full bg-[#0a0a0b] py-16 md:py-24 px-6 md:px-12 flex items-center justify-center relative overflow-hidden">
+        <section className="min-h-screen w-full bg-[#0a0a0b] py-10 sm:py-16 md:py-24 px-4 sm:px-6 md:px-12 flex items-center justify-center relative overflow-hidden">
             {/* Background glow */}
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-[120px] pointer-events-none" />
 
             <div className="container mx-auto max-w-6xl relative z-10 w-full">
                 {/* Heading */}
                 <ScrollSection animationType="slide-down" className="mb-16 text-center">
-                    <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-white uppercase leading-none">
+                    <h2 className="text-3xl sm:text-5xl md:text-7xl font-black tracking-tighter text-white uppercase leading-none">
                         {content.aboutTitle || "WHO AM I"}
                     </h2>
                     <div className="h-1 w-20 bg-indigo-600 rounded-full mt-6 mx-auto" />
@@ -42,13 +42,13 @@ export function AboutSection({ content }: AboutSectionProps) {
                     <ScrollSection animationType="slide-right" className="w-full">
                         <div className="relative group">
                             <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-                            <div className="relative bg-[#0f172a] border border-white/10 rounded-3xl p-10 md:p-14 hover:border-indigo-500/30 transition-all duration-300">
+                            <div className="relative bg-[#0f172a] border border-white/10 rounded-3xl p-6 sm:p-10 md:p-14 hover:border-indigo-500/30 transition-all duration-300">
                                 {content.boldStatement && (
-                                    <h3 className="text-3xl md:text-5xl font-black text-white mb-8 leading-tight tracking-tighter uppercase italic">
+                                    <h3 className="text-2xl sm:text-4xl md:text-5xl font-black text-white mb-8 leading-tight tracking-tighter uppercase italic">
                                         "{content.boldStatement}"
                                     </h3>
                                 )}
-                                <p className="text-xl md:text-2xl text-slate-300 leading-relaxed font-bold mb-10">
+                                <p className="text-lg sm:text-xl md:text-2xl text-slate-300 leading-relaxed font-bold mb-10">
                                     {content.description}
                                 </p>
                                 

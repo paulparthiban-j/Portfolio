@@ -26,13 +26,13 @@ export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSec
         <AnimatedSection
             sectionIndex={sectionIndex}
             isActive={isActive}
-            className={`min-h-screen relative flex items-center justify-center py-16 md:py-24 px-6 md:px-12 overflow-hidden bg-black`}
+            className={`min-h-screen relative flex items-center justify-center py-10 sm:py-16 md:py-24 px-4 sm:px-6 md:px-12 overflow-hidden bg-black`}
         >
             <div className="absolute inset-0 bg-[#0a0a0b] z-0" />
             
             <div className="container mx-auto max-w-7xl relative z-10 w-full">
                 <ScrollSection animationType="slide-down" className="mb-20 text-center">
-                    <h2 className="text-5xl md:text-8xl font-black tracking-tighter text-white mb-4 leading-[0.9]">
+                    <h2 className="text-3xl sm:text-5xl md:text-8xl font-black tracking-tighter text-white mb-4 leading-[0.9]">
                         {content.projectsTitle || 'PROJECTS'}
                     </h2>
                     <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-medium">
@@ -94,24 +94,24 @@ function ProjectCard({ project, index, isMobile, theme, onClick }: { project: Pr
                         src={project.icon || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=80"}
                         alt={project.title}
                         fill
-                        className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                        className="w-full h-auto object-cover transition-transform duration-1000 group-hover:scale-110"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent flex items-end p-8">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent flex items-end p-6 sm:p-8">
                          <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-indigo-600 group-hover:border-indigo-400 transition-all duration-300">
                              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                          </div>
                     </div>
                 </div>
 
-                <div className="p-8 md:p-10 flex-1 flex flex-col">
+                <div className="p-6 sm:p-8 md:p-10 flex-1 flex flex-col">
                     <div className="flex justify-between items-start mb-4">
-                        <h3 className="text-2xl md:text-3xl font-black text-white uppercase tracking-tighter leading-tight group-hover:text-indigo-400 transition-colors">
+                        <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white uppercase tracking-tighter leading-tight group-hover:text-indigo-400 transition-colors">
                             {project.title}
                         </h3>
                     </div>
                     
-                    <p className="text-slate-400 text-sm md:text-base mb-8 line-clamp-3 leading-relaxed font-medium">
+                    <p className="text-sm sm:text-base text-slate-400 mb-8 line-clamp-3 leading-relaxed font-medium">
                         {project.description}
                     </p>
                     

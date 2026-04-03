@@ -77,6 +77,8 @@ const fallbackContent: PortfolioContent = {
   ]
 };
 
+import { Navbar } from "@/components/ui/Navbar";
+
 export default function Home() {
   const [content, setContent] = useState<PortfolioContent>(fallbackContent);
   const [mounted, setMounted] = useState(false);
@@ -120,16 +122,17 @@ export default function Home() {
   return (
     <div className={`min-h-screen relative ${content.theme?.mode === "light" ? "bg-slate-50 text-slate-900" : "bg-[#0a0a0b] text-white"} transition-opacity duration-1000 ${contentLoaded ? 'opacity-100' : 'opacity-0'}`}>
       <ParticleBackground theme={content.theme} />
+      <Navbar content={content} />
       <main className="relative z-10">
-        <HeroSection content={content} />
-        <AboutSection content={content} />
-        <SkillsSection content={content} />
-        <ProjectsSection content={content} />
-        <ExperienceSection content={content} />
-        <CredibilitySection content={content} />
-        <EducationSection content={content} />
+        <div id="hero"><HeroSection content={content} /></div>
+        <div id="about" className="scroll-mt-20"><AboutSection content={content} /></div>
+        <div id="skills" className="scroll-mt-20"><SkillsSection content={content} /></div>
+        <div id="projects" className="scroll-mt-20"><ProjectsSection content={content} /></div>
+        <div id="experience" className="scroll-mt-20"><ExperienceSection content={content} /></div>
+        <div id="credibility" className="scroll-mt-20"><CredibilitySection content={content} /></div>
+        <div id="education" className="scroll-mt-20"><EducationSection content={content} /></div>
         <CustomSections content={content} />
-        <Footer content={content} />
+        <div id="contact"><Footer content={content} /></div>
       </main>
     </div>
   );
