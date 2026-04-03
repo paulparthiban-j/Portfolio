@@ -54,12 +54,21 @@ export function EducationSection({ content }: EducationSectionProps) {
                                     {edu.degree}
                                 </h3>
 
-                                {/* Institution */}
-                                <div className="flex items-center gap-3">
-                                    <div className="w-1 h-4 bg-indigo-500 rounded-full" />
-                                    <p className="text-base text-slate-400 font-medium">
-                                        {edu.institution}
-                                    </p>
+                                {/* Institution & GPA */}
+                                <div className="flex flex-col gap-2">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-1 h-4 bg-indigo-500 rounded-full" />
+                                        <p className="text-base text-slate-400 font-medium">
+                                            {edu.institution}
+                                        </p>
+                                    </div>
+                                    {edu.gpa && (
+                                        <div className="flex items-center gap-3 ml-4">
+                                            <span className="text-sm text-indigo-400/80 font-bold tracking-widest uppercase">
+                                                GPA: {edu.gpa}
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
                             </motion.div>
                         ))}

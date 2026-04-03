@@ -37,11 +37,12 @@ export function Footer({ content }: FooterProps) {
                     <ScrollSection animationType="slide-right" className="w-full">
                         <div className="flex flex-col gap-8">
                             <div>
-                                <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-none mb-4">
-                                    GET IN<br />TOUCH
+                                <h2 className="text-6xl md:text-9xl font-black text-white tracking-tighter leading-[0.8] mb-8 uppercase">
+                                    LET'S BUILD<br />SOMETHING<br /><span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-600">EXTRAORDINARY</span>
                                 </h2>
-                                <p className="text-slate-500 text-base md:text-lg leading-relaxed max-w-sm">
-                                    Looking for a developer to build your next product? Let's talk.
+                                <p className="text-slate-400 text-lg md:text-2xl leading-tight max-w-md font-bold">
+                                    Ready to solve your most complex business challenges? I'm currently 
+                                    <span className="text-indigo-400"> available for high-impact missions</span>.
                                 </p>
                             </div>
 

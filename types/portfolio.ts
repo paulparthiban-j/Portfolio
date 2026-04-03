@@ -10,6 +10,11 @@ export interface Project {
   link: string;
   github: string;
   icon?: string;
+  problem?: string;
+  solution?: string;
+  impact?: string[];
+  challenges?: string;
+  architecture?: string;
 }
 
 export interface Experience {
@@ -23,6 +28,7 @@ export interface Education {
   institution: string;
   degree: string;
   year: string;
+  gpa?: string;
 }
 
 export interface Stat {
@@ -44,6 +50,20 @@ export interface Theme {
   mode: 'light' | 'dark';
   autoTheme?: boolean;
   animationStyle?: 'side' | 'git-push' | 'fade' | 'scale';
+}
+
+export interface Testimonial {
+  name: string;
+  role: string;
+  text: string;
+  avatar?: string;
+}
+
+export interface Certification {
+  name: string;
+  issuer: string;
+  year: string;
+  link?: string;
 }
 
 export interface PortfolioContent {
@@ -71,4 +91,9 @@ export interface PortfolioContent {
   aboutTitle?: string;
   customSections: CustomSection[];
   resumeUrl?: string;
+  githubActivity?: string; 
+  testimonials?: Testimonial[];
+  certifications?: Certification[];
+  currentWork?: string;
+  boldStatement?: string;
 }

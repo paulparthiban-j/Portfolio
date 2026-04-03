@@ -156,36 +156,77 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                     />
                 </div>
 
-                <div className="w-full md:w-[40%] p-10 md:p-14 md:py-20 flex flex-col bg-slate-950/20">
+                <div className="w-full md:w-[40%] p-10 md:p-14 md:py-20 flex flex-col bg-slate-950/20 overflow-y-auto">
                     <div className="flex justify-between items-start mb-10">
                         <div className="px-3 py-1.5 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-[10px] font-black tracking-widest text-indigo-400 uppercase">
-                            Case Study
+                            Mission Log: {project.title}
                         </div>
                         <button onClick={onClose} className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/5 border border-white/10 transition-all active:scale-90">
                              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
                         </button>
                     </div>
 
-                    <h2 className="text-4xl md:text-5xl font-black text-white mb-6 uppercase tracking-tighter leading-none">
-                        {project.title}
-                    </h2>
-                    
-                    <p className="text-slate-400 text-lg leading-relaxed mb-10 font-medium overflow-y-auto max-h-[25vh] hide-scrollbar">
-                        {project.description}
-                    </p>
+                    <div className="space-y-12">
+                        <section>
+                            <h2 className="text-4xl md:text-5xl font-black text-white mb-6 uppercase tracking-tighter leading-none">
+                                {project.title}
+                            </h2>
+                            <p className="text-slate-400 text-lg leading-relaxed font-medium">
+                                {project.description}
+                            </p>
+                        </section>
 
-                    <div className="mb-10">
-                        <h4 className="text-[10px] font-black tracking-widest text-slate-500 uppercase mb-4">Core Avionics</h4>
-                        <div className="flex flex-wrap gap-2">
-                            {techStack.map((t, i) => (
-                                <span key={i} className="px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-[11px] font-black text-white uppercase tracking-wider">
-                                    {t}
-                                </span>
-                            ))}
-                        </div>
+                        {project.problem && (
+                            <section className="p-6 bg-red-500/5 border border-red-500/10 rounded-2xl">
+                                <h4 className="text-[10px] font-black tracking-widest text-red-400 uppercase mb-3">The Problem</h4>
+                                <p className="text-slate-300 text-sm leading-relaxed">{project.problem}</p>
+                            </section>
+                        )}
+
+                        {project.solution && (
+                            <section className="p-6 bg-emerald-500/5 border border-emerald-500/10 rounded-2xl">
+                                <h4 className="text-[10px] font-black tracking-widest text-emerald-400 uppercase mb-3">The Solution</h4>
+                                <p className="text-slate-300 text-sm leading-relaxed">{project.solution}</p>
+                            </section>
+                        )}
+
+                        {project.impact && project.impact.length > 0 && (
+                            <section>
+                                <h4 className="text-[10px] font-black tracking-widest text-indigo-500 uppercase mb-4">Core Impact</h4>
+                                <ul className="space-y-3">
+                                    {project.impact.map((item, i) => (
+                                        <li key={i} className="flex items-start gap-3 text-slate-300 text-sm">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0" />
+                                            <span className="font-bold">{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </section>
+                        )}
+
+                        <section className="pt-10 border-t border-white/5">
+                            <h4 className="text-[10px] font-black tracking-widest text-slate-500 uppercase mb-6">Technical Architecture</h4>
+                            
+                            <div className="space-y-8">
+                                <div className="flex flex-wrap gap-2">
+                                    {techStack.map((t, i) => (
+                                        <span key={i} className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-lg text-[10px] font-black text-white uppercase tracking-wider">
+                                            {t}
+                                        </span>
+                                    ))}
+                                </div>
+                                
+                                {project.architecture && (
+                                    <div className="p-6 bg-white/5 rounded-2xl border border-white/10">
+                                        <h5 className="text-[10px] font-black tracking-widest text-slate-400 uppercase mb-2 italic">How I built this</h5>
+                                        <p className="text-slate-400 text-xs leading-relaxed">{project.architecture}</p>
+                                    </div>
+                                )}
+                            </div>
+                        </section>
                     </div>
 
-                    <div className="mt-auto flex flex-col sm:flex-row gap-4 pt-10 border-t border-white/5">
+                    <div className="mt-12 flex flex-col sm:flex-row gap-4 pt-10 border-t border-white/5">
                         {project.link && (
                             <a href={project.link} target="_blank" className="flex-1 py-4 bg-indigo-600 hover:bg-indigo-500 rounded-2xl text-center text-white text-sm font-black transition-all shadow-xl shadow-indigo-500/20 active:scale-95">
                                 Live Preview
@@ -193,7 +234,7 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                         )}
                         {project.github && (
                             <a href={project.github} target="_blank" className="flex-1 py-4 bg-white/5 border border-white/10 hover:bg-white/10 rounded-2xl text-center text-white text-sm font-black transition-all active:scale-95">
-                                Code Base
+                                View Source
                             </a>
                         )}
                     </div>

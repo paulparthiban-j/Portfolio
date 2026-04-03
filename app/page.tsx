@@ -9,15 +9,15 @@ import { SkillsSection } from "@/components/sections/SkillsSection";
 import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { ExperienceSection } from "@/components/sections/ExperienceSection";
 import { EducationSection } from "@/components/sections/EducationSection";
+import { CredibilitySection } from "@/components/sections/CredibilitySection";
 import { CustomSections } from "@/components/sections/CustomSections";
 import { Footer } from "@/components/sections/Footer";
 
 const fallbackContent: PortfolioContent = {
   name: "Paul Parthiban J",
-  title: "Backend / Full-Stack Developer",
-  subtitle: "Building robust and scalable digital solutions",
-  description:
-    "Associate Software Developer with expertise in Node.js, Express.js, and Sequelize. Experienced in building supply chain management systems and integrating SAP APIs. Passionate about backend excellence and full-stack innovation.",
+  title: "AI-Powered Web Architect",
+  subtitle: "I build scalable AI-powered web apps that solve real business problems.",
+  description: "Associate Software Developer specializing in building high-performance supply chain ecosystems and AI-integrated web applications.",
   email: "paulparthiban85085@gmail.com",
   phone: "6374178098",
   location: "Tirunelveli, India",
@@ -25,49 +25,35 @@ const fallbackContent: PortfolioContent = {
   linkedin: "https://linkedin.com/in/paul-parthiban-j",
   twitter: "",
   website: "",
+  boldStatement: "I don’t just build apps. I build things that people actually use.",
+  currentWork: "Architecting an AI-driven predictive maintenance module.",
   skills: ["Node.js", "Express.js", "Java", "JavaScript", "Sequelize", "MySQL", "React.js", "Spring Boot", "Python", "AWS EC2", "Linux"],
   projects: [
     {
-      title: "E-Commerce Platform",
-      description: "A full-stack e-commerce solution with payment integration",
-      tech: "Next.js, Stripe, MongoDB",
-      link: "https://example.com",
-      github: "https://github.com/johndoe/ecommerce",
-    },
-    {
-      title: "Task Management App",
-      description: "Collaborative task management with real-time updates",
-      tech: "React, Firebase, Tailwind",
-      link: "https://example.com",
-      github: "https://github.com/johndoe/tasks",
-    },
-    {
-      title: "Weather Dashboard",
-      description: "Beautiful weather dashboard with location-based forecasts",
-      tech: "Vue.js, OpenWeather API",
-      link: "https://example.com",
-      github: "https://github.com/johndoe/weather",
-    },
+      title: "P2P - Supply Chain Ecosystem",
+      description: "Enterprise-grade supply chain platform handling procurement, logistics, and warehouse operations for 100+ active industrial users.",
+      tech: "Node.js, Express, Sequelize, MySQL, SAP API",
+      link: "",
+      github: "",
+      problem: "Legacy procurement processes were fragmented and slow.",
+      solution: "Architected a unified P2P platform with real-time SAP integration.",
+      impact: ["Reduced processing time by 40%", "Handled 10k+ transactions per month"],
+      architecture: "Microservices-based architecture using Express.js and Sequelize."
+    }
   ],
   experience: [
     {
-      company: "Tech Corp",
-      position: "Senior Developer",
-      duration: "2022 - Present",
-      description: "Leading development of scalable web applications",
-    },
-    {
-      company: "StartupXYZ",
-      position: "Full Stack Developer",
-      duration: "2020 - 2022",
-      description: "Built and maintained multiple client projects",
-    },
+      company: "Jeyachandran Industries",
+      position: "Associate Software Developer",
+      duration: "2025 - Present",
+      description: "Leading backend modernization effort and SAP integration.",
+    }
   ],
   education: [
     {
-      institution: "University of Technology",
-      degree: "BS Computer Science",
-      year: "2020",
+      institution: "St. Johns College",
+      degree: "MS Computer Science",
+      year: "2024",
     },
   ],
   theme: {
@@ -79,20 +65,16 @@ const fallbackContent: PortfolioContent = {
     autoTheme: true,
   },
   stats: [
-    {
-      number: 5,
-      label: "Years Experience",
-    },
-    {
-      number: 50,
-      label: "Projects Completed",
-    },
-    {
-      number: 10,
-      label: "Technologies",
-    },
+    { number: 10, label: "Projects Completed" },
+    { number: 1.5, label: "Years Experience" },
   ],
   customSections: [],
+  testimonials: [
+    { name: "Senior Architect", role: "Jeyachandran Industries", text: "Paul transformed our fragmented logistics module." }
+  ],
+  certifications: [
+    { name: "Full Stack Web Development", issuer: "Meta", year: "2024" }
+  ]
 };
 
 export default function Home() {
@@ -144,6 +126,7 @@ export default function Home() {
         <SkillsSection content={content} />
         <ProjectsSection content={content} />
         <ExperienceSection content={content} />
+        <CredibilitySection content={content} />
         <EducationSection content={content} />
         <CustomSections content={content} />
         <Footer content={content} />

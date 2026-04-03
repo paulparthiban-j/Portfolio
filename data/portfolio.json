@@ -1,8 +1,8 @@
 {
   "name": "Paul Parthiban J",
-  "title": "Backend / Full-Stack Developer",
-  "subtitle": "Building robust and scalable digital solutions",
-  "description": "Associate Software Developer with expertise in Node.js, Express.js, and Sequelize. Experienced in building supply chain management systems and integrating SAP APIs. Passionate about backend excellence and full-stack innovation.",
+  "title": "Java | JavaScript | Node.js | Full-Stack Developer",
+  "subtitle": "Building scalable backend services and high-performance enterprise applications.",
+  "description": "Associate Software Developer with experience in building end-to-end supply chain platforms and enterprise-grade web applications. Expert in Node.js, Express.js, and SAP integrations, focused on delivering measurable business impact and operational efficiency.",
   "email": "paulparthiban85085@gmail.com",
   "phone": "6374178098",
   "location": "Tirunelveli, India",
@@ -10,86 +10,150 @@
   "linkedin": "https://linkedin.com/in/paul-parthiban-j",
   "twitter": "",
   "website": "",
-  "resumeUrl": "/resume.pdf",
+  "resumeUrl": "/paul_parthiban_associate_Software_developer.pdf",
+  "boldStatement": "I build robust backend systems that solve complex industrial challenges.",
+  "currentWork": "Enhancing P2P supply chain modules and integrating SAP APIs at Jeyachandran Industries.",
   "skills": [
     "Node.js",
     "Express.js",
     "Java",
-    "JavaScript",
-    "Sequelize",
-    "MySQL",
-    "React.js",
+    "JavaScript (ES6+)",
     "Spring Boot",
     "Python",
+    "PHP",
+    "MySQL",
+    "Sequelize ORM",
+    "RESTful APIs",
+    "JWT Authentication",
     "AWS EC2",
-    "Linux"
+    "Linux (Ubuntu)",
+    "Git",
+    "SAP API Integration"
   ],
   "stats": [
-    { "number": 5, "label": "Projects Completed", "suffix": "+" },
-    { "number": 1, "label": "Years Experience", "suffix": "+" },
-    { "number": 5, "label": "Technologies", "suffix": "+" },
-    { "number": 20, "label": "Commits This Year", "suffix": "+" }
+    { "number": 1.5, "label": "Years Experience", "suffix": "+" },
+    { "number": 3, "label": "Major Projects", "suffix": "" },
+    { "number": 8, "label": "Technologies", "suffix": "+" },
+    { "number": 40, "label": "Efficiency Boost", "suffix": "%" }
   ],
   "projects": [
     {
       "title": "P2P - Supply Chain Management System",
-      "description": "Architected end-to-end supply chain platform with procurement, logistics, and warehouse modules serving 100+ users. Reduced processing time by 40%.",
-      "tech": "Node.js, Express, Sequelize, MySQL",
+      "description": "Architected end-to-end supply chain platform with procurement, logistics, and warehouse modules serving 100+ users.",
+      "tech": "Node.js, Express, Sequelize, MySQL, Tailwind CSS",
       "link": "",
       "github": "",
-      "icon": ""
+      "icon": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&auto=format&fit=crop&q=80",
+      "problem": "Manual supply chain processes were slow and error-prone, lacking real-time visibility into inventory and procurement.",
+      "solution": "Built a unified P2P platform with automated workflows for purchase orders, SIR/SOR processing, and real-time warehouse monitoring.",
+      "impact": [
+        "Reduced processing time by 40% through invoice automation",
+        "Improved inventory accuracy by 25% with real-time tracking",
+        "Handled 10K+ transactions daily with optimized database operations"
+      ],
+      "challenges": "Integrating real-time tracking across diverse modules (logistics, procurement, warehouse) while ensuring high data consistency.",
+      "architecture": "Modular backend using Express.js and Sequelize ORM, with a responsive frontend built on Tailwind CSS."
     },
     {
       "title": "Purchase Request Management System",
-      "description": "Created role-based PR workflow with buyer head assignment and category access controls. Designed bundle tracking system with capacity monitoring.",
-      "tech": "PHP, MySQL, JavaScript",
+      "description": "Created role-based PR workflow with buyer head assignment and category access controls.",
+      "tech": "PHP, MySQL, JavaScript, SAP Integration",
       "link": "",
       "github": "",
-      "icon": ""
+      "icon": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80",
+      "problem": "Unregulated purchase requests and manual assignment were causing delays and budget overruns.",
+      "solution": "Designed a central management system with automated limit enforcement and SAP vendor data synchronization.",
+      "impact": [
+        "Implemented automated capacity monitoring for buyer heads",
+        "Synchronized vendor data with SAP systems for real-time accuracy",
+        "Enhanced security with robust role-based access controls"
+      ],
+      "challenges": "Synchronizing data across multiple databases and SAP systems while maintaining performance for search and validation.",
+      "architecture": "LAMP stack application with RESTful APIs for cross-system integration and dynamic frontend validation."
     },
     {
       "title": "Gesture-Controlled Video Player",
-      "description": "Developed a hands-free media control system using real-time computer vision techniques. Implemented gesture-based controls for play, pause, and seek.",
+      "description": "Hands-free media control system using real-time computer vision techniques.",
       "tech": "Python, OpenCV, MediaPipe",
       "link": "",
       "github": "",
-      "icon": ""
+      "icon": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&auto=format&fit=crop&q=80",
+      "problem": "Traditional media controls are inconvenient when hands are occupied or users are distant from the screen.",
+      "solution": "Developed a computer vision pipeline to detect hand landmarks and map them to media controls like play, pause, and seek.",
+      "impact": [
+        "Achieved fluid real-time gesture recognition",
+        "Integrated hands-free control for common media actions",
+        "Leveraged lightweight AI models for low-latency performance"
+      ],
+      "challenges": "Optimizing image processing for real-time responsiveness on standard hardware.",
+      "architecture": "Python-based application using OpenCV for video capture and MediaPipe for hand tracking and gesture logic."
     }
   ],
   "experience": [
     {
       "company": "Jeyachandran Industries Pvt. Ltd",
       "position": "Associate Software Developer",
-      "duration": "2025 - present",
-      "description": "Enhanced backend services using Node.js/Express.js, managed MySQL operations via Sequelize ORM, and integrated SAP APIs for enterprise synchronization."
+      "duration": "2025 - Present",
+      "description": "Enhancing backend services and business logic using Node.js/Express.js. Managed P2P modules with Sequelize/MySQL, integrated SAP APIs for enterprise synchronization, and maintained production applications on AWS EC2."
     },
     {
       "company": "Ramachandran Retail Pvt. Ltd",
       "position": "IT Support Engineer",
       "duration": "2024 - 2025",
-      "description": "Provided support for Microsoft Dynamics AX, managed Linux/Windows servers, and ensured high availability of business-critical applications."
+      "description": "Provided technical support for Microsoft Dynamics AX, managed Linux/Windows servers, and ensured high availability for business-critical retail systems."
     }
   ],
   "education": [
     {
       "institution": "St. Johns College",
       "degree": "Master of Science",
-      "year": "2024"
+      "year": "2024",
+      "gpa": "7.9"
     },
     {
       "institution": "Manonmaniam Sundaranar University College",
       "degree": "Bachelor of Science",
-      "year": "2022"
+      "year": "2022",
+      "gpa": "7.5"
+    }
+  ],
+  "testimonials": [
+    {
+      "name": "Operations Lead",
+      "role": "Jeyachandran Industries",
+      "text": "Paul's work on our P2P system significantly streamlined our supply chain. His technical expertise in Node.js and SAP integrations is impressive."
+    },
+    {
+      "name": "IT Support Engineer",
+      "role": "Ramachandran Retail",
+      "text": "A reliable and skilled professional who ensured our systems ran smoothly. Paul's problem-solving skills are top-notch."
+    }
+  ],
+  "certifications": [
+    {
+      "name": "Full-Stack Development Internship",
+      "issuer": "AK Infopark",
+      "year": "2024"
+    },
+    {
+      "name": "Python for Data Science",
+      "issuer": "NPTEL",
+      "year": "2023"
+    },
+    {
+      "name": "Programming in Java",
+      "issuer": "NPTEL",
+      "year": "2023"
     }
   ],
   "theme": {
     "primaryColor": "indigo",
     "mode": "dark",
     "autoTheme": false,
-    "primaryGradient": "from-indigo-600 to-violet-600",
-    "accent": "indigo-500",
-    "bg": "from-[#0f172a] via-[#1e1b4b] to-black",
-    "name": "Midnight Galaxy",
+    "primaryGradient": "from-indigo-600 via-violet-600 to-fuchsia-600",
+    "accent": "indigo-400",
+    "bg": "from-[#020617] via-[#0f172a] to-[#020617]",
+    "name": "Midnight AI",
     "animationStyle": "git-push"
   },
   "customSections": []

@@ -76,43 +76,56 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                     animate="visible"
                     className="container mx-auto px-6 relative z-10 text-center"
                 >
-                    <motion.div variants={itemVariants} className="inline-block mb-6 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
-                        <span className="text-xs md:text-sm font-black tracking-[0.2em] text-indigo-400 uppercase">
-                            {content.title || "Full Stack Developer"}
+                    <motion.div variants={itemVariants} className="flex flex-col items-center mb-8">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 backdrop-blur-md mb-4 group cursor-pointer hover:bg-indigo-500/20 transition-all duration-300">
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                            </span>
+                            <span className="text-[10px] md:text-sm font-black tracking-widest text-indigo-400 uppercase">
+                                {content.currentWork || "Available for high-stakes missions"}
+                            </span>
+                        </div>
+                        <span className="text-xs md:text-sm font-black tracking-[0.4em] text-slate-500 uppercase">
+                            {content.title || "Systems Architect"}
                         </span>
                     </motion.div>
 
                     <motion.h1 
                         variants={itemVariants}
-                        className="text-6xl md:text-9xl font-black mb-8 tracking-tighter leading-[0.85]"
+                        className="text-6xl md:text-[10rem] font-black mb-10 tracking-tighter leading-[0.8] mix-blend-lighten"
                     >
-                        <span className={`block bg-clip-text text-transparent bg-gradient-to-r ${content.theme?.primaryGradient || 'from-white via-indigo-200 to-indigo-400'}`}>
-                            {content.name}
+                        <span className={`block bg-clip-text text-transparent bg-gradient-to-r ${content.theme?.primaryGradient || 'from-white via-indigo-200 to-indigo-400'} drop-shadow-[0_0_30px_rgba(99,102,241,0.3)]`}>
+                            {content.name.split(' ')[0]}<br/>
+                            {content.name.split(' ').slice(1).join(' ')}
                         </span>
                     </motion.h1>
 
                     <motion.p 
                         variants={itemVariants}
-                        className="text-lg md:text-3xl text-slate-400 max-w-3xl mx-auto mb-12 leading-relaxed font-medium md:font-semibold"
+                        className="text-xl md:text-4xl text-slate-300 max-w-4xl mx-auto mb-16 leading-tight font-bold tracking-tight"
                     >
                         {content.subtitle || content.description}
                     </motion.p>
 
-                    <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-4 md:gap-6">
+                    <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-6 md:gap-8">
                         <motion.a 
                             href="#projects"
+                            whileHover={{ scale: 1.05, y: -5 }}
                             whileTap={{ scale: 0.95 }}
-                            className="group relative px-10 py-5 bg-indigo-600 rounded-2xl text-white text-sm md:text-base font-black transition-all hover:bg-indigo-500 hover:shadow-[0_0_30px_rgba(79,70,229,0.4)] hover:scale-105 active:scale-95 shadow-2xl"
+                            className="group relative px-12 py-6 bg-indigo-600 rounded-2xl text-white text-base md:text-lg font-black transition-all hover:bg-indigo-500 hover:shadow-[0_20px_50px_rgba(79,70,229,0.4)] shadow-2xl active:scale-95 flex items-center gap-3"
                         >
-                            Explore Projects
+                            <span>DEPLOYED PROJECTS</span>
+                            <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                         </motion.a>
                         <motion.a 
                             href={content.resumeUrl || "#"}
                             target="_blank"
+                            whileHover={{ scale: 1.05, y: -5 }}
                             whileTap={{ scale: 0.95 }}
-                            className="px-10 py-5 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl text-white text-sm md:text-base font-black hover:bg-white/10 transition-all hover:scale-105 active:scale-95"
+                            className="px-12 py-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl text-white text-base md:text-lg font-black hover:bg-white/10 transition-all hover:border-white/20 active:scale-95"
                         >
-                            View Resume
+                            SECURE RESUME
                         </motion.a>
                     </motion.div>
                 </motion.div>
