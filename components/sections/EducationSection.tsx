@@ -16,15 +16,15 @@ export function EducationSection({ content }: EducationSectionProps) {
     const education = content.education || [];
 
     return (
-        <section className="min-h-screen w-full bg-[#0d0d0f] py-10 sm:py-16 md:py-24 px-4 sm:px-6 md:px-12 flex items-center justify-center relative overflow-hidden">
+        <section className="w-full bg-[#0d0d0f] py-12 md:py-20 px-4 sm:px-6 md:px-8 relative overflow-hidden">
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-violet-500/[0.04] rounded-full blur-[120px] pointer-events-none" />
 
             <div className="container mx-auto max-w-5xl relative z-10 w-full">
-                <ScrollSection animationType="slide-down" className="mb-16 text-center">
-                    <h2 className="text-3xl sm:text-5xl md:text-7xl font-black tracking-tighter text-white uppercase leading-none">
+                <ScrollSection animationType="slide-down" className="mb-12 md:mb-16 text-center">
+                    <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-white uppercase leading-none">
                         {content.educationTitle || "EDUCATION"}
                     </h2>
-                    <div className="h-1 w-20 bg-indigo-600 rounded-full mt-6 mx-auto" />
+                    <div className="h-1 w-20 bg-indigo-600 rounded-full mt-4 mx-auto" />
                 </ScrollSection>
 
                 {education.length === 0 ? (
@@ -40,7 +40,7 @@ export function EducationSection({ content }: EducationSectionProps) {
                                 transition={{ delay: index * 0.1, duration: 0.5 }}
                                 whileHover={{ y: -4 }}
                                 whileTap={{ scale: 0.99 }}
-                                className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 sm:p-8 hover:border-indigo-500/30 hover:bg-white/[0.05] transition-all duration-300 flex flex-col gap-4 relative"
+                                className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 md:p-8 hover:border-indigo-500/30 hover:bg-white/[0.05] transition-all duration-300 flex flex-col gap-4 relative"
                             >
                                 {/* Year badge */}
                                 <div className="absolute top-6 right-6">

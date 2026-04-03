@@ -24,17 +24,17 @@ export function AboutSection({ content }: AboutSectionProps) {
     ];
 
     return (
-        <section className="min-h-screen w-full bg-[#0a0a0b] py-10 sm:py-16 md:py-24 px-4 sm:px-6 md:px-12 flex items-center justify-center relative overflow-hidden">
+        <section className="w-full bg-[#0a0a0b] py-12 md:py-20 px-4 sm:px-6 md:px-8 relative overflow-hidden">
             {/* Background glow */}
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-[120px] pointer-events-none" />
 
             <div className="container mx-auto max-w-6xl relative z-10 w-full">
                 {/* Heading */}
-                <ScrollSection animationType="slide-down" className="mb-16 text-center">
-                    <h2 className="text-3xl sm:text-5xl md:text-7xl font-black tracking-tighter text-white uppercase leading-none">
+                <ScrollSection animationType="slide-down" className="mb-12 md:mb-16 text-center">
+                    <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-white uppercase leading-none">
                         {content.aboutTitle || "WHO AM I"}
                     </h2>
-                    <div className="h-1 w-20 bg-indigo-600 rounded-full mt-6 mx-auto" />
+                    <div className="h-1 w-20 bg-indigo-600 rounded-full mt-4 mx-auto" />
                 </ScrollSection>
 
                 <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -44,11 +44,11 @@ export function AboutSection({ content }: AboutSectionProps) {
                             <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
                             <div className="relative bg-[#0f172a] border border-white/10 rounded-3xl p-6 sm:p-10 md:p-14 hover:border-indigo-500/30 transition-all duration-300">
                                 {content.boldStatement && (
-                                    <h3 className="text-2xl sm:text-4xl md:text-5xl font-black text-white mb-8 leading-tight tracking-tighter uppercase italic">
+                                    <h3 className="text-xl md:text-3xl font-black text-white mb-6 leading-tight tracking-tighter uppercase italic">
                                         "{content.boldStatement}"
                                     </h3>
                                 )}
-                                <p className="text-lg sm:text-xl md:text-2xl text-slate-300 leading-relaxed font-bold mb-10">
+                                <p className="text-base md:text-lg text-slate-300 leading-relaxed font-bold mb-8">
                                     {content.description}
                                 </p>
                                 
@@ -77,7 +77,7 @@ export function AboutSection({ content }: AboutSectionProps) {
                     </ScrollSection>
 
                     {/* Right: Stats grid */}
-                    <div className="grid grid-cols-2 gap-6 md:gap-10 w-full">
+                    <div className="grid grid-cols-2 gap-6 md:gap-10 w-full h-full">
                         {stats.map((stat, i) => (
                             <motion.div
                                 key={i}
@@ -85,13 +85,13 @@ export function AboutSection({ content }: AboutSectionProps) {
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: i * 0.1, type: "spring", stiffness: 100 }}
-                                className="group relative"
+                                className="group relative h-full"
                             >
-                                <div className="text-center p-8 md:p-12 bg-white/[0.03] border border-white/10 rounded-3xl hover:bg-white/[0.05] transition-all duration-500">
-                                    <div className="text-5xl md:text-7xl font-black text-white mb-3">
+                                <div className="text-center p-6 md:p-12 bg-white/[0.03] border border-white/10 rounded-3xl hover:bg-white/[0.05] transition-all duration-500 h-full flex flex-col justify-center overflow-hidden">
+                                    <div className="text-4xl md:text-7xl font-black text-white mb-3">
                                         <Counter target={stat.number} suffix={stat.suffix} className={`bg-gradient-to-br ${i % 2 === 0 ? "from-indigo-400 to-indigo-600" : "from-purple-400 to-purple-600"} bg-clip-text text-transparent`} />
                                     </div>
-                                    <div className="text-[10px] md:text-xs text-slate-500 font-black uppercase tracking-[0.2em]">
+                                    <div className="text-[10px] md:text-xs text-slate-500 font-black uppercase tracking-[0.2em] truncate w-full px-2" title={stat.label}>
                                         {stat.label}
                                     </div>
                                 </div>

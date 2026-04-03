@@ -65,8 +65,10 @@ const fallbackContent: PortfolioContent = {
     autoTheme: true,
   },
   stats: [
-    { number: 10, label: "Projects Completed" },
-    { number: 1.5, label: "Years Experience" },
+    { number: 1.5, label: "Years Experience", suffix: "+" },
+    { number: 3, label: "Major Projects", suffix: "" },
+    { number: 8, label: "Technologies", suffix: "+" },
+    { number: 40, label: "Efficiency Boost", suffix: "%" },
   ],
   customSections: [],
   testimonials: [

@@ -26,13 +26,13 @@ export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSec
         <AnimatedSection
             sectionIndex={sectionIndex}
             isActive={isActive}
-            className={`min-h-screen relative flex items-center justify-center py-10 sm:py-16 md:py-24 px-4 sm:px-6 md:px-12 overflow-hidden bg-black`}
+            className={`relative w-full py-12 md:py-20 px-4 sm:px-6 md:px-8 overflow-hidden bg-black`}
         >
             <div className="absolute inset-0 bg-[#0a0a0b] z-0" />
             
             <div className="container mx-auto max-w-7xl relative z-10 w-full">
-                <ScrollSection animationType="slide-down" className="mb-20 text-center">
-                    <h2 className="text-3xl sm:text-5xl md:text-8xl font-black tracking-tighter text-white mb-4 leading-[0.9]">
+                <ScrollSection animationType="slide-down" className="mb-12 md:mb-16 text-center">
+                    <h2 className="text-3xl md:text-6xl font-black tracking-tighter text-white mb-4 leading-none">
                         {content.projectsTitle || 'PROJECTS'}
                     </h2>
                     <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-medium">
@@ -40,7 +40,7 @@ export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSec
                     </p>
                 </ScrollSection>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-8 relative">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 relative">
                     {projects.map((project, index) => (
                         <motion.div
                             key={index}
@@ -87,7 +87,7 @@ function ProjectCard({ project, index, isMobile, theme, onClick }: { project: Pr
         <motion.div
             onClick={onClick}
             whileTap={{ scale: 0.97 }}
-            className={`group h-full flex flex-col glass-premium border border-white/10 rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 ${!isMobile ? "hover:translate-y-[-10px] hover:border-indigo-500/30 hover:shadow-2xl hover:shadow-indigo-500/10" : ""}`}
+            className={`group h-full flex flex-col justify-between glass-premium border border-white/10 rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 ${!isMobile ? "hover:translate-y-[-10px] hover:border-indigo-500/30 hover:shadow-2xl hover:shadow-indigo-500/10" : ""}`}
         >
                 <div className="h-60 md:h-72 relative bg-slate-900 overflow-hidden">
                     <Image 

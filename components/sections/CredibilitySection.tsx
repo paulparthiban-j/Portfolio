@@ -12,15 +12,15 @@ export function CredibilitySection({ content }: CredibilitySectionProps) {
     if (!content) return null;
 
     return (
-        <section className="py-10 sm:py-16 md:py-24 px-4 sm:px-6 md:px-12 bg-black relative overflow-hidden">
+        <section className="py-12 md:py-20 px-4 sm:px-6 md:px-8 bg-black relative overflow-hidden">
             <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-indigo-600/5 rounded-full blur-[120px] pointer-events-none" />
             
             <div className="container mx-auto max-w-7xl relative z-10">
-                <ScrollSection animationType="slide-down" className="mb-16 md:mb-20 text-center">
-                    <h2 className="text-3xl sm:text-5xl md:text-8xl font-black tracking-tighter text-white mb-4 uppercase leading-none">
+                <ScrollSection animationType="slide-down" className="mb-12 md:mb-16 text-center">
+                    <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-white mb-4 uppercase leading-none">
                         Proof of Impact
                     </h2>
-                    <p className="text-sm sm:text-base md:text-xl text-slate-400 max-w-2xl mx-auto font-medium">
+                    <p className="text-sm md:text-lg text-slate-400 max-w-2xl mx-auto font-medium">
                         Validation from industry leaders and continuous technical growth.
                     </p>
                 </ScrollSection>
@@ -40,7 +40,7 @@ export function CredibilitySection({ content }: CredibilitySectionProps) {
                                     className="p-6 sm:p-8 bg-white/[0.03] border border-white/5 rounded-3xl relative group hover:border-indigo-500/30 transition-all"
                                 >
                                     <svg className="absolute top-6 right-8 w-10 h-10 text-white/5 group-hover:text-indigo-400/10 transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" /></svg>
-                                    <p className="text-sm sm:text-base md:text-lg text-slate-300 italic leading-relaxed mb-8 relative z-10">
+                                    <p className="text-sm md:text-base text-slate-300 italic leading-relaxed mb-8 relative z-10">
                                         "{t.text}"
                                     </p>
                                     <div className="flex items-center gap-4">

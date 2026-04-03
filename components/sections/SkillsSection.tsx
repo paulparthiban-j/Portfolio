@@ -17,20 +17,20 @@ export function SkillsSection({ content }: SkillsSectionProps) {
     const skills = content.skills || [];
 
     return (
-        <section className="min-h-screen w-full bg-[#0d0d0f] py-10 sm:py-16 md:py-24 px-4 sm:px-6 md:px-12 flex items-center justify-center relative overflow-hidden">
+        <section className="w-full bg-[#0d0d0f] py-12 md:py-20 px-4 sm:px-6 md:px-8 relative overflow-hidden">
             {/* Background accent */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/[0.04] rounded-full blur-[120px] pointer-events-none" />
 
             <div className="container mx-auto max-w-6xl relative z-10 w-full">
                 {/* Heading */}
-                <ScrollSection animationType="slide-down" className="mb-16 text-center">
-                    <h2 className="text-3xl sm:text-5xl md:text-7xl font-black tracking-tighter text-white uppercase leading-none">
+                <ScrollSection animationType="slide-down" className="mb-12 md:mb-16 text-center">
+                    <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-white uppercase leading-none">
                         {content.skillsTitle || "THE STACK"}
                     </h2>
-                    <p className="text-slate-500 text-base md:text-lg mt-4 max-w-xl mx-auto font-medium">
+                    <p className="text-slate-500 text-sm md:text-lg mt-4 max-w-xl mx-auto font-medium">
                         Tools and technologies I work with daily.
                     </p>
-                    <div className="h-1 w-20 bg-indigo-600 rounded-full mt-6 mx-auto" />
+                    <div className="h-1 w-20 bg-indigo-600 rounded-full mt-4 mx-auto" />
                 </ScrollSection>
 
                 {/* Skills grid */}

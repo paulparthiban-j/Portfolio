@@ -28,7 +28,7 @@ export function Footer({ content }: FooterProps) {
     };
 
     return (
-        <footer className="w-full bg-[#0a0a0b] py-10 sm:py-20 md:py-32 px-4 sm:px-6 md:px-12 relative overflow-hidden border-t border-white/5">
+        <footer className="w-full bg-[#0a0a0b] py-12 md:py-24 px-4 sm:px-6 md:px-8 relative overflow-hidden border-t border-white/5">
             <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-indigo-500/[0.04] rounded-full blur-[120px] pointer-events-none" />
 
             <div className="container mx-auto max-w-6xl relative z-10">
@@ -37,10 +37,10 @@ export function Footer({ content }: FooterProps) {
                     <ScrollSection animationType="slide-right" className="w-full">
                         <div className="flex flex-col gap-8">
                             <div>
-                                <h2 className="text-3xl sm:text-7xl md:text-9xl font-black text-white tracking-tighter leading-[0.8] mb-8 uppercase">
+                                <h2 className="text-3xl md:text-7xl lg:text-9xl font-black text-white tracking-tighter leading-[0.8] mb-8 uppercase">
                                     LET'S BUILD<br />SOMETHING<br /><span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-600">EXTRAORDINARY</span>
                                 </h2>
-                                <p className="text-sm sm:text-lg md:text-2xl leading-tight max-w-md font-bold">
+                                <p className="text-sm md:text-xl leading-tight max-w-md font-bold text-slate-400">
                                     Ready to solve your most complex business challenges? I'm currently 
                                     <span className="text-indigo-400"> available for high-impact missions</span>.
                                 </p>
