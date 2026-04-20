@@ -7,7 +7,7 @@ interface ParticleBackgroundProps {
     theme?: Theme;
 }
 
-export function ParticleBackground({ theme }: { theme: any }) {
+export function ParticleBackground({ theme }: ParticleBackgroundProps) {
     const isMobile = useIsMobile();
     const particleCount = isMobile ? 8 : 25;
 

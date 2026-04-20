@@ -15,67 +15,89 @@ import { Footer } from "@/components/sections/Footer";
 
 const fallbackContent: PortfolioContent = {
   name: "Paul Parthiban J",
-  title: "AI-Powered Web Architect",
-  subtitle: "I build scalable AI-powered web apps that solve real business problems.",
-  description: "Associate Software Developer specializing in building high-performance supply chain ecosystems and AI-integrated web applications.",
+  title: "Full-Stack Developer | React, Node.js & .NET",
+  subtitle: "I build end-to-end enterprise applications with focus on API design, real-time systems, and production-grade architecture.",
+  description: "Full-Stack Developer with experience building end-to-end enterprise applications using React, Node.js, .NET, and SQL databases. Skilled in API design, real-time systems, state management, and deploying production-grade solutions.",
   email: "paulparthiban85085@gmail.com",
-  phone: "6374178098",
+  phone: "+91-6374178098",
   location: "Tirunelveli, India",
   github: "https://github.com/parthi25",
   linkedin: "https://linkedin.com/in/paul-parthiban-j",
   twitter: "",
   website: "",
-  boldStatement: "I don’t just build apps. I build things that people actually use.",
-  currentWork: "Architecting an AI-driven predictive maintenance module.",
-  skills: ["Node.js", "Express.js", "Java", "JavaScript", "Sequelize", "MySQL", "React.js", "Spring Boot", "Python", "AWS EC2", "Linux"],
+  boldStatement: "I don’t just write code; I architect systems that solve real business bottlenecks.",
+  currentWork: "Building enterprise access management platform with React 19 & .NET 10.",
+  skills: ["JavaScript (ES6+)", "TypeScript", "C#", "Java", "Python", "PHP", "React 19", "Tailwind CSS", "Zustand", "React Query", "React Hook Form", "ECharts", "Node.js", "Express.js", ".NET 10 Web API", "Spring Boot", "RESTful APIs", "SQL Server", "MySQL", "Entity Framework Core", "Dapper", "Sequelize ORM", "JWT", "OAuth 2.0", "RBAC", "Git", "Linux (Ubuntu)", "SignalR", "SAP API Integration"],
   projects: [
     {
-      title: "P2P - Supply Chain Ecosystem",
-      description: "Enterprise-grade supply chain platform handling procurement, logistics, and warehouse operations for 100+ active industrial users.",
-      tech: "Node.js, Express, Sequelize, MySQL, SAP API",
+      title: "AdminCore - Enterprise Access Management",
+      description: "Full-stack RBAC platform: React 19 + TypeScript SPA with .NET 10 Web API backend following clean architecture patterns.",
+      tech: "React 19, TypeScript, .NET 10, SQL Server, SignalR, Zustand, ECharts",
       link: "",
       github: "",
-      problem: "Legacy procurement processes were fragmented and slow.",
-      solution: "Architected a unified P2P platform with real-time SAP integration.",
-      impact: ["Reduced processing time by 40%", "Handled 10k+ transactions per month"],
-      architecture: "Microservices-based architecture using Express.js and Sequelize."
+      problem: "Enterprise teams lacked granular access control with no real-time visibility.",
+      solution: "Built a full-stack RBAC platform with JWT + GitHub OAuth SSO, device fingerprinting, CAPTCHA, and real-time SignalR dashboard.",
+      impact: ["Granular permission engine managing 50+ rules with SQL Server stored procedures", "SignalR WebSocket for real-time session monitoring", "Zustand + React Query for optimistic updates and cache invalidation", "Dual ORM: EF Core + Dapper"],
+      architecture: "Layered .NET 10 Web API (Controllers, Services, Repository, Utility) with React 19 SPA using Zustand + React Query."
+    },
+    {
+      title: "P2P - Supply Chain Management System",
+      description: "Architected end-to-end supply chain platform with procurement, logistics, and warehouse modules serving 100+ users.",
+      tech: "Node.js, Express, Sequelize, MySQL, Tailwind CSS",
+      link: "",
+      github: "",
+      problem: "Manual supply chain processes were slow and error-prone.",
+      solution: "Built a unified P2P platform with automated workflows for purchase orders, GRN validation, and real-time warehouse monitoring.",
+      impact: ["Purchase order workflows and invoice automation reducing processing time by 40%", "Real-time warehouse operations improving inventory accuracy by 25%", "Handled 1K+ daily transactions with optimized Sequelize ORM operations"],
+      architecture: "Modular backend using Express.js and Sequelize ORM, with responsive Tailwind CSS frontend."
     }
   ],
   experience: [
     {
-      company: "Jeyachandran Industries",
+      company: "Jeyachandran Industries Pvt. Ltd",
       position: "Associate Software Developer",
       duration: "2025 - Present",
-      description: "Leading backend modernization effort and SAP integration.",
+      description: "Developed full-stack enterprise applications using Node.js, Express.js, and React.js, serving 100+ users. Built end-to-end P2P module handling 1K+ daily transactions. Delivered ECharts analytics dashboards.",
+    },
+    {
+      company: "Ramachandran Retail Pvt. Ltd",
+      position: "IT Support Engineer",
+      duration: "2024 - 2025",
+      description: "Technical support for Microsoft Dynamics AX ERP systems across multiple retail locations.",
     }
   ],
   education: [
     {
-      institution: "St. Johns College",
-      degree: "MS Computer Science",
+      institution: "St. Johns College, Palayamkottai",
+      degree: "M.Sc. Computer Science",
       year: "2024",
+    },
+    {
+      institution: "Manonmaniam Sundaranar University College",
+      degree: "B.Sc. Computer Science",
+      year: "2022",
     },
   ],
   theme: {
     primaryColor: "indigo",
-    primaryGradient: "from-indigo-600 to-violet-600",
-    accent: "indigo-500",
-    bg: "from-[#0f172a] via-[#1e1b4b] to-black",
+    primaryGradient: "from-indigo-600 via-violet-600 to-fuchsia-600",
+    accent: "indigo-400",
+    bg: "from-[#020617] via-[#0f172a] to-[#020617]",
     mode: "dark",
-    autoTheme: true,
+    autoTheme: false,
   },
   stats: [
     { number: 1.5, label: "Years Experience", suffix: "+" },
-    { number: 3, label: "Major Projects", suffix: "" },
-    { number: 8, label: "Technologies", suffix: "+" },
+    { number: 4, label: "Major Projects", suffix: "" },
+    { number: 20, label: "Technologies", suffix: "+" },
     { number: 40, label: "Efficiency Boost", suffix: "%" },
   ],
   customSections: [],
   testimonials: [
-    { name: "Senior Architect", role: "Jeyachandran Industries", text: "Paul transformed our fragmented logistics module." }
+    { name: "Associate Software Developer", role: "Jeyachandran Industries", text: "Paul’s work on our P2P system significantly streamlined our supply chain." }
   ],
   certifications: [
-    { name: "Full Stack Web Development", issuer: "Meta", year: "2024" }
+    { name: "Full-Stack Development Internship", issuer: "AK Infopark", year: "2024" }
   ]
 };
 

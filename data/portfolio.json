@@ -1,10 +1,10 @@
 {
   "name": "Paul Parthiban J",
-  "title": "Software Developer | React & Node.js Architecture",
-  "subtitle": "I build scalable React systems with focus on performance and state architecture.",
-  "description": "Associate Software Developer specializing in high-performance enterprise ecosystems and scalable architecture. Expert in Node.js, React, and SAP integrations, focused on delivering measurable business impact.",
+  "title": "Full-Stack Developer | React, Node.js & .NET",
+  "subtitle": "I build end-to-end enterprise applications with focus on API design, real-time systems, and production-grade architecture.",
+  "description": "Full-Stack Developer with experience building end-to-end enterprise applications using React, Node.js, .NET, and SQL databases. Skilled in API design, real-time systems, state management, and deploying production-grade solutions.",
   "email": "paulparthiban85085@gmail.com",
-  "phone": "6374178098",
+  "phone": "+91-6374178098",
   "location": "Tirunelveli, India",
   "github": "https://github.com/parthi25",
   "linkedin": "https://linkedin.com/in/paul-parthiban-j",
@@ -12,31 +12,71 @@
   "website": "",
   "resumeUrl": "/resume.pdf",
   "boldStatement": "I don't just write code; I architect systems that solve real business bottlenecks.",
-  "currentWork": "Enhancing P2P supply chain modules and integrating SAP APIs at Jeyachandran Industries.",
+  "currentWork": "Building enterprise access management platform with React 19 & .NET 10.",
   "skills": [
-    "Node.js",
-    "Express.js",
-    "Java",
     "JavaScript (ES6+)",
-    "Spring Boot",
+    "TypeScript",
+    "C#",
+    "Java",
     "Python",
     "PHP",
-    "MySQL",
-    "Sequelize ORM",
+    "React 19",
+    "Tailwind CSS",
+    "Zustand",
+    "React Query",
+    "React Hook Form",
+    "ECharts",
+    "Node.js",
+    "Express.js",
+    ".NET 10 Web API",
+    "Spring Boot",
     "RESTful APIs",
-    "JWT Authentication",
-    "AWS EC2",
-    "Linux (Ubuntu)",
+    "SQL Server",
+    "MySQL",
+    "Entity Framework Core",
+    "Dapper",
+    "Sequelize ORM",
+    "JWT",
+    "OAuth 2.0",
+    "RBAC",
+    "Device Fingerprinting",
     "Git",
-    "SAP API Integration"
+    "Linux (Ubuntu)",
+    "Vite",
+    "Sentry",
+    "Swagger",
+    "WinSCP",
+    "SignalR",
+    "SAP API Integration",
+    "Agile/Scrum",
+    "CI/CD Workflows"
   ],
   "stats": [
     { "number": 1.5, "label": "Years Experience", "suffix": "+" },
-    { "number": 3, "label": "Major Projects", "suffix": "" },
-    { "number": 8, "label": "Technologies", "suffix": "+" },
+    { "number": 4, "label": "Major Projects", "suffix": "" },
+    { "number": 20, "label": "Technologies", "suffix": "+" },
     { "number": 40, "label": "Efficiency Boost", "suffix": "%" }
   ],
   "projects": [
+    {
+      "title": "AdminCore - Enterprise Access Management",
+      "description": "Full-stack RBAC platform: React 19 + TypeScript SPA with .NET 10 Web API backend following clean architecture patterns.",
+      "tech": "React 19, TypeScript, .NET 10, SQL Server, SignalR, Zustand, React Query, ECharts",
+      "link": "",
+      "github": "",
+      "icon": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800&auto=format&fit=crop&q=80",
+      "problem": "Enterprise teams lacked granular access control, with no real-time visibility into user sessions or permission management.",
+      "solution": "Built a full-stack RBAC platform with JWT + GitHub OAuth SSO, device fingerprinting, CAPTCHA, and secure session lifecycle management with real-time SignalR dashboard.",
+      "impact": [
+        "Engineered granular permission engine with menu-level and action-level controls using SQL Server stored procedures, managing 50+ rules",
+        "Integrated SignalR WebSocket for real-time dashboard updates and live session monitoring across concurrent clients",
+        "Designed frontend state layer with Zustand + React Query for optimistic updates, cache invalidation, and server-state sync",
+        "Built audit logging, document management with file preview, and interactive ECharts analytics with CSV export",
+        "Optimized data access with dual ORM: Entity Framework Core for CRUD + Dapper for high-performance stored procedure calls"
+      ],
+      "challenges": "Balancing granular permission control with a clean, intuitive UI while maintaining real-time synchronization across concurrent users.",
+      "architecture": "Layered .NET 10 Web API (Controllers, Services, Repository, Utility) with React 19 SPA using Zustand + React Query for state management."
+    },
     {
       "title": "P2P - Supply Chain Management System",
       "description": "Architected end-to-end supply chain platform with procurement, logistics, and warehouse modules serving 100+ users.",
@@ -45,18 +85,18 @@
       "github": "",
       "icon": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&auto=format&fit=crop&q=80",
       "problem": "Manual supply chain processes were slow and error-prone, lacking real-time visibility into inventory and procurement.",
-      "solution": "Built a unified P2P platform with automated workflows for purchase orders, SIR/SOR processing, and real-time warehouse monitoring.",
+      "solution": "Built a unified P2P platform with automated workflows for purchase orders, GRN validation, and real-time warehouse monitoring.",
       "impact": [
-        "Reduced processing time by 40% through invoice automation",
-        "Improved inventory accuracy by 25% with real-time tracking",
-        "Handled 10K+ transactions daily with optimized database operations"
+        "Engineered purchase order workflows, GRN validation, and invoice automation reducing processing time by 40%",
+        "Built real-time warehouse operations and supplier tracking improving inventory accuracy by 25%",
+        "Handled 1K+ daily transactions with optimized Sequelize ORM database operations"
       ],
       "challenges": "Integrating real-time tracking across diverse modules (logistics, procurement, warehouse) while ensuring high data consistency.",
       "architecture": "Modular backend using Express.js and Sequelize ORM, with a responsive frontend built on Tailwind CSS."
     },
     {
       "title": "Purchase Request Management System",
-      "description": "Created role-based PR workflow with buyer head assignment and category access controls.",
+      "description": "Role-based PR workflow with buyer head assignment, category access controls, and SAP integration.",
       "tech": "PHP, MySQL, JavaScript, SAP Integration",
       "link": "",
       "github": "",
@@ -64,22 +104,21 @@
       "problem": "Unregulated purchase requests and manual assignment were causing delays and budget overruns.",
       "solution": "Designed a central management system with automated limit enforcement and SAP vendor data synchronization.",
       "impact": [
-        "Implemented automated capacity monitoring for buyer heads",
-        "Synchronized vendor data with SAP systems for real-time accuracy",
-        "Enhanced security with robust role-based access controls"
+        "Created role-based PR workflow with buyer head assignment and category access controls",
+        "Built RESTful APIs and cross-database queries for SAP integration and vendor synchronization"
       ],
       "challenges": "Synchronizing data across multiple databases and SAP systems while maintaining performance for search and validation.",
       "architecture": "LAMP stack application with RESTful APIs for cross-system integration and dynamic frontend validation."
     },
     {
       "title": "Gesture-Controlled Video Player",
-      "description": "Hands-free media control system using real-time computer vision techniques.",
+      "description": "Hands-free media control system using real-time computer vision with OpenCV and MediaPipe.",
       "tech": "Python, OpenCV, MediaPipe",
       "link": "",
       "github": "",
       "icon": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&auto=format&fit=crop&q=80",
       "problem": "Traditional media controls are inconvenient when hands are occupied or users are distant from the screen.",
-      "solution": "Developed a computer vision pipeline to detect hand landmarks and map them to media controls like play, pause, and seek.",
+      "solution": "Developed a computer vision pipeline to detect hand landmarks and map them to media controls like play, pause, volume, and seek.",
       "impact": [
         "Achieved fluid real-time gesture recognition",
         "Integrated hands-free control for common media actions",
@@ -94,32 +133,32 @@
       "company": "Jeyachandran Industries Pvt. Ltd",
       "position": "Associate Software Developer",
       "duration": "2025 - Present",
-      "description": "Enhancing backend services and business logic using Node.js/Express.js. Managed P2P modules with Sequelize/MySQL, integrated SAP APIs for enterprise synchronization, and maintained production applications on AWS EC2."
+      "description": "Developed full-stack enterprise applications using Node.js, Express.js, and React.js, serving 100+ users across supply chain operations. Built end-to-end P2P module with Sequelize ORM backend and responsive Tailwind CSS frontend handling 1K+ daily transactions. Integrated SAP APIs with error handling and retry logic. Deployed on Linux (Ubuntu) servers achieving 99%+ uptime. Delivered interactive analytics dashboards with ECharts visualization and Excel export."
     },
     {
       "company": "Ramachandran Retail Pvt. Ltd",
       "position": "IT Support Engineer",
       "duration": "2024 - 2025",
-      "description": "Provided technical support for Microsoft Dynamics AX, managed Linux/Windows servers, and ensured high availability for business-critical retail systems."
+      "description": "Provided technical and production support for Microsoft Dynamics AX ERP systems across multiple retail locations. Administered Linux and Windows servers with proactive monitoring, maintaining 99%+ uptime for business-critical apps."
     }
   ],
   "education": [
     {
-      "institution": "St. Johns College",
-      "degree": "Master of Science",
+      "institution": "St. Johns College, Palayamkottai",
+      "degree": "M.Sc. Computer Science",
       "year": "2024",
       "gpa": "7.9"
     },
     {
-      "institution": "Manonmaniam Sundaranar University College",
-      "degree": "Bachelor of Science",
+      "institution": "Manonmaniam Sundaranar University College, Govindaperi",
+      "degree": "B.Sc. Computer Science",
       "year": "2022",
       "gpa": "7.5"
     }
   ],
   "testimonials": [
     {
-      "name": "Operations Lead",
+      "name": "Associate Software Developer",
       "role": "Jeyachandran Industries",
       "text": "Paul's work on our P2P system significantly streamlined our supply chain. His technical expertise in Node.js and SAP integrations is impressive."
     },

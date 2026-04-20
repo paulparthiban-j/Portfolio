@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import { motion, useInView, animate } from "framer-motion";
+import { motion } from "framer-motion";
 import { PortfolioContent } from "@/types/portfolio";
 import { ScrollSection } from "@/components/ui/ScrollSection";
 import { Counter } from "@/components/ui/Counter";

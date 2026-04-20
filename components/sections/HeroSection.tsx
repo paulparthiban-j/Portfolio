@@ -118,9 +118,10 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                             <span>DEPLOYED PROJECTS</span>
                             <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                         </motion.a>
-                        <motion.a 
+                        <motion.a
                             href={content.resumeUrl || "#"}
                             target="_blank"
+                            rel="noopener noreferrer"
                             whileHover={{ scale: 1.05, y: -5 }}
                             whileTap={{ scale: 0.95 }}
                             className="w-full sm:w-auto px-8 py-4 md:px-12 md:py-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl text-white text-base md:text-lg font-black hover:bg-white/10 transition-all hover:border-white/20 active:scale-95 text-center"

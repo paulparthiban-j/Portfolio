@@ -52,7 +52,7 @@ export function Navbar({ content }: NavbarProps) {
                                 {content.name}
                             </span>
                             <span className="text-indigo-400 font-bold text-[10px] tracking-widest uppercase block mt-1">
-                                Developer
+                                Software Developer
                             </span>
                         </div>
                     </a>
@@ -71,6 +71,7 @@ export function Navbar({ content }: NavbarProps) {
                         <a
                             href={content.resumeUrl || "#"}
                             target="_blank"
+                            rel="noopener noreferrer"
                             className="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-black uppercase tracking-widest px-6 py-3 rounded-full shadow-lg shadow-indigo-500/20 transition-all active:scale-95"
                         >
                             Resume
@@ -78,8 +79,9 @@ export function Navbar({ content }: NavbarProps) {
                     </div>
 
                     {/* Mobile Toggle */}
-                    <button 
+                    <button
                         onClick={() => setIsOpen(!isOpen)}
+                        aria-label={isOpen ? "Close menu" : "Open menu"}
                         className="md:hidden w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex flex-col items-center justify-center gap-1.5 transition-all active:scale-90"
                     >
                         <motion.div 
@@ -126,6 +128,7 @@ export function Navbar({ content }: NavbarProps) {
                             transition={{ delay: 0.5 }}
                             href={content.resumeUrl || "#"}
                             target="_blank"
+                            rel="noopener noreferrer"
                             className="mt-4 px-12 py-5 bg-indigo-600 rounded-2xl text-white font-black uppercase tracking-widest shadow-2xl shadow-indigo-500/20"
                         >
                             Get Resume

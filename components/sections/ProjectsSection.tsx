@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PortfolioContent, Project, Theme } from "@/types/portfolio";
 import { ScrollSection } from "@/components/ui/ScrollSection";
@@ -130,11 +130,27 @@ function ProjectCard({ project, index, isMobile, theme, onClick }: { project: Pr
 function ProjectModal({ project, onClose, theme }: { project: Project; onClose: () => void; theme: Theme }) {
     const techStack = useMemo(() => (project.tech || "").split(',').map(s => s.trim()), [project.tech]);
 
+    const handleKeyDown = useCallback((e: KeyboardEvent) => {
+        if (e.key === "Escape") onClose();
+    }, [onClose]);
+
+    useEffect(() => {
+        document.addEventListener("keydown", handleKeyDown);
+        document.body.style.overflow = "hidden";
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+            document.body.style.overflow = "";
+        };
+    }, [handleKeyDown]);
+
     return (
         <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Project details: ${project.title}`}
             className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-8 backdrop-blur-2xl bg-black/80"
             onClick={onClose}
         >
@@ -161,7 +177,7 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                         <div className="px-3 py-1.5 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-[10px] font-black tracking-widest text-indigo-400 uppercase">
                             Mission Log: {project.title}
                         </div>
-                        <button onClick={onClose} className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/5 border border-white/10 transition-all active:scale-90">
+                        <button onClick={onClose} aria-label="Close project details" className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/5 border border-white/10 transition-all active:scale-90">
                              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
                         </button>
                     </div>
@@ -228,12 +244,12 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
 
                     <div className="mt-12 flex flex-col sm:flex-row gap-4 pt-10 border-t border-white/5">
                         {project.link && (
-                            <a href={project.link} target="_blank" className="flex-1 py-4 bg-indigo-600 hover:bg-indigo-500 rounded-2xl text-center text-white text-sm font-black transition-all shadow-xl shadow-indigo-500/20 active:scale-95">
+                            <a href={project.link} target="_blank" rel="noopener noreferrer" className="flex-1 py-4 bg-indigo-600 hover:bg-indigo-500 rounded-2xl text-center text-white text-sm font-black transition-all shadow-xl shadow-indigo-500/20 active:scale-95">
                                 Live Preview
                             </a>
                         )}
                         {project.github && (
-                            <a href={project.github} target="_blank" className="flex-1 py-4 bg-white/5 border border-white/10 hover:bg-white/10 rounded-2xl text-center text-white text-sm font-black transition-all active:scale-95">
+                            <a href={project.github} target="_blank" rel="noopener noreferrer" className="flex-1 py-4 bg-white/5 border border-white/10 hover:bg-white/10 rounded-2xl text-center text-white text-sm font-black transition-all active:scale-95">
                                 View Source
                             </a>
                         )}

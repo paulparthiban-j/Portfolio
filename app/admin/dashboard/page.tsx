@@ -25,6 +25,8 @@ export default function AdminDashboard() {
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState("");
     const [activeTab, setActiveTab] = useState("general");
+    const [resumeUploading, setResumeUploading] = useState(false);
+    const [resumeMessage, setResumeMessage] = useState("");
     const router = useRouter();
 
     useEffect(() => {
@@ -100,6 +102,48 @@ export default function AdminDashboard() {
     const logout = async () => {
         await fetch("/api/admin/logout", { method: "POST" });
         router.push("/admin");
+    };
+
+    const handleResumeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        if (file.type !== "application/pdf") {
+            setResumeMessage("Only PDF files are allowed.");
+            setTimeout(() => setResumeMessage(""), 3000);
+            return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+            setResumeMessage("File must be under 5MB.");
+            setTimeout(() => setResumeMessage(""), 3000);
+            return;
+        }
+
+        setResumeUploading(true);
+        setResumeMessage("");
+
+        const formData = new FormData();
+        formData.append("resume", file);
+
+        try {
+            const res = await fetch("/api/admin/resume", {
+                method: "POST",
+                body: formData,
+            });
+            const result = await res.json();
+            if (res.ok) {
+                setResumeMessage("Resume uploaded successfully!");
+                setData({ ...data, resumeUrl: "/resume.pdf" });
+            } else {
+                setResumeMessage(result.error || "Upload failed.");
+            }
+        } catch {
+            setResumeMessage("Upload failed. Please try again.");
+        } finally {
+            setResumeUploading(false);
+            setTimeout(() => setResumeMessage(""), 3000);
+        }
     };
 
     if (loading) {
@@ -234,6 +278,39 @@ export default function AdminDashboard() {
                                     <div className="md:col-span-3">
                                         <label className="block text-sm font-medium text-slate-400 mb-1">Resume URL (e.g. /resume.pdf)</label>
                                         <input type="text" value={data.resumeUrl || ""} onChange={(e) => setData({ ...data, resumeUrl: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
+                                    </div>
+                                    <div className="md:col-span-3">
+                                        <label className="block text-sm font-medium text-slate-400 mb-2">Upload / Replace Resume PDF</label>
+                                        <div className="flex items-center gap-4">
+                                            <label className={`flex-1 flex items-center justify-center gap-3 px-6 py-4 bg-white/5 border-2 border-dashed border-white/10 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-indigo-500/5 transition-all ${resumeUploading ? "opacity-50 pointer-events-none" : ""}`}>
+                                                <svg className="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                                                <span className="text-sm font-medium text-slate-300">
+                                                    {resumeUploading ? "Uploading..." : "Choose PDF file (max 5MB)"}
+                                                </span>
+                                                <input
+                                                    type="file"
+                                                    accept=".pdf"
+                                                    onChange={handleResumeUpload}
+                                                    className="hidden"
+                                                    disabled={resumeUploading}
+                                                />
+                                            </label>
+                                            {data.resumeUrl && (
+                                                <a
+                                                    href={data.resumeUrl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="px-4 py-3 bg-indigo-600/20 border border-indigo-500/30 rounded-xl text-indigo-400 text-sm font-bold hover:bg-indigo-600/30 transition-all whitespace-nowrap"
+                                                >
+                                                    Preview CV
+                                                </a>
+                                            )}
+                                        </div>
+                                        {resumeMessage && (
+                                            <p className={`mt-2 text-sm font-medium ${resumeMessage.includes("success") ? "text-emerald-400" : "text-red-400"}`}>
+                                                {resumeMessage}
+                                            </p>
+                                        )}
                                     </div>
                                 </div>
                             </div>
