@@ -1,15 +1,103 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { PortfolioContent } from "@/types/portfolio";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { Particles } from "@/components/ui/Particles";
 
 interface HeroSectionProps {
     content: PortfolioContent;
     hideHeroContent?: boolean;
     isActive?: boolean;
     sectionIndex?: number;
+}
+
+// Magnetic Button Component
+function MagneticButton({ children, className, ...props }: any) {
+    const ref = useRef<HTMLButtonElement | HTMLAnchorElement>(null);
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (!ref.current) return;
+        const rect = ref.current.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        x.set(e.clientX - centerX);
+        y.set(e.clientY - centerY);
+    };
+
+    const handleMouseLeave = () => {
+        x.set(0);
+        y.set(0);
+    };
+
+    const springX = useSpring(x, { stiffness: 150, damping: 15 });
+    const springY = useSpring(y, { stiffness: 150, damping: 15 });
+
+    return (
+        <motion.button
+            ref={ref}
+            style={{ x: springX, y: springY }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className={className}
+            {...props}
+        >
+            {children}
+        </motion.button>
+    );
+}
+
+// Text Reveal Component
+function TextReveal({ text, className }: { text: string; className?: string }) {
+    const letters = Array.from(text);
+    
+    const container = {
+        hidden: { opacity: 0 },
+        visible: (i = 1) => ({
+            opacity: 1,
+            transition: { staggerChildren: 0.05, delayChildren: 0.04 * i },
+        }),
+    };
+    
+    const child = {
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                type: "spring" as const,
+                damping: 12,
+                stiffness: 100,
+            },
+        },
+        hidden: {
+            opacity: 0,
+            y: 20,
+            transition: {
+                type: "spring" as const,
+                damping: 12,
+                stiffness: 100,
+            },
+        },
+    };
+
+    return (
+        <motion.div
+            style={{ display: "flex", overflow: "hidden" }}
+            variants={container}
+            initial="hidden"
+            animate="visible"
+            className={className}
+        >
+            {letters.map((letter, index) => (
+                <motion.span variants={child} key={index}>
+                    {letter === " " ? "\u00A0" : letter}
+                </motion.span>
+            ))}
+        </motion.div>
+    );
 }
 
 export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }: HeroSectionProps) {
@@ -33,105 +121,118 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
 
     if (!content) return null;
 
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.1,
-                delayChildren: 0.2,
-            },
-        },
-    };
-
-    const itemVariants = {
-        hidden: { y: 20, opacity: 0 },
-        visible: {
-            y: 0,
-            opacity: 1,
-            transition: { type: "spring" as const, stiffness: 100 },
-        },
-    };
+    const nameParts = content.name.split(' ');
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(' ');
 
     return (
         <section 
             ref={containerRef}
-            className={`relative min-h-screen flex items-center justify-center overflow-hidden h-full ${content.theme?.bg || 'bg-black'} py-12 md:py-20`}
+            className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0A0A0B] py-12 md:py-20"
         >
-            {/* Background Layer: Mobile = Static, Desktop = Particles */}
+            {/* Animated Gradient Mesh Background */}
             <div className="absolute inset-0 z-0">
-                <div className={`absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black pointer-events-none`} />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black pointer-events-none" />
                 {!isMobile && mounted && (
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] opacity-20 pointer-events-none">
-                         <div className="w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-from)_0%,_transparent_70%)] from-indigo-500/20" />
-                    </div>
+                    <motion.div 
+                        className="absolute inset-0 opacity-30 pointer-events-none"
+                        style={{
+                            background: 'var(--gradient-mesh)',
+                        }}
+                        animate={{
+                            backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'],
+                        }}
+                        transition={{
+                            duration: 20,
+                            repeat: Infinity,
+                            ease: "linear",
+                        }}
+                    />
                 )}
+                <Particles />
             </div>
 
             {mounted && (
                 <motion.div
                     style={!isMobile ? { y, opacity, scale } : {}}
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
                     className="container mx-auto px-4 sm:px-6 md:px-8 relative z-10 text-center"
                 >
-                    <motion.div variants={itemVariants} className="flex flex-col items-center mb-8">
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 backdrop-blur-md mb-4 group cursor-pointer hover:bg-indigo-500/20 transition-all duration-300">
+                    {/* Status Badge */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2, duration: 0.8 }}
+                        className="flex flex-col items-center mb-8"
+                    >
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-md mb-4 group cursor-pointer hover:bg-emerald-500/20 transition-all duration-300">
                             <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                             </span>
-                            <span className="text-[10px] md:text-sm font-black tracking-widest text-indigo-400 uppercase">
+                            <span className="text-[10px] md:text-sm font-black tracking-widest text-emerald-400 uppercase">
                                 {content.currentWork || "Available for high-stakes missions"}
                             </span>
                         </div>
-                        <span className="text-xs md:text-sm font-black tracking-[0.4em] text-slate-500 uppercase">
-                            {content.title || "Systems Architect"}
+                        <span className="text-xs md:text-sm font-black tracking-[0.4em] text-slate-500 uppercase" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
+                            {content.title || "Full-Stack Developer"}
                         </span>
                     </motion.div>
 
-                    <motion.h1 
-                        variants={itemVariants}
-                        className="text-3xl sm:text-5xl md:text-7xl lg:text-[9rem] font-black mb-10 tracking-tighter leading-[0.8] mix-blend-lighten"
+                    {/* Name with Text Reveal */}
+                    <motion.h1
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.4, duration: 1 }}
+                        className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-black mb-10 tracking-tighter leading-[0.85] mix-blend-lighten"
+                        style={{ fontFamily: 'var(--font-space-grotesk)' }}
                     >
-                        <span className={`block bg-clip-text text-transparent bg-gradient-to-r ${content.theme?.primaryGradient || 'from-white via-indigo-200 to-indigo-400'} drop-shadow-[0_0_30px_rgba(99,102,241,0.3)]`}>
-                            {content.name.split(' ')[0]}<br/>
-                            {content.name.split(' ').slice(1).join(' ')}
-                        </span>
+                        <div className="block">
+                            <TextReveal text={firstName} className="bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-emerald-400 drop-shadow-[0_0_40px_rgba(16,185,129,0.4)]" />
+                        </div>
+                        <div className="block mt-2">
+                            <TextReveal text={lastName} className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-emerald-300 to-white drop-shadow-[0_0_40px_rgba(16,185,129,0.4)]" />
+                        </div>
                     </motion.h1>
 
-                    <motion.p 
-                        variants={itemVariants}
-                        className="text-lg sm:text-2xl md:text-3xl lg:text-4xl text-slate-300 max-w-4xl mx-auto mb-16 leading-tight font-bold tracking-tight"
+                    {/* Subtitle */}
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.8, duration: 0.8 }}
+                        className="text-base sm:text-xl md:text-2xl lg:text-3xl text-slate-300 max-w-4xl mx-auto mb-12 md:mb-16 leading-tight font-bold tracking-tight px-4"
                     >
                         {content.subtitle || content.description}
                     </motion.p>
 
-                    <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8">
-                        <motion.a 
+                    {/* CTA Buttons */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 1, duration: 0.8 }}
+                        className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8 px-4"
+                    >
+                        <MagneticButton
+                            as="a"
                             href="#projects"
-                            whileHover={{ scale: 1.05, y: -5 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="w-full sm:w-auto group relative px-8 py-4 md:px-12 md:py-6 bg-indigo-600 rounded-2xl text-white text-base md:text-lg font-black transition-all hover:bg-indigo-500 hover:shadow-[0_20px_50px_rgba(79,70,229,0.4)] shadow-2xl active:scale-95 flex items-center justify-center gap-3"
+                            className="w-full sm:w-auto group relative px-6 py-3 sm:px-8 sm:py-4 md:px-12 md:py-6 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 rounded-2xl text-white text-sm sm:text-base md:text-lg font-black transition-all duration-300 shadow-2xl shadow-emerald-500/30 active:scale-95 flex items-center justify-center gap-3 cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-900"
                         >
                             <span>DEPLOYED PROJECTS</span>
-                            <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-                        </motion.a>
-                        <motion.a
-                            href={content.resumeUrl || "#"}
+                            <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                        </MagneticButton>
+                        <MagneticButton
+                            as="a"
+                            href="/api/resume"
                             target="_blank"
                             rel="noopener noreferrer"
-                            whileHover={{ scale: 1.05, y: -5 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="w-full sm:w-auto px-8 py-4 md:px-12 md:py-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl text-white text-base md:text-lg font-black hover:bg-white/10 transition-all hover:border-white/20 active:scale-95 text-center"
+                            className="w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 md:px-12 md:py-6 bg-white/5 backdrop-blur-xl border border-white/10 hover:bg-white/10 hover:border-white/20 rounded-2xl text-white text-sm sm:text-base md:text-lg font-black transition-all duration-300 active:scale-95 text-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-900"
                         >
                             SECURE RESUME
-                        </motion.a>
+                        </MagneticButton>
                     </motion.div>
                 </motion.div>
             )}
 
+            {/* Scroll Indicator */}
             {mounted && (
                 <motion.div
                     initial={{ opacity: 0 }}
@@ -139,7 +240,11 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                     transition={{ delay: 1.5 }}
                     className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
                 >
-                    <div className="w-px h-16 bg-gradient-to-b from-indigo-500/50 to-transparent" />
+                    <motion.div 
+                        animate={{ y: [0, 10, 0] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                        className="w-px h-16 bg-gradient-to-b from-emerald-500/50 to-transparent" 
+                    />
                     <span className="text-[10px] md:text-xs font-black tracking-widest text-slate-500 uppercase">Scroll to explore</span>
                 </motion.div>
             )}

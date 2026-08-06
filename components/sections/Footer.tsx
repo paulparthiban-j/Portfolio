@@ -2,13 +2,48 @@
 
 import { PortfolioContent } from "@/types/portfolio";
 import { ScrollSection } from "@/components/ui/ScrollSection";
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useState, useRef } from "react";
 
 interface FooterProps {
     content: PortfolioContent;
     isActive?: boolean;
     sectionIndex?: number;
+}
+
+// Magnetic Input Component
+function MagneticInput({ children, className, ...props }: any) {
+    const ref = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (!ref.current) return;
+        const rect = ref.current.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        x.set((e.clientX - centerX) / 20);
+        y.set((e.clientY - centerY) / 20);
+    };
+
+    const handleMouseLeave = () => {
+        x.set(0);
+        y.set(0);
+    };
+
+    const springX = useSpring(x, { stiffness: 100, damping: 15 });
+    const springY = useSpring(y, { stiffness: 100, damping: 15 });
+
+    return (
+        <motion.div
+            style={{ x: springX, y: springY }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className={className}
+        >
+            {children}
+        </motion.div>
+    );
 }
 
 export function Footer({ content }: FooterProps) {
@@ -33,28 +68,60 @@ export function Footer({ content }: FooterProps) {
         }] : []),
     ];
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setFormStatus("sending");
-        setTimeout(() => setFormStatus("sent"), 2000);
+
+        try {
+            const formData = new FormData(e.currentTarget as HTMLFormElement);
+            const data = {
+                name: formData.get('name') as string,
+                email: formData.get('email') as string,
+                message: formData.get('message') as string,
+            };
+
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                setFormStatus("sent");
+                // Reset form after successful submission
+                (e.currentTarget as HTMLFormElement).reset();
+                // Reset status after 5 seconds
+                setTimeout(() => setFormStatus("idle"), 5000);
+            } else {
+                const errorData = await response.json();
+                alert(errorData.error || 'Failed to send message');
+                setFormStatus("idle");
+            }
+        } catch (error) {
+            console.error('Form submission error:', error);
+            alert('Failed to send message. Please try again.');
+            setFormStatus("idle");
+        }
     };
 
     return (
-        <footer className="w-full bg-[#0a0a0b] py-12 md:py-24 px-4 sm:px-6 md:px-8 relative overflow-hidden border-t border-white/5">
-            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-indigo-500/[0.04] rounded-full blur-[120px] pointer-events-none" />
+        <footer className="w-full bg-[#0A0A0B] py-16 md:py-24 px-4 sm:px-6 md:px-8 relative overflow-hidden border-t border-white/5">
+            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-emerald-500/[0.04] rounded-full blur-[120px] pointer-events-none" />
 
             <div className="container mx-auto max-w-6xl relative z-10">
-                <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
+                <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-24">
                     {/* Left: contact info */}
                     <ScrollSection animationType="slide-right" className="w-full">
                         <div className="flex flex-col gap-8">
                             <div>
-                                <h2 className="text-3xl md:text-7xl lg:text-9xl font-black text-white tracking-tighter leading-[0.8] mb-8 uppercase">
-                                    LET'S BUILD<br />SOMETHING<br /><span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-600">EXTRAORDINARY</span>
+                                <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black text-white tracking-tighter leading-[0.8] mb-6 sm:mb-8 uppercase" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
+                                    LET'S BUILD<br />SOMETHING<br /><span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-emerald-600">EXTRAORDINARY</span>
                                 </h2>
-                                <p className="text-sm md:text-xl leading-tight max-w-md font-bold text-slate-400">
-                                    Ready to solve your most complex business challenges? I'm currently 
-                                    <span className="text-indigo-400"> available for high-impact missions</span>.
+                                <p className="text-xs sm:text-sm md:text-base lg:text-xl leading-tight max-w-md font-bold text-slate-400">
+                                    Ready to solve your most complex business challenges? I'm currently
+                                    <span className="text-emerald-400"> available for high-impact missions</span>.
                                 </p>
                             </div>
 
@@ -62,7 +129,7 @@ export function Footer({ content }: FooterProps) {
                             <div className="flex flex-col gap-3">
                                 <a
                                     href={`mailto:${content.email}`}
-                                    className="text-indigo-400 hover:text-white transition-colors font-semibold text-lg flex items-center gap-2"
+                                    className="text-emerald-400 hover:text-white transition-colors font-semibold text-lg flex items-center gap-2"
                                 >
                                     <span className="text-slate-600">→</span> {content.email}
                                 </a>
@@ -85,7 +152,7 @@ export function Footer({ content }: FooterProps) {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         aria-label={s.label}
-                                        className="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-slate-400 hover:bg-indigo-600 hover:border-indigo-500 hover:text-white transition-all duration-300"
+                                        className="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-slate-400 hover:bg-emerald-600 hover:border-emerald-500 hover:text-white transition-all duration-300"
                                     >
                                         {s.icon}
                                     </a>
@@ -101,11 +168,11 @@ export function Footer({ content }: FooterProps) {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
-                            className="bg-white/[0.03] border border-white/10 rounded-2xl md:rounded-3xl p-8 md:p-10"
+                            className="bg-white/[0.03] border border-white/10 rounded-2xl md:rounded-3xl p-6 sm:p-8 md:p-10"
                         >
                             {formStatus === "sent" ? (
                                 <div className="flex flex-col items-center justify-center py-12 text-center gap-4">
-                                    <div className="w-16 h-16 rounded-full bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-2xl">✓</div>
+                                    <div className="w-16 h-16 rounded-full bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center text-2xl">✓</div>
                                     <h3 className="text-2xl font-black text-white">Message Sent!</h3>
                                     <p className="text-slate-400 text-base">I'll get back to you soon.</p>
                                 </div>
@@ -113,40 +180,54 @@ export function Footer({ content }: FooterProps) {
                                 <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                                     <div className="grid sm:grid-cols-2 gap-4">
                                         <div className="flex flex-col gap-2">
-                                            <label className="text-xs font-bold uppercase tracking-widest text-slate-500">Name</label>
-                                            <input
-                                                required
-                                                type="text"
-                                                placeholder="Your Name"
-                                                className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-indigo-500/50 transition-all"
-                                            />
+                                            <label htmlFor="name" className="text-xs font-bold uppercase tracking-widest text-slate-500">Name</label>
+                                            <MagneticInput className="w-full">
+                                                <input
+                                                    id="name"
+                                                    name="name"
+                                                    required
+                                                    type="text"
+                                                    placeholder="Your Name"
+                                                    className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/50 transition-all hover:border-emerald-500/30"
+                                                />
+                                            </MagneticInput>
                                         </div>
                                         <div className="flex flex-col gap-2">
-                                            <label className="text-xs font-bold uppercase tracking-widest text-slate-500">Email</label>
-                                            <input
-                                                required
-                                                type="email"
-                                                placeholder="you@example.com"
-                                                className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-indigo-500/50 transition-all"
-                                            />
+                                            <label htmlFor="email" className="text-xs font-bold uppercase tracking-widest text-slate-500">Email</label>
+                                            <MagneticInput className="w-full">
+                                                <input
+                                                    id="email"
+                                                    name="email"
+                                                    required
+                                                    type="email"
+                                                    placeholder="you@example.com"
+                                                    className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/50 transition-all hover:border-emerald-500/30"
+                                                />
+                                            </MagneticInput>
                                         </div>
                                     </div>
                                     <div className="flex flex-col gap-2">
-                                        <label className="text-xs font-bold uppercase tracking-widest text-slate-500">Message</label>
-                                        <textarea
-                                            required
-                                            rows={4}
-                                            placeholder="Tell me about your project..."
-                                            className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-indigo-500/50 transition-all resize-none"
-                                        />
+                                        <label htmlFor="message" className="text-xs font-bold uppercase tracking-widest text-slate-500">Message</label>
+                                        <MagneticInput className="w-full">
+                                            <textarea
+                                                id="message"
+                                                name="message"
+                                                required
+                                                rows={4}
+                                                placeholder="Tell me about your project..."
+                                                className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/50 transition-all resize-none hover:border-emerald-500/30"
+                                            />
+                                        </MagneticInput>
                                     </div>
-                                    <button
+                                    <motion.button
                                         type="submit"
-                                        disabled={formStatus !== "idle"}
-                                        className="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-sm uppercase tracking-widest rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center min-h-[56px]"
+                                        disabled={formStatus === "sending"}
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        className="w-full py-4 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-black text-sm uppercase tracking-widest rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center min-h-[56px] shadow-lg shadow-emerald-500/20"
                                     >
-                                        {formStatus === "idle" ? "Send Message" : "Sending…"}
-                                    </button>
+                                        {formStatus === "idle" ? "Send Message" : formStatus === "sending" ? "Sending…" : "Sent!"}
+                                    </motion.button>
                                 </form>
                             )}
                         </motion.div>

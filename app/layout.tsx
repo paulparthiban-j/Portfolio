@@ -1,13 +1,26 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
+import { Plus_Jakarta_Sans, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 
 import { getPortfolioData } from "@/lib/portfolio";
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-plus-jakarta",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+});
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
@@ -52,6 +65,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 import { CustomCursor } from "@/components/ui/CustomCursor";
+import { SmoothScroll } from "@/components/ui/SmoothScroll";
+import { ScrollProgress } from "@/components/ui/ScrollProgress";
 
 export default function RootLayout({
   children,
@@ -59,12 +74,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="custom" className="scroll-smooth" suppressHydrationWarning>
+    <html lang="en" data-theme="custom" suppressHydrationWarning>
       <body
-        className={`${inter.variable} font-sans antialiased noise-overlay`}
+        className={`${plusJakarta.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} font-sans antialiased noise-overlay`}
       >
-        <CustomCursor />
-        {children}
+        <ScrollProgress />
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-emerald-600 focus:text-white focus:rounded-lg focus:font-bold focus:transition-all"
+        >
+          Skip to main content
+        </a>
+        <SmoothScroll>
+          <CustomCursor />
+          <div id="main-content">
+            {children}
+          </div>
+        </SmoothScroll>
       </body>
     </html>
   );

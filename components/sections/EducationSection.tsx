@@ -16,15 +16,15 @@ export function EducationSection({ content }: EducationSectionProps) {
     const education = content.education || [];
 
     return (
-        <section className="w-full bg-[#0d0d0f] py-12 md:py-20 px-4 sm:px-6 md:px-8 relative overflow-hidden">
-            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-violet-500/[0.04] rounded-full blur-[120px] pointer-events-none" />
+        <section className="w-full bg-[#0A0A0B] py-16 md:py-24 px-4 sm:px-6 md:px-8 relative overflow-hidden">
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-emerald-500/[0.04] rounded-full blur-[120px] pointer-events-none" />
 
-            <div className="container mx-auto max-w-5xl relative z-10 w-full">
-                <ScrollSection animationType="slide-down" className="mb-12 md:mb-16 text-center">
-                    <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-white uppercase leading-none">
+            <div className="container mx-auto max-w-6xl relative z-10 w-full">
+                <ScrollSection animationType="slide-down" className="mb-16 md:mb-20 text-center">
+                    <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-white uppercase leading-none" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
                         {content.educationTitle || "EDUCATION"}
                     </h2>
-                    <div className="h-1 w-20 bg-indigo-600 rounded-full mt-4 mx-auto" />
+                    <div className="h-1 w-24 bg-emerald-600 rounded-full mt-6 mx-auto" />
                 </ScrollSection>
 
                 {education.length === 0 ? (
@@ -40,11 +40,11 @@ export function EducationSection({ content }: EducationSectionProps) {
                                 transition={{ delay: index * 0.1, duration: 0.5 }}
                                 whileHover={{ y: -4 }}
                                 whileTap={{ scale: 0.99 }}
-                                className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 md:p-8 hover:border-indigo-500/30 hover:bg-white/[0.05] transition-all duration-300 flex flex-col gap-4 relative"
+                                className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 md:p-8 hover:border-emerald-500/30 hover:bg-white/[0.05] transition-all duration-200 flex flex-col gap-4 relative cursor-pointer interaction-lift"
                             >
                                 {/* Year badge */}
                                 <div className="absolute top-6 right-6">
-                                    <span className="text-xs font-black text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full uppercase tracking-widest">
+                                    <span className="text-xs font-black text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full uppercase tracking-widest">
                                         {edu.year}
                                     </span>
                                 </div>
@@ -57,14 +57,14 @@ export function EducationSection({ content }: EducationSectionProps) {
                                 {/* Institution & GPA */}
                                 <div className="flex flex-col gap-2">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-1 h-4 bg-indigo-500 rounded-full" />
+                                        <div className="w-1 h-4 bg-emerald-500 rounded-full" />
                                         <p className="text-base text-slate-400 font-medium">
                                             {edu.institution}
                                         </p>
                                     </div>
                                     {edu.gpa && (
                                         <div className="flex items-center gap-3 ml-4">
-                                            <span className="text-sm text-indigo-400/80 font-bold tracking-widest uppercase">
+                                            <span className="text-sm text-emerald-400/80 font-bold tracking-widest uppercase">
                                                 GPA: {edu.gpa}
                                             </span>
                                         </div>

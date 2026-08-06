@@ -9,13 +9,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: "#6366f1", // Indigo
-        background: "#0a0a0b",
-        foreground: "#f8fafc",
+        primary: "#1E293B", // Slate 800
+        secondary: "#334155", // Slate 700
+        cta: "#22C55E", // Green 500
+        background: "#0F172A", // Slate 900
+        foreground: "#F8FAFC", // Slate 50
         accent: {
-          light: "#818cf8",
-          DEFAULT: "#6366f1",
-          dark: "#4f46e5",
+          light: "#4ADE80", // Green 400
+          DEFAULT: "#22C55E", // Green 500
+          dark: "#16A34A", // Green 600
         },
         card: {
           DEFAULT: "rgba(255, 255, 255, 0.03)",
@@ -42,13 +44,13 @@ const config: Config = {
     themes: [
       {
         dark: {
-          "primary": "#6366f1",
-          "secondary": "#a855f7",
-          "accent": "#f472b6",
-          "neutral": "#1e293b",
-          "base-100": "#0a0a0b",
+          "primary": "#1E293B",
+          "secondary": "#334155",
+          "accent": "#22C55E",
+          "neutral": "#334155",
+          "base-100": "#0F172A",
           "info": "#3b82f6",
-          "success": "#22c55e",
+          "success": "#22C55E",
           "warning": "#eab308",
           "error": "#ef4444",
         },

@@ -1,17 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { PortfolioContent } from "@/types/portfolio";
 import { ParticleBackground } from "@/components/sections/ParticleBackground";
 import { HeroSection } from "@/components/sections/HeroSection";
-import { AboutSection } from "@/components/sections/AboutSection";
-import { SkillsSection } from "@/components/sections/SkillsSection";
-import { ProjectsSection } from "@/components/sections/ProjectsSection";
-import { ExperienceSection } from "@/components/sections/ExperienceSection";
-import { EducationSection } from "@/components/sections/EducationSection";
-import { CredibilitySection } from "@/components/sections/CredibilitySection";
-import { CustomSections } from "@/components/sections/CustomSections";
-import { Footer } from "@/components/sections/Footer";
+import { Navbar } from "@/components/ui/Navbar";
+import { SectionLoader } from "@/components/ui/SectionLoader";
+
+// Lazy load heavy sections using dynamic imports
+const AboutSection = lazy(() => import("@/components/sections/AboutSection").then(mod => ({ default: mod.AboutSection })));
+const SkillsSection = lazy(() => import("@/components/sections/SkillsSection").then(mod => ({ default: mod.SkillsSection })));
+const ProjectsSection = lazy(() => import("@/components/sections/ProjectsSection").then(mod => ({ default: mod.ProjectsSection })));
+const ExperienceSection = lazy(() => import("@/components/sections/ExperienceSection").then(mod => ({ default: mod.ExperienceSection })));
+const EducationSection = lazy(() => import("@/components/sections/EducationSection").then(mod => ({ default: mod.EducationSection })));
+const CredibilitySection = lazy(() => import("@/components/sections/CredibilitySection").then(mod => ({ default: mod.CredibilitySection })));
+const CustomSections = lazy(() => import("@/components/sections/CustomSections").then(mod => ({ default: mod.CustomSections })));
+const Footer = lazy(() => import("@/components/sections/Footer").then(mod => ({ default: mod.Footer })));
 
 const fallbackContent: PortfolioContent = {
   name: "Paul Parthiban J",
@@ -79,10 +83,10 @@ const fallbackContent: PortfolioContent = {
     },
   ],
   theme: {
-    primaryColor: "indigo",
-    primaryGradient: "from-indigo-600 via-violet-600 to-fuchsia-600",
-    accent: "indigo-400",
-    bg: "from-[#020617] via-[#0f172a] to-[#020617]",
+    primaryColor: "slate",
+    primaryGradient: "from-slate-700 via-slate-600 to-green-600",
+    accent: "green-400",
+    bg: "from-[#0F172A] via-[#1E293B] to-[#0F172A]",
     mode: "dark",
     autoTheme: false,
   },
@@ -100,8 +104,6 @@ const fallbackContent: PortfolioContent = {
     { name: "Full-Stack Development Internship", issuer: "AK Infopark", year: "2024" }
   ]
 };
-
-import { Navbar } from "@/components/ui/Navbar";
 
 export default function Home() {
   const [content, setContent] = useState<PortfolioContent>(fallbackContent);
@@ -134,9 +136,9 @@ export default function Home() {
 
   if (!mounted) {
     return (
-      <div className="fixed inset-0 bg-[#0a0a0b] flex items-center justify-center z-50">
+      <div className="fixed inset-0 bg-[#0F172A] flex items-center justify-center z-50">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 border-2 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin" />
+          <div className="w-10 h-10 border-2 border-green-500/30 border-t-green-500 rounded-full animate-spin" />
           <span className="text-xs text-slate-500 tracking-widest uppercase font-bold">Loading</span>
         </div>
       </div>
@@ -144,19 +146,35 @@ export default function Home() {
   }
 
   return (
-    <div className={`min-h-screen relative ${content.theme?.mode === "light" ? "bg-slate-50 text-slate-900" : "bg-[#0a0a0b] text-white"} transition-opacity duration-1000 ${contentLoaded ? 'opacity-100' : 'opacity-0'}`}>
+    <div className={`min-h-screen relative ${content.theme?.mode === "light" ? "bg-slate-50 text-slate-900" : "bg-[#0F172A] text-white"} transition-opacity duration-1000 ${contentLoaded ? 'opacity-100' : 'opacity-0'}`}>
       <ParticleBackground theme={content.theme} />
       <Navbar content={content} />
-      <main className="relative z-10">
-        <div id="hero"><HeroSection content={content} /></div>
-        <div id="about" className="scroll-mt-20"><AboutSection content={content} /></div>
-        <div id="skills" className="scroll-mt-20"><SkillsSection content={content} /></div>
-        <div id="projects" className="scroll-mt-20"><ProjectsSection content={content} /></div>
-        <div id="experience" className="scroll-mt-20"><ExperienceSection content={content} /></div>
-        <div id="credibility" className="scroll-mt-20"><CredibilitySection content={content} /></div>
-        <div id="education" className="scroll-mt-20"><EducationSection content={content} /></div>
-        <CustomSections content={content} />
-        <div id="contact"><Footer content={content} /></div>
+      <main className="relative z-10" role="main">
+        <div id="hero" aria-label="Hero section"><HeroSection content={content} /></div>
+        <Suspense fallback={<SectionLoader />}>
+          <div id="about" className="scroll-mt-20" aria-label="About section"><AboutSection content={content} /></div>
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <div id="skills" className="scroll-mt-20" aria-label="Skills section"><SkillsSection content={content} /></div>
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <div id="projects" className="scroll-mt-20" aria-label="Projects section"><ProjectsSection content={content} /></div>
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <div id="experience" className="scroll-mt-20" aria-label="Experience section"><ExperienceSection content={content} /></div>
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <div id="credibility" className="scroll-mt-20" aria-label="Credibility section"><CredibilitySection content={content} /></div>
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <div id="education" className="scroll-mt-20" aria-label="Education section"><EducationSection content={content} /></div>
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <CustomSections content={content} />
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <div id="contact" aria-label="Contact section"><Footer content={content} /></div>
+        </Suspense>
       </main>
     </div>
   );
