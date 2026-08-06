@@ -67,6 +67,7 @@ export async function generateMetadata(): Promise<Metadata> {
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export default function RootLayout({
   children,
@@ -91,6 +92,7 @@ export default function RootLayout({
             {children}
           </div>
         </SmoothScroll>
+        <SpeedInsights />
       </body>
     </html>
   );
