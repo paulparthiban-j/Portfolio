@@ -70,10 +70,17 @@ export function Footer({ content }: FooterProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        // React nulls out the SyntheticEvent's currentTarget once the handler
+        // yields (e.g. at an `await`), so it must be captured now rather than
+        // read again after the fetch below - otherwise the later `.reset()`
+        // call throws "Cannot read properties of null (reading 'reset')",
+        // which used to make every successful submission fall into the catch
+        // block and show a false "failed to send" error to the user.
+        const form = e.currentTarget as HTMLFormElement;
         setFormStatus("sending");
 
         try {
-            const formData = new FormData(e.currentTarget as HTMLFormElement);
+            const formData = new FormData(form);
             const data = {
                 name: formData.get('name') as string,
                 email: formData.get('email') as string,
@@ -91,7 +98,7 @@ export function Footer({ content }: FooterProps) {
             if (response.ok) {
                 setFormStatus("sent");
                 // Reset form after successful submission
-                (e.currentTarget as HTMLFormElement).reset();
+                form.reset();
                 // Reset status after 5 seconds
                 setTimeout(() => setFormStatus("idle"), 5000);
             } else {

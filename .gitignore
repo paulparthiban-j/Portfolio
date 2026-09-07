@@ -34,3 +34,16 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# temp files for resume upload
+/temp
+
+# portfolio data backups created by the resume-sync feature
+/data/portfolio.backup.*.json
+/data/.portfolio.json.e2e-backup
+
+# test artifacts
+/playwright-report/
+/test-results/
+/blob-report/
+/.vitest-cache/

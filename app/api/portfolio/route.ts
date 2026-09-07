@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getPortfolioData, savePortfolioData } from "@/lib/portfolio";
 import { checkRateLimit, getClientIdentifier } from "@/lib/rateLimit";
-import { headers } from 'next/headers';
+import { headers, cookies } from 'next/headers';
 
 export async function GET() {
     try {
@@ -42,14 +42,12 @@ export async function POST(request: Request) {
             );
         }
 
-        const authHeader = request.headers.get("Authorization");
-        const token = authHeader?.startsWith("Bearer ") ? authHeader.substring(7) : authHeader;
+        const cookieStore = await cookies();
+        const adminToken = cookieStore.get("admin_token");
+        const isValid = adminToken?.value === (process.env.ADMIN_TOKEN || "super-secret-admin");
 
-        // Use a default token for development or the environment variable
-        const secretToken = process.env.ADMIN_TOKEN || "development-token";
-
-        if (token && token !== secretToken) {
-            return NextResponse.json({ error: "Unauthorized mission access" }, { status: 403 });
+        if (!isValid) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
         const data = await request.json();

@@ -27,6 +27,10 @@ export default function AdminDashboard() {
     const [activeTab, setActiveTab] = useState("general");
     const [resumeUploading, setResumeUploading] = useState(false);
     const [resumeMessage, setResumeMessage] = useState("");
+    const [texTempFilePath, setTexTempFilePath] = useState<string | null>(null);
+    const [parsedData, setParsedData] = useState<any>(null);
+    const [changePreview, setChangePreview] = useState<any>(null);
+    const [showPreview, setShowPreview] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -146,6 +150,116 @@ export default function AdminDashboard() {
         }
     };
 
+    const handleTexUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        if (!file.name.endsWith('.tex')) {
+            setResumeMessage("Only .tex files are allowed.");
+            setTimeout(() => setResumeMessage(""), 3000);
+            return;
+        }
+
+        if (file.size > 2 * 1024 * 1024) {
+            setResumeMessage("File must be under 2MB.");
+            setTimeout(() => setResumeMessage(""), 3000);
+            return;
+        }
+
+        setResumeUploading(true);
+        setResumeMessage("Uploading .tex file...");
+
+        const formData = new FormData();
+        formData.append("resume", file);
+
+        try {
+            // Upload the file
+            const uploadRes = await fetch("/api/admin/resume/upload-tex", {
+                method: "POST",
+                body: formData,
+            });
+            const uploadResult = await uploadRes.json();
+
+            if (!uploadRes.ok) {
+                setResumeMessage(uploadResult.error || "Upload failed.");
+                setResumeUploading(false);
+                return;
+            }
+
+            setTexTempFilePath(uploadResult.filePath);
+
+            // Parse the file
+            setResumeMessage("Parsing .tex file...");
+            const parseRes = await fetch("/api/admin/resume/parse-and-preview", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ filePath: uploadResult.filePath }),
+            });
+            const parseResult = await parseRes.json();
+
+            if (!parseRes.ok) {
+                setResumeMessage(parseResult.error || "Parsing failed.");
+                setResumeUploading(false);
+                return;
+            }
+
+            setParsedData(parseResult.parsedData);
+            setChangePreview(parseResult.changePreview);
+            setShowPreview(true);
+            setResumeMessage("");
+        } catch {
+            setResumeMessage("Upload failed. Please try again.");
+        } finally {
+            setResumeUploading(false);
+        }
+    };
+
+    const handleConfirmUpdate = async () => {
+        if (!parsedData) return;
+
+        setResumeUploading(true);
+        setResumeMessage("Updating portfolio...");
+
+        try {
+            const res = await fetch("/api/admin/resume/update-from-tex", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    newPortfolioData: parsedData,
+                    filePath: texTempFilePath
+                }),
+            });
+            const result = await res.json();
+
+            if (res.ok) {
+                setResumeMessage("Portfolio updated successfully!");
+                // Refresh the data
+                const portfolioRes = await fetch("/api/portfolio");
+                const portfolioData = await portfolioRes.json();
+                setData(portfolioData);
+                setShowPreview(false);
+                setParsedData(null);
+                setChangePreview(null);
+                setTexTempFilePath(null);
+            } else {
+                setResumeMessage(result.error || "Update failed.");
+            }
+        } catch {
+            setResumeMessage("Update failed. Please try again.");
+        } finally {
+            setResumeUploading(false);
+            setTimeout(() => setResumeMessage(""), 3000);
+        }
+    };
+
+    const handleCancelUpdate = () => {
+        setShowPreview(false);
+        setParsedData(null);
+        setChangePreview(null);
+        setTexTempFilePath(null);
+        setResumeMessage("");
+    };
+
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-black">
@@ -195,6 +309,7 @@ export default function AdminDashboard() {
                         { id: "education", label: "Foundation", icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg> },
                         { id: "credibility", label: "Social Proof", icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg> },
                         { id: "custom", label: "Extensions", icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg> },
+                        { id: "resume-upload", label: "Resume Sync", icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg> },
                     ].map((tab) => (
                         <button
                             key={tab.id}
@@ -713,6 +828,110 @@ export default function AdminDashboard() {
                                     </div>
                                 )}
                             </div>
+                        </section>
+                    )}
+
+                    {activeTab === "resume-upload" && (
+                        <section className="glass-dark p-8 rounded-[2rem] border border-white/5 animate-fade-in">
+                            <h2 className="text-xl font-bold text-white border-b border-white/10 pb-4 mb-6 flex items-center gap-3">
+                                <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                                Resume Sync from LaTeX
+                            </h2>
+                            
+                            {!showPreview ? (
+                                <div className="space-y-6">
+                                    <div className="p-6 bg-white/5 rounded-2xl border border-white/10">
+                                        <label className="block text-sm font-medium text-slate-400 mb-2">Upload LaTeX Resume (.tex)</label>
+                                        <input 
+                                            type="file" 
+                                            accept=".tex"
+                                            onChange={handleTexUpload}
+                                            disabled={resumeUploading}
+                                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-indigo-500/20 file:text-indigo-400 hover:file:bg-indigo-500/30"
+                                        />
+                                        <p className="text-xs text-slate-500 mt-2">
+                                            Upload your LaTeX resume file to update portfolio data. Maximum file size: 2MB
+                                        </p>
+                                    </div>
+
+                                    {resumeMessage && (
+                                        <div className={`p-4 rounded-xl text-center font-medium ${resumeMessage.includes("success") ? "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20" : "bg-red-500/10 text-red-500 border border-red-500/20"}`}>
+                                            {resumeMessage}
+                                        </div>
+                                    )}
+
+                                    <div className="p-6 bg-indigo-500/10 rounded-2xl border border-indigo-500/20">
+                                        <h3 className="text-lg font-bold text-indigo-400 mb-3">How it works:</h3>
+                                        <ol className="list-decimal list-inside space-y-2 text-slate-300 text-sm">
+                                            <li>Upload your LaTeX resume (.tex file)</li>
+                                            <li>System parses and extracts structured data</li>
+                                            <li>Preview changes before updating</li>
+                                            <li>Confirm to update portfolio.json</li>
+                                            <li>Portfolio automatically reflects changes</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="space-y-6">
+                                    <div className="p-6 bg-emerald-500/10 rounded-2xl border border-emerald-500/20">
+                                        <h3 className="text-lg font-bold text-emerald-400 mb-4">✓ Resume Parsed Successfully</h3>
+                                        <p className="text-slate-300 text-sm">Review the changes below before updating your portfolio.</p>
+                                    </div>
+
+                                    {changePreview && changePreview.length > 0 ? (
+                                        <div className="space-y-4">
+                                            <h3 className="text-lg font-bold text-white">Change Preview</h3>
+                                            {changePreview.map((section: any, idx: number) => (
+                                                <div key={idx} className="p-4 bg-white/5 rounded-xl border border-white/10">
+                                                    <h4 className="font-bold text-indigo-400 mb-3">{section.section}</h4>
+                                                    <div className="space-y-2">
+                                                        {section.changes.map((change: any, changeIdx: number) => (
+                                                            <div key={changeIdx} className={`flex items-start gap-2 text-sm p-2 rounded ${
+                                                                change.type === 'added' ? 'bg-emerald-500/10 text-emerald-400' :
+                                                                change.type === 'removed' ? 'bg-red-500/10 text-red-400' :
+                                                                change.type === 'modified' ? 'bg-amber-500/10 text-amber-400' :
+                                                                'bg-slate-500/10 text-slate-400'
+                                                            }`}>
+                                                                <span className="font-bold">
+                                                                    {change.type === 'added' ? '+' : change.type === 'removed' ? '-' : change.type === 'modified' ? '~' : '='}
+                                                                </span>
+                                                                <span>{change.field}</span>
+                                                                {change.type === 'modified' && (
+                                                                    <div className="ml-4 text-xs">
+                                                                        <div className="text-red-400 line-through">{change.oldValue}</div>
+                                                                        <div className="text-emerald-400">{change.newValue}</div>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="p-4 bg-slate-500/10 rounded-xl border border-slate-500/20 text-slate-400 text-center">
+                                            No changes detected
+                                        </div>
+                                    )}
+
+                                    <div className="flex gap-4">
+                                        <button 
+                                            onClick={handleConfirmUpdate}
+                                            disabled={resumeUploading}
+                                            className="flex-1 btn btn-premium bg-gradient-to-r from-emerald-600 to-teal-600 border-none text-white px-6 rounded-xl shadow-lg hover:shadow-emerald-500/20"
+                                        >
+                                            {resumeUploading ? "Updating..." : "Confirm & Update Portfolio"}
+                                        </button>
+                                        <button 
+                                            onClick={handleCancelUpdate}
+                                            disabled={resumeUploading}
+                                            className="flex-1 btn btn-outline border-red-500/50 text-red-400 hover:bg-red-500/10 px-6 rounded-xl"
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </section>
                     )}
                 </div>

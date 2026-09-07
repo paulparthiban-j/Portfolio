@@ -1,21 +1,7 @@
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import { checkRateLimit, getClientIdentifier } from "@/lib/rateLimit";
-
-function validateEmail(email: string): boolean {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
-
-function sanitizeInput(input: string): string {
-  return input
-    .trim()
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#x27;')
-    .slice(0, 500); // Limit length
-}
+import { validateEmail, sanitizeInput } from "@/lib/validation";
 
 export async function POST(request: Request) {
   try {
