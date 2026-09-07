@@ -138,7 +138,7 @@ export default function AdminDashboard() {
             const result = await res.json();
             if (res.ok) {
                 setResumeMessage("Resume uploaded successfully!");
-                setData({ ...data, resumeUrl: "/resume.pdf" });
+                setData({ ...data, resumeUrl: `/${result.filename}` });
             } else {
                 setResumeMessage(result.error || "Upload failed.");
             }
