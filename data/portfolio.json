@@ -130,15 +130,21 @@
   ],
   "experience": [
     {
-      "company": "Jeyachandran Industries Pvt. Ltd",
+      "company": "PainPoint Tech Solutions",
       "position": "Associate Software Developer",
-      "duration": "2025 - Present",
+      "duration": "May 2026 - Present",
+      "description": "Own and maintain four production business software systems for the company's clients, spanning distribution/inventory, education management, HR case management, and trading operations, built on .NET backends with role-based permission architectures. Led a security and authorization review on a distribution ERP system, closing a frontend/backend permission gap surfaced during live verification and adding regression coverage. Designed a requirements-driven permission and access-control model for an HR platform, tracing every permission back to its source business requirement for audit and compliance purposes. Own the full deployment lifecycle for client systems: automated testing, live verification, and production deployment, including pre-release configuration and security checks."
+    },
+    {
+      "company": "Jeyachandran Industries Pvt. Ltd",
+      "position": "Junior Software Developer",
+      "duration": "Mar 2025 - May 2026",
       "description": "Developed full-stack enterprise applications using Node.js, Express.js, and React.js, serving 100+ users across supply chain operations. Built end-to-end P2P module with Sequelize ORM backend and responsive Tailwind CSS frontend handling 1K+ daily transactions. Integrated SAP APIs with error handling and retry logic. Deployed on Linux (Ubuntu) servers achieving 99%+ uptime. Delivered interactive analytics dashboards with ECharts visualization and Excel export."
     },
     {
       "company": "Ramachandran Retail Pvt. Ltd",
       "position": "IT Support Engineer",
-      "duration": "2024 - 2025",
+      "duration": "Jun 2024 - Jan 2025",
       "description": "Provided technical and production support for Microsoft Dynamics AX ERP systems across multiple retail locations. Administered Linux and Windows servers with proactive monitoring, maintaining 99%+ uptime for business-critical apps."
     }
   ],
