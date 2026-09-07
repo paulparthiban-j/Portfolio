@@ -24,7 +24,7 @@ export async function GET() {
 
         if (files.length === 0) {
             // Fallback to the original resume file if timestamped ones don't exist
-            const fallbackPath = path.join(publicDir, "paul_parthiban_associate_Software_developer.pdf");
+            const fallbackPath = path.join(publicDir, "resume.pdf");
             try {
                 const fileBuffer = await readFile(fallbackPath);
                 return new NextResponse(fileBuffer, {

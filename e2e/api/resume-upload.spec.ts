@@ -7,6 +7,23 @@ import { uaHeaders, loginAs } from './helpers';
 // valid fixture for the "accepted" path.
 const PDF_BUFFER = Buffer.from('%PDF-1.4 fake pdf content for e2e testing');
 
+test.describe('GET /api/resume (public download)', () => {
+  test('falls back to the bundled resume.pdf when no timestamped upload exists yet @critical', async ({ request }) => {
+    // Regression test: the fallback path used to be hardcoded to
+    // "paul_parthiban_associate_Software_developer.pdf", a file that doesn't
+    // exist in public/ (the real bundled file is "resume.pdf") - so with no
+    // resume_<timestamp>.pdf ever uploaded, every request hit this fallback
+    // and 404'd. This is the exact state a fresh deployment starts in, so
+    // this was breaking the public resume download for every real visitor.
+    // Must run before any test in this project uploads a PDF (which would
+    // create a resume_<timestamp>.pdf and mask the bug by skipping this
+    // branch entirely) - kept as the first test in the file for that reason.
+    const res = await request.get('/api/resume', { headers: uaHeaders('resume-fallback-download') });
+    expect(res.status()).toBe(200);
+    expect(res.headers()['content-type']).toBe('application/pdf');
+  });
+});
+
 test.describe('POST /api/admin/resume (PDF upload)', () => {
   test('requires the admin_token cookie', async ({ request }) => {
     const res = await request.post('/api/admin/resume', {
