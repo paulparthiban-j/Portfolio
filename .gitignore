@@ -47,3 +47,6 @@ next-env.d.ts
 /test-results/
 /blob-report/
 /.vitest-cache/
+
+# local personal notes, not for GitHub
+LINKEDIN_UPDATE_CHECKLIST.md

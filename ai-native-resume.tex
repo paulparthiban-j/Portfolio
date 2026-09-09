@@ -5,7 +5,12 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{enumitem}
 \usepackage[T1]{fontenc}
-\usepackage{tgtermes}
+\usepackage{helvet}
+\usepackage{xcolor}
+\renewcommand{\familydefault}{\sfdefault}
+
+\definecolor{accent}{HTML}{0F766E}
+\definecolor{muted}{HTML}{6B7684}
 
 \addtolength{\oddsidemargin}{-0.5in}
 \addtolength{\textwidth}{1in}
@@ -16,22 +21,28 @@
 \raggedbottom
 \setlength{\tabcolsep}{0in}
 
-\titleformat{\section}{\bfseries\large\raggedright}{}{0em}{}[\titlerule]
+\titleformat{\section}{\bfseries\large\raggedright}{}{0em}{}[{\color{accent}\titlerule[1.2pt]}]
+\titlespacing*{\section}{0pt}{10pt}{4pt}
 
 \newcommand{\resumeItem}[1]{\item \small{#1}}
-\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=*, noitemsep]}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=*, noitemsep, label={\color{accent}\textbullet}]}
 \newcommand{\resumeItemListEnd}{\end{itemize}}
+\newcommand{\duration}[1]{\textbf{\color{accent}#1}}
 
 \begin{document}
 
 %================ HEADER =================
 \begin{center}
 {\Large \textbf{PAUL PARTHIBAN J}} \\
-Senior Software Engineer \textbar{} AI-Native Development \textbar{} Full-Stack \textbar{} Backend Development \\
+\vspace{2pt}
+{\color{accent}\textbf{SENIOR SOFTWARE ENGINEER \textbullet\ AI-NATIVE DEVELOPMENT \textbullet\ FULL-STACK \textbullet\ BACKEND DEVELOPMENT}} \\
 
 \vspace{4pt}
-Tirunelveli, India \textbar{} 6374178098 \textbar{} \href{mailto:paulparthiban.j@gmail.com}{paulparthiban.j@gmail.com} \textbar{} \href{https://github.com/paulparthiban-j}{github.com/paulparthiban-j} \textbar{} \href{https://www.linkedin.com/in/paul-parthiban-j}{linkedin.com/in/paul-parthiban-j}
+{\color{muted}Tirunelveli, India \textbar{} 6374178098 \textbar{} \href{mailto:paulparthiban.j@gmail.com}{paulparthiban.j@gmail.com} \textbar{} \href{https://github.com/paulparthiban-j}{github.com/paulparthiban-j} \textbar{} \href{https://www.linkedin.com/in/paul-parthiban-j}{linkedin.com/in/paul-parthiban-j}}
 \end{center}
+\vspace{-8pt}
+{\color{accent}\hrule height 1.2pt}
+\vspace{4pt}
 
 %================ SUMMARY =================
 \section{Summary}
@@ -65,9 +76,9 @@ Senior Software Engineer with 2+ years building scalable REST APIs, enterprise s
 %================ EXPERIENCE =================
 \section{Experience}
 
-\textbf{PainPoint Tech Solutions} \hfill Coimbatore, Tamil Nadu \\
-\href{https://painpoint.in/}{painpoint.in} \\
-Senior Software Developer \hfill May 2026 -- Present
+\textbf{PainPoint Tech Solutions} \hfill {\color{muted}Coimbatore, Tamil Nadu} \\
+{\color{accent}\href{https://painpoint.in/}{painpoint.in}} \\
+Senior Software Developer \hfill \duration{May 2026 -- Present}
 
 \resumeItemListStart
 \resumeItem{Own and maintain four production \textbf{.NET} systems for the company's clients, spanning distribution, education management, HR case management, and trading operations.}
@@ -76,8 +87,8 @@ Senior Software Developer \hfill May 2026 -- Present
 \resumeItem{Own the full deployment lifecycle: automated testing, live verification, and production release.}
 \resumeItemListEnd
 
-\textbf{Jeyachandran Industries Pvt. Ltd} \hfill Chennai, Tamil Nadu \\
-Junior Software Developer \hfill Mar 2025 -- May 2026
+\textbf{Jeyachandran Industries Pvt. Ltd} \hfill {\color{muted}Chennai, Tamil Nadu} \\
+Junior Software Developer \hfill \duration{Mar 2025 -- May 2026}
 
 \resumeItemListStart
 \resumeItem{Designed and developed RESTful APIs using \textbf{Node.js and Express.js} supporting enterprise business workflows and data processing.}
@@ -87,8 +98,8 @@ Junior Software Developer \hfill Mar 2025 -- May 2026
 \resumeItem{Diagnosed and resolved production issues, ensuring system reliability and minimal downtime for business-critical applications.}
 \resumeItemListEnd
 
-\textbf{Ramachandran Retail Pvt. Ltd} \hfill Thiruvananthapuram, Kerala \\
-IT Support Engineer \hfill Jun 2024 -- Jan 2025
+\textbf{Ramachandran Retail Pvt. Ltd} \hfill {\color{muted}Thiruvananthapuram, Kerala} \\
+IT Support Engineer \hfill \duration{Jun 2024 -- Jan 2025}
 
 \resumeItemListStart
 \resumeItem{Provided production support for \textbf{Microsoft Dynamics AX}, ensuring high availability of business-critical systems.}
@@ -99,7 +110,7 @@ IT Support Engineer \hfill Jun 2024 -- Jan 2025
 \section{Projects}
 
 \textbf{AdminCore — Enterprise Access Management Platform}
-\textit{React, TypeScript, .NET Web API, SQL Server, SignalR}
+\textit{\color{muted}React, TypeScript, .NET Web API, SQL Server, SignalR}
 \resumeItemListStart
 \resumeItem{Designed and built a full-stack RBAC platform supporting secure role-based access control across multiple modules with JWT authentication.}
 \resumeItem{Implemented fine-grained permission system enabling dynamic role assignment and access control with audit logging and session security.}
@@ -109,7 +120,7 @@ IT Support Engineer \hfill Jun 2024 -- Jan 2025
 \resumeItemListEnd
 
 \textbf{P2P — Supply Chain Management System}
-\textit{Node.js, Express, Sequelize, MySQL}
+\textit{\color{muted}Node.js, Express, Sequelize, MySQL}
 \resumeItemListStart
 \resumeItem{Architected end-to-end supply chain system supporting procurement, logistics, and warehouse operations for 100+ users with scalable backend handling 1K+ daily transactions.}
 \resumeItem{Automated purchase workflows (SIR/SOR, GRN, invoicing), reducing manual processing time by 40\% through workflow optimization.}
@@ -118,7 +129,7 @@ IT Support Engineer \hfill Jun 2024 -- Jan 2025
 \resumeItemListEnd
 
 \textbf{Purchase Request Management System}
-\textit{PHP, MySQL, JavaScript}
+\textit{\color{muted}PHP, MySQL, JavaScript}
 \resumeItemListStart
 \resumeItem{Developed role-based workflow system with access control and automated validation processes for enterprise procurement.}
 \resumeItem{Implemented REST APIs for category management, validation, and authentication.}
@@ -126,13 +137,13 @@ IT Support Engineer \hfill Jun 2024 -- Jan 2025
 \resumeItemListEnd
 
 \textbf{Gesture-Controlled Video Player}
-\textit{Python, OpenCV, MediaPipe}
+\textit{\color{muted}Python, OpenCV, MediaPipe}
 \resumeItemListStart
 \resumeItem{Developed a computer vision-based media control system using real-time gesture recognition with MediaPipe.}
 \resumeItemListEnd
 
 \textbf{FamilyVerse Platform}
-\textit{React Native, Expo, React, TypeScript, Vite, Firebase, Socket.io, Vercel}
+\textit{\color{muted}React Native, Expo, React, TypeScript, Vite, Firebase, Socket.io, Vercel}
 \resumeItemListStart
 \resumeItem{Built cross-platform family communication platform with React Native mobile app and React web application using TypeScript.}
 \resumeItem{Integrated Firebase services for authentication, real-time database, notifications, and cloud storage across mobile and web.}
@@ -141,17 +152,17 @@ IT Support Engineer \hfill Jun 2024 -- Jan 2025
 \resumeItem{Added payment integration with Razorpay and document/file management capabilities in mobile app.}
 \resumeItemListEnd
 
-\textbf{DISTRIBIZ ERP Mobile Client}
-\textit{Flutter, Dart, Riverpod, Drift, Go Router}
+\textbf{DISTRIBIZ ERP --- Multi-Tenant Supply Chain Platform}
+\textit{\color{muted}.NET (Modular Monolith), React, TypeScript, Flutter, SQL Server}
 \resumeItemListStart
-\resumeItem{Developed multi-platform Flutter ERP client for Android, iOS, Windows, macOS, and POS systems using Dart and Riverpod state management.}
-\resumeItem{Implemented offline-first architecture with Drift (SQLite) for local data persistence and sync with backend APIs.}
-\resumeItem{Built secure authentication and session management using flutter_secure_storage and dio with cookie management.}
-\resumeItem{Integrated thermal printer support for POS operations with flutter_thermal_printer and esc_pos_utils_plus.}
+\resumeItem{Primary backend contributor to an 18-module \textbf{.NET modular monolith} (Inventory, Logistics, Procurement, Warehouse, POS, Pricing, Sales, HRMS, Identity, Compliance, and more) for a multi-tenant distribution/agri-business ERP.}
+\resumeItem{Built core workflows in the \textbf{React} admin web frontend using TanStack Query/Table and ECharts analytics.}
+\resumeItem{Solely built the \textbf{Flutter} client for Android, iOS, Windows, macOS, and POS terminals with offline-first sync via Drift (SQLite).}
+\resumeItem{Implemented multi-tenant role/permission ownership across the platform.}
 \resumeItemListEnd
 
 \textbf{Personal Portfolio Website}
-\textit{Next.js, React, TypeScript, Tailwind CSS, Vercel}
+\textit{\color{muted}Next.js, React, TypeScript, Tailwind CSS, Vercel}
 \resumeItemListStart
 \resumeItem{Built personal portfolio website using Next.js 16 with React 19 and TypeScript for professional presentation.}
 \resumeItem{Implemented modern animations using Framer Motion, GSAP, and Lenis for smooth scrolling effects.}
@@ -162,11 +173,11 @@ IT Support Engineer \hfill Jun 2024 -- Jan 2025
 %================ EDUCATION =================
 \section{Education}
 
-\textbf{Master of Science} — St. John's College \hfill 2024 \\
-GPA: 7.9
+\textbf{Master of Science} — St. John's College \hfill {\color{muted}2024} \\
+{\color{muted}GPA: 7.9}
 
-\textbf{Bachelor of Science} — Manonmaniam Sundaranar University College \hfill 2022 \\
-GPA: 7.5
+\textbf{Bachelor of Science} — Manonmaniam Sundaranar University College \hfill {\color{muted}2022} \\
+{\color{muted}GPA: 7.5}
 
 %================ CERTIFICATIONS =================
 \section{Certifications}
