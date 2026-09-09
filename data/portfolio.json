@@ -60,7 +60,7 @@
   ],
   "stats": [
     { "number": 1.5, "label": "Years Experience", "suffix": "+" },
-    { "number": 4, "label": "Major Projects", "suffix": "" },
+    { "number": 5, "label": "Major Projects", "suffix": "" },
     { "number": 20, "label": "Technologies", "suffix": "+" },
     { "number": 40, "label": "Efficiency Boost", "suffix": "%" }
   ],
@@ -134,6 +134,25 @@
       ],
       "challenges": "Optimizing image processing for real-time responsiveness on standard hardware.",
       "architecture": "Python-based application using OpenCV for video capture and MediaPipe for hand tracking and gesture logic."
+    },
+    {
+      "title": "FamilyVerse Platform",
+      "description": "Cross-platform family communication app: a React Native mobile client and a React web app sharing one Firebase backend.",
+      "tech": "React Native, Expo, React, TypeScript, Firebase, Socket.io, Vercel",
+      "link": "",
+      "github": "",
+      "icon": "https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?w=800&auto=format&fit=crop&q=80",
+      "problem": "Families wanted one place for messaging, calls, and shared files instead of juggling separate apps across phones and browsers.",
+      "solution": "Built a cross-platform app - a React Native mobile client and a React web client on a shared TypeScript codebase - backed by Firebase for auth, real-time data, and storage, with Socket.io/WebRTC for live calling.",
+      "impact": [
+        "Built a cross-platform family communication platform with a React Native mobile app and a React web application on TypeScript",
+        "Integrated Firebase for authentication, real-time database, push notifications, and cloud storage across mobile and web",
+        "Implemented real-time messaging and WebRTC video/audio calling via Socket.io",
+        "Added Razorpay payment integration and in-app document/file management",
+        "Deployed the web app to Vercel with an optimized build and performance monitoring"
+      ],
+      "challenges": "Keeping the React Native mobile app and React web app in sync on a shared codebase while supporting real-time messaging, calls, and file sync on both.",
+      "architecture": "React Native + Expo mobile app and a React/TypeScript web app, both backed by Firebase (auth, realtime database, storage, notifications) with Socket.io and WebRTC for live communication."
     }
   ],
   "experience": [
