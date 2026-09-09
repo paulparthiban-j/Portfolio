@@ -12,7 +12,10 @@ interface TechIconProps {
 
 // Simple Icons has no entry for these - requesting them always 404s, so skip
 // straight to the letter-badge fallback instead of making a doomed request.
-const NO_ICON_AVAILABLE = new Set(["csharp", "sqlserver", "microsoftsqlserver", "winscp", "windowsterminal"]);
+const NO_ICON_AVAILABLE = new Set([
+    "csharp", "sqlserver", "microsoftsqlserver", "winscp", "windowsterminal",
+    "reactnative", "awsec2", "aws", "windowsserver", "iis",
+]);
 
 export function TechIcon({ name, icon, className = "", theme }: TechIconProps) {
     const [error, setError] = useState(false);

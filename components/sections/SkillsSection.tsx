@@ -17,10 +17,10 @@ interface SkillsSectionProps {
 // exact string equality (a skill that doesn't match any category is only
 // reachable via "All").
 const skillCategories = {
-    "Frontend": ["JavaScript (ES6+)", "TypeScript", "React 19", "Tailwind CSS", "Zustand", "React Query", "React Hook Form", "ECharts"],
+    "Frontend": ["JavaScript (ES6+)", "TypeScript", "React 19", "React Native", "Flutter", "Tailwind CSS", "Zustand", "React Query", "React Hook Form", "ECharts"],
     "Backend": ["C#", "Java", "Python", "PHP", "Node.js", "Express.js", ".NET 10 Web API", "Spring Boot", "RESTful APIs", "SignalR", "SAP API Integration"],
     "Database": ["SQL Server", "MySQL", "Entity Framework Core", "Dapper", "Sequelize ORM"],
-    "DevOps": ["Git", "Vite", "CI/CD Workflows", "Agile/Scrum"],
+    "DevOps": ["Git", "Vite", "CI/CD Workflows", "Agile/Scrum", "Windows Server", "IIS", "AWS EC2", "Vercel"],
     "Tools": ["JWT", "OAuth 2.0", "RBAC", "Device Fingerprinting", "Linux (Ubuntu)", "Sentry", "Swagger", "WinSCP"],
 };
 

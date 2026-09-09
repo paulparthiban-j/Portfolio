@@ -22,6 +22,8 @@
     "Python",
     "PHP",
     "React 19",
+    "React Native",
+    "Flutter",
     "Tailwind CSS",
     "Zustand",
     "React Query",
@@ -43,6 +45,10 @@
     "Device Fingerprinting",
     "Git",
     "Linux (Ubuntu)",
+    "Windows Server",
+    "IIS",
+    "AWS EC2",
+    "Vercel",
     "Vite",
     "Sentry",
     "Swagger",
@@ -73,7 +79,8 @@
         "Integrated SignalR WebSocket for real-time dashboard updates and live session monitoring across concurrent clients",
         "Designed frontend state layer with Zustand + React Query for optimistic updates, cache invalidation, and server-state sync",
         "Built audit logging, document management with file preview, and interactive ECharts analytics with CSV export",
-        "Optimized data access with dual ORM: Entity Framework Core for CRUD + Dapper for high-performance stored procedure calls"
+        "Optimized data access with dual ORM: Entity Framework Core for CRUD + Dapper for high-performance stored procedure calls",
+        "Deployed the full-stack React and .NET application on Windows Server using IIS, configuring application pools and site bindings for production hosting"
       ],
       "challenges": "Balancing granular permission control with a clean, intuitive UI while maintaining real-time synchronization across concurrent users.",
       "architecture": "Layered .NET 10 Web API (Controllers, Services, Repository, Utility) with React 19 SPA using Zustand + React Query for state management."
