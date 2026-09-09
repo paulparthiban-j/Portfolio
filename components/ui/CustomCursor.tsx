@@ -87,11 +87,12 @@ export function CustomCursor() {
             ))}
             {/* Main cursor */}
             <div
-                className={`custom-cursor ${isHovering ? "hovering" : ""}`}
+                className={`custom-cursor pointer-events-none ${isHovering ? "hovering" : ""}`}
                 style={{
                     left: `${position.x}px`,
                     top: `${position.y}px`,
                     transform: `translate(-50%, -50%) ${isHovering ? 'scale(3)' : 'scale(1)'}`,
+                    zIndex: 9999,
                 }}
             />
         </>

@@ -160,7 +160,7 @@
       "company": "PainPoint Tech Solutions",
       "position": "Senior Software Developer",
       "duration": "May 2026 - Present",
-      "description": "Own and maintain four production .NET systems for the company's clients, spanning distribution, education management, HR case management, and trading operations. Led a security review on a distribution ERP, closing a frontend/backend permission gap found via live verification. Designed a requirements-driven permission model for an HR platform, tracing every permission back to its source requirement. Own the full deployment lifecycle: automated testing, live verification, and production release."
+      "description": "Own and maintain four production .NET systems for the company's clients, spanning distribution, education management and HR case management. Led a security review on a distribution ERP, closing a frontend/backend permission gap found via live verification. Designed a requirements-driven permission model for an HR platform, tracing every permission back to its source requirement. Own the full deployment lifecycle: automated testing, live verification, and production release."
     },
     {
       "company": "Jeyachandran Industries Pvt. Ltd",
