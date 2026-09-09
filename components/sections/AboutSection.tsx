@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { PortfolioContent } from "@/types/portfolio";
 import { ScrollSection } from "@/components/ui/ScrollSection";
 import { Counter } from "@/components/ui/Counter";
+import { LiveBadge } from "@/components/ui/LiveBadge";
 
 interface AboutSectionProps {
     content: PortfolioContent;
@@ -91,7 +92,10 @@ export function AboutSection({ content }: AboutSectionProps) {
                                         gridRow: i === 0 ? 'span 2' : 'span 1'
                                     }}
                                 >
-                                    <div className="text-center p-6 md:p-12 bg-white/[0.03] border border-white/10 rounded-3xl hover:bg-white/[0.05] transition-all duration-500 h-full flex flex-col justify-center overflow-hidden">
+                                    <div className="relative text-center p-6 md:p-12 bg-white/[0.03] border border-white/10 rounded-3xl hover:bg-white/[0.05] transition-all duration-500 h-full flex flex-col justify-center overflow-hidden">
+                                        {stat.label === "Years Experience" && (
+                                            <LiveBadge label="Auto-updating" className="absolute top-4 right-4 md:top-6 md:right-6 text-emerald-400" />
+                                        )}
                                         <div className="text-4xl md:text-7xl font-black text-white mb-3">
                                             <Counter target={stat.number} suffix={stat.suffix} className={`bg-gradient-to-br ${i % 2 === 0 ? "from-emerald-400 to-emerald-600" : "from-indigo-400 to-indigo-600"} bg-clip-text text-transparent`} />
                                         </div>

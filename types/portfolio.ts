@@ -91,7 +91,8 @@ export interface PortfolioContent {
   aboutTitle?: string;
   customSections: CustomSection[];
   resumeUrl?: string;
-  githubActivity?: string; 
+  experienceStartDate?: string;
+  githubActivity?: string;
   testimonials?: Testimonial[];
   certifications?: Certification[];
   currentWork?: string;

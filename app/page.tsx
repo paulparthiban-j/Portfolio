@@ -19,13 +19,13 @@ const Footer = lazy(() => import("@/components/sections/Footer").then(mod => ({ 
 
 const fallbackContent: PortfolioContent = {
   name: "Paul Parthiban J",
-  title: "Full-Stack Developer | React, Node.js & .NET",
-  subtitle: "I build end-to-end enterprise applications with focus on API design, real-time systems, and production-grade architecture.",
-  description: "Full-Stack Developer with experience building end-to-end enterprise applications using React, Node.js, .NET, and SQL databases. Skilled in API design, real-time systems, state management, and deploying production-grade solutions.",
-  email: "paulparthiban85085@gmail.com",
+  title: "Senior Software Engineer | AI-Native Development",
+  subtitle: "I build end-to-end enterprise applications using AI-assisted workflows, with focus on API design, real-time systems, and production-grade architecture.",
+  description: "Senior Software Engineer with experience building end-to-end enterprise applications using React, Node.js, .NET, and SQL databases. AI-native developer who uses Claude for code generation, debugging, refactoring, and test creation to accelerate delivery.",
+  email: "paulparthiban.j@gmail.com",
   phone: "+91-6374178098",
   location: "Tirunelveli, India",
-  github: "https://github.com/parthi25",
+  github: "https://github.com/paulparthiban-j",
   linkedin: "https://linkedin.com/in/paul-parthiban-j",
   twitter: "",
   website: "",

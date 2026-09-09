@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { PortfolioContent } from "@/types/portfolio";
 import { ScrollSection } from "@/components/ui/ScrollSection";
+import { GithubStats } from "@/components/ui/GithubStats";
 
 interface CredibilitySectionProps {
     content: PortfolioContent;
@@ -84,13 +85,14 @@ export function CredibilitySection({ content }: CredibilitySectionProps) {
                                     <span className="px-3 py-1 bg-white/20 rounded-lg text-[10px] font-black text-white uppercase tracking-widest">Active</span>
                                 </div>
                                 <h4 className="text-white text-xl font-black mb-2 tracking-tight">GitHub Activity</h4>
-                                <p className="text-white/70 text-sm leading-relaxed mb-6">
+                                <p className="text-white/70 text-sm leading-relaxed mb-2">
                                     Consistently contributing to open-source and refining professional projects. Check my latest commits.
                                 </p>
-                                <a 
-                                    href={content.github} 
-                                    target="_blank" 
-                                    className="inline-flex items-center gap-2 text-white text-xs font-black uppercase tracking-[0.2em] group-hover:gap-3 transition-all"
+                                <GithubStats />
+                                <a
+                                    href={content.github}
+                                    target="_blank"
+                                    className="inline-flex items-center gap-2 mt-6 text-white text-xs font-black uppercase tracking-[0.2em] group-hover:gap-3 transition-all"
                                 >
                                     Review Missions <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                                 </a>
