@@ -22,7 +22,7 @@ export function CredibilitySection({ content }: CredibilitySectionProps) {
                         Proof of Impact
                     </h2>
                     <p className="text-sm md:text-lg text-slate-400 max-w-2xl mx-auto font-medium">
-                        Validation from industry leaders and continuous technical growth.
+                        What colleagues have said, and how I keep building on my skills.
                     </p>
                 </ScrollSection>
 
@@ -76,7 +76,7 @@ export function CredibilitySection({ content }: CredibilitySectionProps) {
                         </div>
 
                         <div>
-                            <h3 className="text-xs font-black tracking-[0.3em] text-emerald-500 uppercase mb-8">Continuous Deployment</h3>
+                            <h3 className="text-xs font-black tracking-[0.3em] text-emerald-500 uppercase mb-8">GitHub Activity</h3>
                             <div className="p-8 bg-gradient-to-r from-emerald-600 to-emerald-700 rounded-3xl shadow-2xl shadow-emerald-500/20 group hover:scale-[1.02] transition-all cursor-pointer">
                                 <div className="flex justify-between items-start mb-6">
                                     <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center">
@@ -84,17 +84,18 @@ export function CredibilitySection({ content }: CredibilitySectionProps) {
                                     </div>
                                     <span className="px-3 py-1 bg-white/20 rounded-lg text-[10px] font-black text-white uppercase tracking-widest">Active</span>
                                 </div>
-                                <h4 className="text-white text-xl font-black mb-2 tracking-tight">GitHub Activity</h4>
+                                <h4 className="text-white text-xl font-black mb-2 tracking-tight">Latest Activity</h4>
                                 <p className="text-white/70 text-sm leading-relaxed mb-2">
-                                    Consistently contributing to open-source and refining professional projects. Check my latest commits.
+                                    See my repositories and recent commits on GitHub.
                                 </p>
                                 <GithubStats />
                                 <a
                                     href={content.github}
                                     target="_blank"
+                                    rel="noopener noreferrer"
                                     className="inline-flex items-center gap-2 mt-6 text-white text-xs font-black uppercase tracking-[0.2em] group-hover:gap-3 transition-all"
                                 >
-                                    Review Missions <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                                    View GitHub <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                                 </a>
                             </div>
                         </div>

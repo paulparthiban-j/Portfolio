@@ -26,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     const data = await getPortfolioData();
     const title = `${data.name} | ${data.title}`;
-    const description = data.description || "Full Stack Developer Portfolio";
+    const description = data.description || "Senior Software Engineer Portfolio";
 
     return {
       title,
@@ -59,8 +59,8 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 
   return {
-    title: "Paul Parthiban J | Full-Stack Developer",
-    description: "Full-Stack Developer specializing in React, Node.js, .NET, and enterprise applications.",
+    title: "Paul Parthiban J | Senior Software Engineer",
+    description: "Senior Software Engineer specializing in React, Node.js, .NET, and enterprise applications.",
   };
 }
 

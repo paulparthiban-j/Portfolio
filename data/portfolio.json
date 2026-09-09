@@ -1,7 +1,7 @@
 {
   "name": "Paul Parthiban J",
   "title": "Senior Software Engineer | AI-Native Development",
-  "subtitle": "I build end-to-end enterprise applications using AI-assisted workflows, with focus on API design, real-time systems, and production-grade architecture.",
+  "subtitle": "I build end-to-end enterprise applications using AI-assisted workflows, with a focus on API design, real-time systems, and production-grade architecture.",
   "description": "Senior Software Engineer with experience building end-to-end enterprise applications using React, Node.js, .NET, and SQL databases. AI-native developer who uses Claude for code generation, debugging, refactoring, and test creation to accelerate delivery. Skilled in API design, real-time systems, state management, and deploying production-grade solutions.",
   "email": "paulparthiban.j@gmail.com",
   "phone": "+91-6374178098",
@@ -81,7 +81,7 @@
     {
       "title": "P2P - Supply Chain Management System",
       "description": "Architected end-to-end supply chain platform with procurement, logistics, and warehouse modules serving 100+ users.",
-      "tech": "Node.js, Express, Sequelize, MySQL, Tailwind CSS",
+      "tech": "Node.js, Express.js, Sequelize, MySQL, Tailwind CSS",
       "link": "",
       "github": "",
       "icon": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&auto=format&fit=crop&q=80",

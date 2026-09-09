@@ -75,7 +75,7 @@ export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSec
                         {content.projectsTitle || 'PROJECTS'}
                     </h2>
                     <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-medium">
-                        Solving complex problems with elegant code and innovative solutions.
+                        Systems designed and built end-to-end.
                     </p>
                 </ScrollSection>
 
@@ -100,7 +100,7 @@ export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSec
 
                     {projects.length === 0 && (
                         <div className="col-span-full py-20 text-center glass-premium border border-white/5 rounded-2xl md:rounded-3xl">
-                            <p className="text-slate-500 font-bold tracking-widest uppercase text-sm">No missions deployed yet.</p>
+                            <p className="text-slate-500 font-bold tracking-widest uppercase text-sm">No projects yet.</p>
                         </div>
                     )}
                 </div>
@@ -223,7 +223,7 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                 <div className="w-full md:w-[40%] p-10 md:p-14 md:py-20 flex flex-col bg-slate-950/20 overflow-y-auto">
                     <div className="flex justify-between items-start mb-10">
                         <div className="px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-black tracking-widest text-emerald-400 uppercase">
-                            Mission Log: {project.title}
+                            Project Overview
                         </div>
                         <button onClick={onClose} aria-label="Close project details" className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/5 border border-white/10 transition-all active:scale-90">
                              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>

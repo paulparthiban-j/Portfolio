@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://yourdomain.com'; // Replace with actual domain
+  const baseUrl = 'https://portfolio.one-ai.in';
   
   return [
     {

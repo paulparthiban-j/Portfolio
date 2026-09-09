@@ -10,6 +10,10 @@ interface TechIconProps {
     theme?: Theme;
 }
 
+// Simple Icons has no entry for these - requesting them always 404s, so skip
+// straight to the letter-badge fallback instead of making a doomed request.
+const NO_ICON_AVAILABLE = new Set(["csharp", "sqlserver", "microsoftsqlserver", "winscp", "windowsterminal"]);
+
 export function TechIcon({ name, icon, className = "", theme }: TechIconProps) {
     const [error, setError] = useState(false);
 
@@ -96,7 +100,7 @@ export function TechIcon({ name, icon, className = "", theme }: TechIconProps) {
     const color = theme?.mode === 'light' ? '333333' : 'FFFFFF';
     const iconUrl = `https://cdn.simpleicons.org/${slug}/${color}`;
 
-    if (error) {
+    if (error || NO_ICON_AVAILABLE.has(baseSlug) || NO_ICON_AVAILABLE.has(slug)) {
         return (
             <div className={`${className} bg-gradient-to-br ${theme?.primaryGradient || 'from-indigo-500 to-purple-600'} text-white flex items-center justify-center text-3xl font-bold shadow-lg`}>
                 {name.charAt(0)}

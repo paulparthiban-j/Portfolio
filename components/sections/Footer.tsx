@@ -124,11 +124,11 @@ export function Footer({ content }: FooterProps) {
                         <div className="flex flex-col gap-8">
                             <div>
                                 <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black text-white tracking-tighter leading-[0.8] mb-6 sm:mb-8 uppercase" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
-                                    LET'S BUILD<br />SOMETHING<br /><span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-emerald-600">EXTRAORDINARY</span>
+                                    LET'S BUILD<br />SOMETHING<br /><span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-emerald-600">GREAT</span>
                                 </h2>
                                 <p className="text-xs sm:text-sm md:text-base lg:text-xl leading-tight max-w-md font-bold text-slate-400">
-                                    Ready to solve your most complex business challenges? I'm currently
-                                    <span className="text-emerald-400"> available for high-impact missions</span>.
+                                    I'm currently
+                                    <span className="text-emerald-400"> open to new opportunities</span> — reach out if you have something worth building.
                                 </p>
                             </div>
 

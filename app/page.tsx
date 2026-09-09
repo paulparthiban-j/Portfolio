@@ -20,7 +20,7 @@ const Footer = lazy(() => import("@/components/sections/Footer").then(mod => ({ 
 const fallbackContent: PortfolioContent = {
   name: "Paul Parthiban J",
   title: "Senior Software Engineer | AI-Native Development",
-  subtitle: "I build end-to-end enterprise applications using AI-assisted workflows, with focus on API design, real-time systems, and production-grade architecture.",
+  subtitle: "I build end-to-end enterprise applications using AI-assisted workflows, with a focus on API design, real-time systems, and production-grade architecture.",
   description: "Senior Software Engineer with experience building end-to-end enterprise applications using React, Node.js, .NET, and SQL databases. AI-native developer who uses Claude for code generation, debugging, refactoring, and test creation to accelerate delivery.",
   email: "paulparthiban.j@gmail.com",
   phone: "+91-6374178098",
@@ -29,7 +29,7 @@ const fallbackContent: PortfolioContent = {
   linkedin: "https://linkedin.com/in/paul-parthiban-j",
   twitter: "",
   website: "",
-  boldStatement: "I don’t just write code; I architect systems that solve real business bottlenecks.",
+  boldStatement: "I don't just write code; I architect systems that solve real business bottlenecks.",
   currentWork: "Building enterprise access management platform with React 19 & .NET 10.",
   skills: ["JavaScript (ES6+)", "TypeScript", "C#", "Java", "Python", "PHP", "React 19", "Tailwind CSS", "Zustand", "React Query", "React Hook Form", "ECharts", "Node.js", "Express.js", ".NET 10 Web API", "Spring Boot", "RESTful APIs", "SQL Server", "MySQL", "Entity Framework Core", "Dapper", "Sequelize ORM", "JWT", "OAuth 2.0", "RBAC", "Git", "Linux (Ubuntu)", "SignalR", "SAP API Integration"],
   projects: [

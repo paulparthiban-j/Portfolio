@@ -12,13 +12,16 @@ interface SkillsSectionProps {
     sectionIndex?: number;
 }
 
-// Skill categories
+// Skill categories - keep these strings in sync with the exact names in
+// data/portfolio.json's `skills` array, since the filter below matches by
+// exact string equality (a skill that doesn't match any category is only
+// reachable via "All").
 const skillCategories = {
-    "Frontend": ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
-    "Backend": ["Node.js", ".NET", "Python", "GraphQL", "REST APIs"],
-    "Database": ["PostgreSQL", "MongoDB", "Redis", "SQL Server"],
-    "DevOps": ["Docker", "AWS", "CI/CD", "Git"],
-    "Tools": ["VS Code", "Figma", "Postman", "Linux"],
+    "Frontend": ["JavaScript (ES6+)", "TypeScript", "React 19", "Tailwind CSS", "Zustand", "React Query", "React Hook Form", "ECharts"],
+    "Backend": ["C#", "Java", "Python", "PHP", "Node.js", "Express.js", ".NET 10 Web API", "Spring Boot", "RESTful APIs", "SignalR", "SAP API Integration"],
+    "Database": ["SQL Server", "MySQL", "Entity Framework Core", "Dapper", "Sequelize ORM"],
+    "DevOps": ["Git", "Vite", "CI/CD Workflows", "Agile/Scrum"],
+    "Tools": ["JWT", "OAuth 2.0", "RBAC", "Device Fingerprinting", "Linux (Ubuntu)", "Sentry", "Swagger", "WinSCP"],
 };
 
 export function SkillsSection({ content }: SkillsSectionProps) {

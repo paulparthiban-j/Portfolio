@@ -33,7 +33,7 @@ test.describe('Homepage', () => {
     // Next dev may still be compiling it.
     await expect(page.locator('[aria-label="Hero section"]')).toBeVisible({ timeout: 15000 });
     await expect(page.locator('h1')).toBeVisible();
-    await expect(page.getByText('DEPLOYED PROJECTS')).toBeVisible();
+    await expect(page.getByText('View Projects')).toBeVisible();
 
     // Every other section is lazy-loaded (React.lazy + Suspense) below the fold.
     // app/page.tsx wraps each one in a div with a hardcoded aria-label - these
@@ -54,7 +54,7 @@ test.describe('Homepage', () => {
     // A couple of static, non-data-driven text fragments confirm real content
     // rendered inside those wrappers rather than an empty Suspense fallback.
     await expect(
-      page.getByText('Solving complex problems with elegant code and innovative solutions.')
+      page.getByText('Systems designed and built end-to-end.')
     ).toBeVisible();
 
     const unexpectedErrors = consoleErrors.filter((e) => !IGNORED_CONSOLE_ERRORS.has(e));

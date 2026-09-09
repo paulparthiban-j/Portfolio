@@ -94,7 +94,7 @@ export function Navbar({ content }: NavbarProps) {
                                 {content.name}
                             </span>
                             <span className="text-emerald-400 font-bold text-[10px] tracking-widest uppercase block mt-1">
-                                Software Developer
+                                Senior Software Engineer
                             </span>
                         </div>
                     </a>
@@ -176,7 +176,7 @@ export function Navbar({ content }: NavbarProps) {
                             rel="noopener noreferrer"
                             className="mt-4 px-12 py-5 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl text-white font-black uppercase tracking-widest shadow-2xl shadow-emerald-500/30"
                         >
-                            Get Resume
+                            Download Resume
                         </motion.a>
                     </motion.div>
                 )}
