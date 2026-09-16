@@ -1,4 +1,4 @@
-name: Deploy to Vercel
+name: CI/CD
 
 on:
   push:
@@ -9,14 +9,92 @@ on:
       - '**.md'
       - '.gitignore'
       - '.github/**'
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 jobs:
+  quality:
+    name: Lint, typecheck, unit tests, build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # Non-blocking until the existing lint backlog (64 errors as of
+      # 2026-09-16, mostly no-explicit-any / no-require-imports) is cleaned
+      # up. Still runs on every push/PR so violations are visible.
+      - name: Lint
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Unit tests
+        run: npm run test:unit
+
+      - name: Build
+        run: npm run build
+
+  e2e:
+    name: Playwright (api + e2e)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: API tests
+        run: npm run test:api
+
+      - name: UI tests
+        run: npm run test:e2e
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
   deploy:
+    name: Deploy to Vercel (production)
+    needs: [quality, e2e]
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: production
@@ -48,8 +126,38 @@ jobs:
           vercel-args: '--prod'
           working-directory: ./
 
-      - name: Comment Deployment URL on PR
-        if: github.event_name == 'pull_request'
+  preview:
+    name: Deploy PR preview to Vercel
+    needs: quality
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Deploy Preview to Vercel
+        id: deploy
+        uses: vercel/action@v1
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./
+
+      - name: Comment Preview URL on PR
         uses: actions/github-script@v7
         with:
           script: |
@@ -57,5 +165,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '🚀 Deployed to Vercel: ${{ steps.deploy.outputs.url }}'
+              body: '🚀 Preview deployed: ${{ steps.deploy.outputs.url }}'
             })
