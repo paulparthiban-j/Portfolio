@@ -98,7 +98,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: production
-      url: ${{ steps.deploy.outputs.url }}
+      url: ${{ steps.deploy.outputs['preview-url'] }}
 
     steps:
       - name: Checkout Code
@@ -118,7 +118,7 @@ jobs:
 
       - name: Deploy to Vercel
         id: deploy
-        uses: vercel/action@v1
+        uses: amondnet/vercel-action@v42
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
@@ -150,7 +150,7 @@ jobs:
 
       - name: Deploy Preview to Vercel
         id: deploy
-        uses: vercel/action@v1
+        uses: amondnet/vercel-action@v42
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
@@ -165,5 +165,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '🚀 Preview deployed: ${{ steps.deploy.outputs.url }}'
+              body: "🚀 Preview deployed: ${{ steps.deploy.outputs['preview-url'] }}"
             })
