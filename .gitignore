@@ -50,3 +50,4 @@ next-env.d.ts
 
 # local personal notes, not for GitHub
 LINKEDIN_UPDATE_CHECKLIST.md
+.env*
