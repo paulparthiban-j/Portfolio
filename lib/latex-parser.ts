@@ -90,9 +90,16 @@ function parseHeader(content: string, personalInfo: ParsedResumeData['personalIn
     personalInfo.name = cleanLatexText(nameMatch[1]);
   }
 
-  // Extract title from second line (clean LaTeX commands)
+  // Extract title from second line (clean LaTeX commands). Some resumes
+  // style this line in ALL CAPS for visual effect in the PDF, which reads
+  // as shouting on the web page - normalize only text that is actually
+  // all-caps to title case (and only this field - other fields like "AWS
+  // EC2" or "SQL Server" are already correctly cased in the source and
+  // must not go through this).
   if (headerLines[1]) {
-    personalInfo.title = cleanLatexText(headerLines[1]);
+    const cleanedTitle = cleanLatexText(headerLines[1]);
+    const isAllCaps = /[A-Z]/.test(cleanedTitle) && !/[a-z]/.test(cleanedTitle);
+    personalInfo.title = isAllCaps ? toTitleCase(cleanedTitle) : cleanedTitle;
   }
 
   // Extract contact info from third line (after \vspace)
@@ -262,9 +269,12 @@ function parseProjects(content: string, data: ParsedResumeData) {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
     
-    // Check if this is a project title line (textbf title)
+    // Check if this is a project title line (textbf title). Bullet lines can
+    // also contain inline \textbf{...} for emphasis (e.g. "\textbf{.NET}
+    // modular monolith"), so require the line to actually be a title line
+    // rather than a \resumeItem bullet.
     const titleMatch = line.match(/\\textbf\{([^}]+)\}/);
-    if (titleMatch && !line.includes('\\textit')) {
+    if (titleMatch && !line.includes('\\textit') && !line.includes('\\resumeItem')) {
       // Save previous project if exists
       if (currentProject) {
         data.projects.push({
@@ -384,11 +394,34 @@ function parseCertifications(content: string, data: ParsedResumeData) {
 }
 
 /**
+ * Title-case an ALL-CAPS string, hyphen-aware, preserving short (<=2 letter)
+ * uppercase words/parts as acronyms (e.g. "AI-NATIVE" -> "AI-Native" rather
+ * than "Ai-Native").
+ */
+function toTitleCase(text: string): string {
+  return text
+    .split(' ')
+    .map((word) =>
+      word
+        .split('-')
+        .map((part) => {
+          if (!part) return part;
+          if (/^[A-Z]{1,2}$/.test(part)) return part;
+          return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+        })
+        .join('-')
+    )
+    .join(' ');
+}
+
+/**
  * Clean LaTeX special characters and formatting
  */
 function cleanLatexText(text: string): string {
   if (!text) return '';
   return text
+    .replace(/\\color\{[^}]+\}/g, '')
+    .replace(/\\textbullet\\?\s*/g, ' | ')
     .replace(/\\textbar\{/g, '|')
     .replace(/\\&/g, '&')
     .replace(/\\%/g, '%')

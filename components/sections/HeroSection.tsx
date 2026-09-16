@@ -14,7 +14,8 @@ interface HeroSectionProps {
 }
 
 // Magnetic Button Component
-function MagneticButton({ children, className, ...props }: any) {
+function MagneticButton({ children, className, as = "button", ...props }: any) {
+    const Component = as === "a" ? motion.a : motion.button;
     const ref = useRef<HTMLButtonElement | HTMLAnchorElement>(null);
     const x = useMotionValue(0);
     const y = useMotionValue(0);
@@ -37,7 +38,7 @@ function MagneticButton({ children, className, ...props }: any) {
     const springY = useSpring(y, { stiffness: 150, damping: 15 });
 
     return (
-        <motion.button
+        <Component
             ref={ref}
             style={{ x: springX, y: springY }}
             onMouseMove={handleMouseMove}
@@ -46,7 +47,7 @@ function MagneticButton({ children, className, ...props }: any) {
             {...props}
         >
             {children}
-        </motion.button>
+        </Component>
     );
 }
 
