@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: production
-      url: ${{ steps.deploy.outputs.preview-url }}
+      url: ${{ steps.deploy.outputs.url }}
 
     steps:
       - name: Checkout Code
@@ -30,18 +30,18 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-
-      - name: Build Project Artifacts
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build with Next.js
+        run: npm run build
 
       - name: Deploy to Vercel
         id: deploy
-        run: |
-          url=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})
-          echo "preview-url=$url" >> $GITHUB_OUTPUT
-          echo "Deployment URL: $url"
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: ./
 
       - name: Comment Deployment URL on PR
         if: github.event_name == 'pull_request'
@@ -52,5 +52,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '🚀 Deployed to Vercel: ${{ steps.deploy.outputs.preview-url }}'
+              body: '🚀 Deployed to Vercel: ${{ steps.deploy.outputs.url }}'
             })
