@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - 'release/prod-*'
+      - main
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - '.github/**'
   workflow_dispatch:
 
 env:
