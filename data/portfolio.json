@@ -8,7 +8,7 @@
   "location": "Tirunelveli, India",
   "experienceStartDate": "2024-06-01",
   "github": "https://github.com/paulparthiban-j",
-  "linkedin": "https://linkedin.com/in/paul-parthiban-j",
+  "linkedin": "https://www.linkedin.com/in/paul-parthiban-j",
   "twitter": "",
   "website": "",
   "resumeUrl": "/resume.pdf",
@@ -153,6 +153,42 @@
       ],
       "challenges": "Keeping the React Native mobile app and React web app in sync on a shared codebase while supporting real-time messaging, calls, and file sync on both.",
       "architecture": "React Native + Expo mobile app and a React/TypeScript web app, both backed by Firebase (auth, realtime database, storage, notifications) with Socket.io and WebRTC for live communication."
+    },
+    {
+      "title": "DISTRIBIZ ERP - Multi-Tenant Supply Chain Platform",
+      "description": "Primary backend contributor to an 18-module .NET modular monolith and sole builder of its Flutter client for a multi-tenant distribution/agri-business ERP.",
+      "tech": ".NET (Modular Monolith), React, TypeScript, Flutter, SQL Server",
+      "link": "",
+      "github": "",
+      "icon": "https://images.unsplash.com/photo-1553413077-190dd305871c?w=800&auto=format&fit=crop&q=80",
+      "problem": "A multi-tenant distribution/agri-business ERP needed a unified backend across 18 modules (inventory, logistics, procurement, warehouse, POS, pricing, sales, HRMS, identity, compliance, and more) plus native clients for desktop, mobile, and POS hardware, all with tenant-scoped permissions.",
+      "solution": "Built core backend workflows across the modular monolith and independently built the Flutter client covering Android, iOS, Windows, macOS, and POS terminals with offline-first sync.",
+      "impact": [
+        "Served as primary backend contributor to the 18-module .NET modular monolith spanning inventory, logistics, procurement, warehouse, POS, pricing, sales, HRMS, identity, and compliance",
+        "Built core workflows in the React admin web frontend using TanStack Query/Table and ECharts analytics",
+        "Solely built the Flutter client for Android, iOS, Windows, macOS, and POS terminals with offline-first sync via Drift (SQLite)",
+        "Implemented multi-tenant role/permission ownership across the platform"
+      ],
+      "challenges": "Keeping a single offline-first Flutter client consistent across phones, desktops, and POS terminals while the backend enforced tenant-scoped permissions across 18 interdependent modules.",
+      "architecture": ".NET modular monolith backend serving a React/TypeScript admin web frontend and a single cross-platform Flutter client, with Drift (SQLite) providing offline-first sync on device."
+    },
+    {
+      "title": "Personal Portfolio Website",
+      "description": "This site: a Next.js 16 + React 19 + TypeScript portfolio with an AI-native resume sync pipeline and live GitHub activity.",
+      "tech": "Next.js, React, TypeScript, Tailwind CSS, Vercel",
+      "link": "",
+      "github": "https://github.com/paulparthiban-j",
+      "icon": "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&auto=format&fit=crop&q=80",
+      "problem": "Needed a professional presentation site that stays in sync with an actively updated resume instead of drifting out of date.",
+      "solution": "Built a Next.js portfolio with an admin-driven resume sync pipeline that parses an uploaded LaTeX resume and merges it into the site's content, alongside live GitHub activity.",
+      "impact": [
+        "Built personal portfolio website using Next.js 16 with React 19 and TypeScript for professional presentation",
+        "Implemented modern animations using Framer Motion, GSAP, and Lenis for smooth scrolling effects",
+        "Deployed to Vercel with Speed Insights integration for performance monitoring and optimization",
+        "Configured responsive design with Tailwind CSS and DaisyUI for cross-device compatibility"
+      ],
+      "challenges": "Keeping resume content and site content in sync without losing hand-curated project detail when the resume is updated.",
+      "architecture": "Next.js 16 App Router site with an admin dashboard, a LaTeX resume parser/merge pipeline, and live GitHub stats fetched client-side."
     }
   ],
   "experience": [
