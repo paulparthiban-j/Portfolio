@@ -600,19 +600,24 @@ html {
   transform: translateY(80px) scale(0.95);
 }
 
+/* Headings: rise out of a mask, like a line of type being slotted in */
 .scroll-slide-down {
   opacity: 0;
-  transform: translateY(-80px) scale(0.95);
+  transform: translateY(48px);
+  clip-path: inset(0 0 100% 0);
 }
 
+/* Cards swing in from the side with a slight tilt and settle flat */
 .scroll-slide-left {
   opacity: 0;
-  transform: translateX(-80px) scale(0.95);
+  transform: translateX(-80px) rotate(-2deg) scale(0.95);
+  transform-origin: left center;
 }
 
 .scroll-slide-right {
   opacity: 0;
-  transform: translateX(80px) scale(0.95);
+  transform: translateX(80px) rotate(2deg) scale(0.95);
+  transform-origin: right center;
 }
 
 .scroll-scale-in {
@@ -622,6 +627,7 @@ html {
 
 .scroll-fade-in {
   opacity: 0;
+  transform: translateY(16px);
 }
 
 .scroll-rotate-in {
@@ -629,7 +635,7 @@ html {
   transform: rotate(-15deg) scale(0.8);
 }
 
-/* Unified transition for all scroll animations */
+/* Unified transition for all scroll animations (expo-out: fast start, long soft landing) */
 .scroll-slide-up,
 .scroll-slide-down,
 .scroll-slide-left,
@@ -637,13 +643,34 @@ html {
 .scroll-scale-in,
 .scroll-fade-in,
 .scroll-rotate-in {
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    clip-path 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
+}
+
+/* Desktop only: a soft focus-pull on the side cards (blur is too costly on phones) */
+@media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
+  .scroll-slide-left,
+  .scroll-slide-right {
+    filter: blur(6px);
+  }
+}
+
+/* The accent bar under each section heading draws itself in after the title lands */
+.scroll-slide-down > h2 + div {
+  transform: scaleX(0);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s;
+}
+
+.scroll-slide-down.visible > h2 + div {
+  transform: scaleX(1);
 }
 
 @media (max-width: 768px) {
   .scroll-slide-up { transform: translateY(24px); }
-  .scroll-slide-down { transform: translateY(-24px); }
+  .scroll-slide-down { transform: translateY(20px); }
   .scroll-slide-left { transform: translateX(-24px); }
   .scroll-slide-right { transform: translateX(24px); }
   .scroll-scale-in { transform: scale(0.94); }
@@ -659,6 +686,12 @@ html {
   .scroll-fade-in,
   .scroll-rotate-in {
     opacity: 1;
+    transform: none;
+    clip-path: none;
+    filter: none;
+  }
+
+  .scroll-slide-down > h2 + div {
     transform: none;
   }
 }
@@ -715,6 +748,9 @@ html {
 .scroll-rotate-in.visible {
   opacity: 1;
   transform: none;
+  /* Slightly larger than the box so descenders and glows are never clipped */
+  clip-path: inset(-20% -20% -20% -20%);
+  filter: none;
   will-change: auto;
 }
 
@@ -963,4 +999,304 @@ html {
 .timeline-box:hover {
   transform: scale(1.05);
   box-shadow: var(--shadow-lg);
+}
+/* ------------------------------------------------------------------ */
+/* Intro curtain + hero entrance                                        */
+/* ------------------------------------------------------------------ */
+
+/* How long the hero waits for the curtain. Repeat visits in the same
+   session (html.intro-seen, set by an inline script in app/layout.tsx)
+   and reduced-motion users skip the curtain, so the hero starts at once. */
+:root {
+  --intro-offset: 0.95s;
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-curtain: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+html.intro-seen {
+  --intro-offset: 0.05s;
+}
+
+.intro-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Remove the layer once finished so it costs nothing afterwards */
+  animation: intro-done 0s linear 1.7s forwards;
+}
+
+html.intro-seen .intro-curtain {
+  display: none;
+}
+
+.intro-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50.5%;
+  background: #0a0a0b;
+  will-change: transform;
+}
+
+.intro-panel--top {
+  top: 0;
+  animation: intro-panel-up 0.75s var(--ease-curtain) 0.95s forwards;
+}
+
+.intro-panel--bottom {
+  bottom: 0;
+  animation: intro-panel-down 0.75s var(--ease-curtain) 0.95s forwards;
+}
+
+/* Glowing seam where the two halves meet, visible as they split */
+.intro-panel--top::after,
+.intro-panel--bottom::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.9), transparent);
+  box-shadow: 0 0 24px 2px rgba(139, 92, 246, 0.6);
+}
+
+.intro-panel--top::after { bottom: 0; }
+.intro-panel--bottom::before { top: 0; }
+
+.intro-mark {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  animation: intro-mark-out 0.45s var(--ease-curtain) 0.8s forwards;
+}
+
+.intro-name {
+  display: flex;
+  font-size: clamp(1rem, 3.2vw, 1.6rem);
+  font-weight: 800;
+  letter-spacing: 0.35em;
+  color: #f8fafc;
+  overflow: hidden;
+  padding: 0.15em 0;
+}
+
+.intro-letter {
+  display: inline-block;
+  transform: translateY(110%);
+  animation: intro-letter-in 0.6s var(--ease-expo) forwards;
+  animation-delay: calc(var(--i) * 25ms + 0.05s);
+}
+
+.intro-progress {
+  width: min(14rem, 50vw);
+  height: 1px;
+  background: linear-gradient(90deg, #7c3aed, #c4b5fd);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: intro-progress 0.75s var(--ease-expo) 0.1s forwards;
+}
+
+@keyframes intro-letter-in {
+  to { transform: translateY(0); }
+}
+
+@keyframes intro-progress {
+  to { transform: scaleX(1); }
+}
+
+@keyframes intro-mark-out {
+  to {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.96);
+  }
+}
+
+@keyframes intro-panel-up {
+  to { transform: translateY(-101%); }
+}
+
+@keyframes intro-panel-down {
+  to { transform: translateY(101%); }
+}
+
+@keyframes intro-done {
+  to { visibility: hidden; }
+}
+
+/* Hero name: each letter springs up and un-tilts, staggered left to right */
+.hero-letter {
+  display: inline-block;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: hero-letter-in 1s var(--ease-expo) both;
+  animation-delay: calc(var(--intro-offset) + var(--i) * 40ms);
+}
+
+@keyframes hero-letter-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.45em) rotate(8deg) scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-underline {
+  transform: scaleX(0);
+  animation: hero-underline-in 1.1s var(--ease-expo) both;
+  animation-delay: calc(var(--intro-offset) + 0.6s);
+}
+
+@keyframes hero-underline-in {
+  from { transform: scaleX(0); opacity: 0; }
+  to { transform: scaleX(1); opacity: 1; }
+}
+
+.hero-rise {
+  animation: hero-rise-in 0.9s var(--ease-expo) both;
+  animation-delay: calc(var(--intro-offset) + var(--d, 0s));
+}
+
+@keyframes hero-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Subtitle comes into focus rather than just fading (blur on desktop only) */
+.hero-focus {
+  animation: hero-focus-in 1s var(--ease-expo) both;
+  animation-delay: calc(var(--intro-offset) + var(--d, 0s));
+}
+
+@keyframes hero-focus-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (min-width: 769px) {
+  @keyframes hero-focus-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+      filter: blur(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+      filter: blur(0);
+    }
+  }
+}
+
+.hero-fade {
+  animation: fade-in 1s ease both;
+  animation-delay: calc(var(--intro-offset) + var(--d, 0s));
+}
+
+/* ------------------------------------------------------------------ */
+/* Scroll-driven section transitions                                    */
+/* ------------------------------------------------------------------ */
+
+/* Each section rises in like a card being dealt onto the table - its rounded
+   corners open up to full-bleed as it arrives - and gently recedes as it
+   scrolls away. Driven by the scroll position itself (no JS, runs off the
+   main thread where supported); browsers without scroll timelines just show
+   the sections normally. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .section-reveal {
+      animation: section-enter linear both, section-exit linear forwards;
+      animation-timeline: view(), view();
+      animation-range: entry 0% entry 50vh, exit 35% exit 100%;
+      transform-origin: 50% 0%;
+    }
+
+    @media (min-width: 769px) {
+      .section-reveal {
+        animation-name: section-enter-desktop, section-exit;
+      }
+    }
+  }
+}
+
+@keyframes section-enter {
+  from {
+    opacity: 0.2;
+    transform: translateY(40px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes section-enter-desktop {
+  from {
+    opacity: 0.2;
+    transform: translateY(80px) scale(0.94);
+    clip-path: inset(4% 5% 0 5% round 48px);
+  }
+
+  99.9% {
+    clip-path: inset(0 0 0 0 round 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+  }
+}
+
+@keyframes section-exit {
+  to {
+    opacity: 0.4;
+    transform: translateY(-2%) scale(0.97);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-curtain {
+    display: none;
+  }
+
+  :root {
+    --intro-offset: 0s;
+  }
+
+  .hero-letter,
+  .hero-underline,
+  .hero-rise,
+  .hero-focus,
+  .hero-fade {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }

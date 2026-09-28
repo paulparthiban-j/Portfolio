@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { Fragment, useEffect, useState, useRef } from "react";
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { PortfolioContent } from "@/types/portfolio";
 import { useIsMobile } from "@/hooks/useIsMobile";
@@ -48,6 +48,48 @@ function MagneticButton({ children, className, as = "button", ...props }: any) {
         >
             {children}
         </Component>
+    );
+}
+
+function GradientLetters({ text, gradient, startIndex, className = "" }: {
+    text: string;
+    gradient: string;
+    startIndex: number;
+    className?: string;
+}) {
+    const n = Array.from(text).length;
+    // Letters are grouped per word so the line can still wrap between words.
+    let index = 0;
+    const words = text.split(" ").map((word) => {
+        const letters = Array.from(word).map((char) => ({ char, i: index++ }));
+        index++; // the space
+        return letters;
+    });
+
+    return (
+        <span aria-hidden="true" className={`block md:drop-shadow-[0_0_40px_rgba(139,92,246,0.4)] ${className}`}>
+            {words.map((letters, w) => (
+                <Fragment key={w}>
+                    {w > 0 && " "}
+                    <span className="inline-block whitespace-nowrap">
+                        {letters.map(({ char, i }) => (
+                            <span
+                                key={i}
+                                className="hero-letter"
+                                style={{
+                                    ["--i" as string]: startIndex + i,
+                                    backgroundImage: gradient,
+                                    backgroundSize: `${n * 100}% 100%`,
+                                    backgroundPosition: `${n > 1 ? (i / (n - 1)) * 100 : 0}% 0`,
+                                }}
+                            >
+                                {char}
+                            </span>
+                        ))}
+                    </span>
+                </Fragment>
+            ))}
+        </span>
     );
 }
 
@@ -104,8 +146,8 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                     even if the animation never gets to run - e.g. a throttled/backgrounded tab
                     on mobile, which previously left the hero stuck invisible indefinitely. */}
                 <div
-                    className="flex flex-col items-center mb-8 animate-slide-up"
-                    style={{ animationDelay: '0.2s', animationFillMode: 'both' }}
+                    className="flex flex-col items-center mb-8 hero-rise"
+                    style={{ ["--d" as string]: "0s" }}
                 >
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-500/10 border border-violet-500/20 backdrop-blur-md mb-4 group cursor-pointer hover:bg-violet-500/20 transition-all duration-300">
                         <span className="relative flex h-2 w-2">
@@ -121,31 +163,42 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                     </span>
                 </div>
 
-                {/* Name */}
+                {/* Name - letters rise in one by one. Each letter carries its slice
+                    of the line's gradient so the per-letter transforms don't break it. */}
                 <h1
-                    className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-black mb-10 tracking-tighter leading-[0.85] animate-fade-in"
-                    style={{ fontFamily: 'var(--font-space-grotesk)', animationDelay: '0.4s', animationFillMode: 'both' }}
+                    aria-label={content.name}
+                    className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-black mb-8 tracking-tighter leading-[0.85]"
+                    style={{ fontFamily: 'var(--font-space-grotesk)' }}
                 >
-                    <div className="block bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-violet-400 md:drop-shadow-[0_0_40px_rgba(139,92,246,0.4)]">
-                        {firstName}
-                    </div>
-                    <div className="block mt-2 bg-clip-text text-transparent bg-gradient-to-r from-violet-400 via-violet-300 to-white md:drop-shadow-[0_0_40px_rgba(139,92,246,0.4)]">
-                        {lastName}
-                    </div>
+                    <GradientLetters
+                        text={firstName}
+                        gradient="linear-gradient(90deg, #ffffff, #e2e8f0, #a78bfa)"
+                        startIndex={0}
+                    />
+                    <GradientLetters
+                        text={lastName}
+                        gradient="linear-gradient(90deg, #a78bfa, #c4b5fd, #ffffff)"
+                        startIndex={firstName.length}
+                        className="mt-2"
+                    />
+                    <span
+                        aria-hidden="true"
+                        className="hero-underline block h-[3px] w-32 md:w-48 mx-auto mt-5 md:mt-6 rounded-full bg-gradient-to-r from-transparent via-violet-400 to-transparent"
+                    />
                 </h1>
 
                 {/* Subtitle */}
                 <p
-                    className="text-base sm:text-xl md:text-2xl lg:text-3xl text-slate-300 max-w-4xl mx-auto mb-12 md:mb-16 leading-tight font-bold tracking-tight px-4 animate-slide-up"
-                    style={{ animationDelay: '0.8s', animationFillMode: 'both' }}
+                    className="text-base sm:text-xl md:text-2xl lg:text-3xl text-slate-300 max-w-4xl mx-auto mb-12 md:mb-16 leading-tight font-bold tracking-tight px-4 hero-focus"
+                    style={{ ["--d" as string]: "0.55s" }}
                 >
                     {content.subtitle || content.description}
                 </p>
 
                 {/* CTA Buttons */}
                 <div
-                    className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8 px-4 animate-slide-up"
-                    style={{ animationDelay: '1s', animationFillMode: 'both' }}
+                    className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8 px-4 hero-rise"
+                    style={{ ["--d" as string]: "0.7s" }}
                 >
                     <MagneticButton
                         as="a"
@@ -169,8 +222,8 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
 
             {/* Scroll Indicator */}
             <div
-                className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none animate-fade-in"
-                style={{ animationDelay: '1.5s', animationFillMode: 'both' }}
+                className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none hero-fade"
+                style={{ ["--d" as string]: "1.1s" }}
             >
                 <div className="w-px h-16 bg-gradient-to-b from-violet-400/70 to-transparent animate-scroll-cue" />
                 <span className="text-[10px] md:text-xs font-black tracking-widest text-slate-400 uppercase">Scroll to explore</span>

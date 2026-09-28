@@ -75,6 +75,8 @@ import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 
+const INTRO_SCRIPT = `try{var d=document.documentElement;if(sessionStorage.getItem("intro-seen")){d.classList.add("intro-seen")}else{sessionStorage.setItem("intro-seen","1")}}catch(e){}`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -82,6 +84,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme="custom" className="dark" style={{ colorScheme: "dark" }} suppressHydrationWarning>
+      <head>
+        {/* Runs before first paint: play the intro curtain only once per session */}
+        <script dangerouslySetInnerHTML={{ __html: INTRO_SCRIPT }} />
+      </head>
       <body
         className={`${plusJakarta.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} font-sans antialiased noise-overlay`}
       >
