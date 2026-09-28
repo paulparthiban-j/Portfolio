@@ -234,8 +234,11 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
             ref={containerRef}
             onPointerMove={handlePointerMove}
             onPointerLeave={handlePointerLeave}
-            className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0A0A0B] py-12 md:py-20"
+            className="relative min-h-[100svh] flex items-center [align-items:safe_center] justify-center overflow-hidden bg-[#0A0A0B] pt-28 pb-20 md:pt-32 md:pb-24 [@media(max-height:820px)]:pb-10"
         >
+            {/* Top padding reserves the fixed navbar; type and gaps scale with the
+                viewport height; "safe center" sends any overflow downwards rather
+                than up under the navbar on short screens */}
             {/* Animated Gradient Mesh Background */}
             <div className="absolute inset-0 z-0">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black pointer-events-none" />
@@ -260,10 +263,10 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                     even if the animation never gets to run - e.g. a throttled/backgrounded tab
                     on mobile, which previously left the hero stuck invisible indefinitely. */}
                 <div
-                    className="flex flex-col items-center mb-8 hero-rise"
+                    className="flex flex-col items-center mb-[clamp(1rem,3vh,2rem)] hero-rise"
                     style={{ ["--d" as string]: "0s" }}
                 >
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-500/10 border border-violet-500/20 mb-4 group cursor-pointer hover:bg-violet-500/20 transition-all duration-300">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-500/10 border border-violet-500/20 mb-[clamp(0.5rem,1.5vh,1rem)] group cursor-pointer hover:bg-violet-500/20 transition-all duration-300">
                         <span className="relative flex h-2 w-2">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-violet-500"></span>
@@ -283,7 +286,7 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                 <div aria-hidden="true" className="hidden md:block absolute inset-x-[10%] top-[5%] bottom-[20%] pointer-events-none bg-[radial-gradient(closest-side,rgba(139,92,246,0.28),transparent)]" />
                 <h1
                     aria-label={content.name}
-                    className="relative text-4xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-black mb-8 tracking-tighter leading-[0.85]"
+                    className="relative text-[clamp(2.5rem,min(12vw,13vh),10rem)] font-black mb-[clamp(1rem,3.5vh,2rem)] tracking-tighter leading-[0.85]"
                     style={{ fontFamily: 'var(--font-space-grotesk)' }}
                 >
                     <GradientLetters
@@ -306,7 +309,7 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
 
                 {/* Subtitle */}
                 <p
-                    className="text-base sm:text-xl md:text-2xl lg:text-3xl text-slate-300 max-w-4xl mx-auto mb-12 md:mb-16 leading-tight font-bold tracking-tight px-4 hero-focus"
+                    className="text-[clamp(1rem,min(2.4vw,3.2vh),1.875rem)] text-slate-300 max-w-4xl mx-auto mb-[clamp(1.5rem,5vh,4rem)] leading-tight font-bold tracking-tight px-4 hero-focus"
                     style={{ ["--d" as string]: "0.55s" }}
                 >
                     {content.subtitle || content.description}
@@ -320,7 +323,7 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                     <MagneticButton
                         as="a"
                         href="#projects"
-                        className="w-full sm:w-auto group relative px-6 py-3 sm:px-8 sm:py-4 md:px-12 md:py-6 bg-gradient-to-r from-violet-500 to-violet-600 hover:from-violet-400 hover:to-violet-500 rounded-2xl text-white text-sm sm:text-base md:text-lg font-black uppercase transition-colors duration-300 shadow-2xl shadow-violet-500/30 active:scale-95 flex items-center justify-center gap-3 cursor-pointer focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+                        className="w-full sm:w-auto group relative px-6 py-3 sm:px-8 sm:py-4 md:px-12 md:py-[clamp(1rem,2.2vh,1.5rem)] bg-gradient-to-r from-violet-500 to-violet-600 hover:from-violet-400 hover:to-violet-500 rounded-2xl text-white text-sm sm:text-base md:text-lg font-black uppercase transition-colors duration-300 shadow-2xl shadow-violet-500/30 active:scale-95 flex items-center justify-center gap-3 cursor-pointer focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-slate-900"
                     >
                         <span aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
                             <span className="absolute inset-y-0 -left-1/2 w-1/3 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-cta-shine" />
@@ -333,7 +336,7 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                         href="/api/resume"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 md:px-12 md:py-6 bg-white/[0.06] border border-white/10 hover:bg-white/10 hover:border-white/20 rounded-2xl text-white text-sm sm:text-base md:text-lg font-black uppercase transition-colors duration-300 active:scale-95 text-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+                        className="w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 md:px-12 md:py-[clamp(1rem,2.2vh,1.5rem)] bg-white/[0.06] border border-white/10 hover:bg-white/10 hover:border-white/20 rounded-2xl text-white text-sm sm:text-base md:text-lg font-black uppercase transition-colors duration-300 active:scale-95 text-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-slate-900"
                     >
                         Download Resume
                     </MagneticButton>
@@ -342,10 +345,10 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
 
             {/* Scroll Indicator */}
             <div
-                className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none hero-fade"
+                className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none hero-fade [@media(max-height:820px)]:hidden"
                 style={{ ["--d" as string]: "1.1s" }}
             >
-                <div className="w-px h-16 bg-gradient-to-b from-violet-400/70 to-transparent animate-scroll-cue" />
+                <div className="w-px h-12 bg-gradient-to-b from-violet-400/70 to-transparent animate-scroll-cue" />
                 <span className="text-[10px] md:text-xs font-black tracking-widest text-slate-400 uppercase">Scroll to explore</span>
             </div>
         </section>

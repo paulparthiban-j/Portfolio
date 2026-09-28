@@ -87,11 +87,13 @@ export function Navbar({ content }: NavbarProps) {
                         <motion.div
                             whileHover={{ scale: 1.1, rotate: 5 }}
                             transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                            className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-violet-600 flex items-center justify-center font-black text-white text-xl shadow-lg shadow-violet-500/30"
+                            className="w-10 h-10 shrink-0 rounded-xl bg-gradient-to-br from-violet-500 to-violet-600 flex items-center justify-center font-black text-white text-xl shadow-lg shadow-violet-500/30"
                         >
                             {content.name[0]}
                         </motion.div>
-                        <div className="hidden sm:block">
+                        {/* Hidden from md to xl: next to the full desktop link row there
+                            isn't room, and it wrapped onto four lines, making the bar taller */}
+                        <div className="hidden sm:block md:hidden xl:block whitespace-nowrap">
                             <span className="text-white font-black tracking-tighter text-lg uppercase block leading-none" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
                                 {content.name}
                             </span>
