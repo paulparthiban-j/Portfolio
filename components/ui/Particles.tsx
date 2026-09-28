@@ -13,77 +13,95 @@ interface Particle {
 
 export function Particles() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particlesRef = useRef<Particle[]>([]);
-  const animationRef = useRef<number | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    let width = 0;
+    let height = 0;
+
     const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = canvas.clientWidth;
+      height = canvas.clientHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
     resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
+    window.addEventListener("resize", resizeCanvas, { passive: true });
 
-    // Create particles
-    const particleCount = 50;
-    const particles: Particle[] = [];
+    const particles: Particle[] = Array.from({ length: 40 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      size: Math.random() * 2 + 1,
+      speedX: (Math.random() - 0.5) * 0.5,
+      speedY: (Math.random() - 0.5) * 0.5,
+      opacity: Math.random() * 0.5 + 0.1,
+    }));
 
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 2 + 1,
-        speedX: (Math.random() - 0.5) * 0.5,
-        speedY: (Math.random() - 0.5) * 0.5,
-        opacity: Math.random() * 0.5 + 0.1,
-      });
-    }
+    let frame: number | null = null;
+    let onScreen = true;
 
-    particlesRef.current = particles;
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height);
 
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      particles.forEach((particle) => {
+      for (const particle of particles) {
         particle.x += particle.speedX;
         particle.y += particle.speedY;
 
         // Wrap around screen
-        if (particle.x < 0) particle.x = canvas.width;
-        if (particle.x > canvas.width) particle.x = 0;
-        if (particle.y < 0) particle.y = canvas.height;
-        if (particle.y > canvas.height) particle.y = 0;
+        if (particle.x < 0) particle.x = width;
+        if (particle.x > width) particle.x = 0;
+        if (particle.y < 0) particle.y = height;
+        if (particle.y > height) particle.y = 0;
 
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(16, 185, 129, ${particle.opacity})`;
+        ctx.fillStyle = `rgba(167, 139, 250, ${particle.opacity})`;
         ctx.fill();
-      });
+      }
 
-      animationRef.current = requestAnimationFrame(animate);
+      frame = requestAnimationFrame(draw);
     };
 
-    animate();
+    // Only spend frames while the hero is on screen and the tab is visible
+    const sync = () => {
+      const shouldRun = onScreen && !document.hidden;
+      if (shouldRun && frame === null) {
+        frame = requestAnimationFrame(draw);
+      } else if (!shouldRun && frame !== null) {
+        cancelAnimationFrame(frame);
+        frame = null;
+      }
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      onScreen = entry.isIntersecting;
+      sync();
+    });
+    observer.observe(canvas);
+    document.addEventListener("visibilitychange", sync);
+    sync();
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
+      document.removeEventListener("visibilitychange", sync);
+      observer.disconnect();
+      if (frame !== null) cancelAnimationFrame(frame);
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 pointer-events-none opacity-30"
+      className="absolute inset-0 w-full h-full pointer-events-none opacity-30"
       aria-hidden="true"
     />
   );

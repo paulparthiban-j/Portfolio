@@ -9,29 +9,32 @@ interface CounterProps {
   className?: string;
 }
 
+const DURATION = 1600;
+
 export function Counter({ target, suffix = "", className = "" }: CounterProps) {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   useEffect(() => {
-    if (isInView) {
-      const duration = 2000; // 2 seconds
-      const increment = target / (duration / 16); // 60fps
-      let current = 0;
+    if (!isInView) return;
 
-      const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-          setCount(target);
-          clearInterval(timer);
-        } else {
-          setCount(Math.floor(current));
-        }
-      }, 16);
+    // rAF + ease-out instead of a 16ms setInterval: synced to the display,
+    // and pauses automatically in background tabs.
+    const duration = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : DURATION;
+    const decimals = Number.isInteger(target) ? 0 : 1;
+    let frame: number;
+    const start = performance.now();
 
-      return () => clearInterval(timer);
-    }
+    const tick = (now: number) => {
+      const t = duration ? Math.min((now - start) / duration, 1) : 1;
+      const eased = 1 - Math.pow(1 - t, 3);
+      setCount(Number((target * eased).toFixed(decimals)));
+      if (t < 1) frame = requestAnimationFrame(tick);
+    };
+
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
   }, [isInView, target]);
 
   return (

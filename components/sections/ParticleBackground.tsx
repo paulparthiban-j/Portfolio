@@ -9,14 +9,21 @@ interface ParticleBackgroundProps {
 
 export function ParticleBackground({ theme }: ParticleBackgroundProps) {
     const isMobile = useIsMobile();
-    const particleCount = isMobile ? 8 : 25;
+    const particleCount = isMobile ? 0 : 20;
 
     return (
         <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-            {/* Soft Ambient Blobs - Primary UI Depth */}
-            <div className={`absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/10 rounded-full blur-[120px] ${!isMobile ? "animate-soft-blob" : ""}`} />
-            <div className={`absolute bottom-[-10%] right-[-10%] w-[45%] h-[45%] bg-purple-500/10 rounded-full blur-[120px] ${!isMobile ? "animate-soft-blob animation-delay-2000" : ""}`} />
-            <div className={`absolute top-[20%] right-[-5%] w-[30%] h-[30%] bg-blue-500/5 rounded-full blur-[100px] ${!isMobile ? "animate-soft-blob animation-delay-4000" : ""}`} />
+            {/* Soft ambient glow. Radial gradients instead of blur() filters:
+                same look, but no expensive full-screen filter layers on mobile GPUs. */}
+            <div
+                className="absolute inset-0"
+                style={{
+                    background:
+                        "radial-gradient(40% 40% at 10% 5%, rgba(217, 70, 239, 0.08), transparent 70%)," +
+                        "radial-gradient(45% 45% at 95% 95%, rgba(168, 85, 247, 0.08), transparent 70%)," +
+                        "radial-gradient(30% 30% at 95% 30%, rgba(139, 92, 246, 0.05), transparent 70%)",
+                }}
+            />
 
             {/* Particles */}
             {[...Array(particleCount)].map((_, i) => {

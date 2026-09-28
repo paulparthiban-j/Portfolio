@@ -42,7 +42,7 @@ export function SkillsSection({ content }: SkillsSectionProps) {
     return (
         <section className="w-full bg-[#0A0A0B] py-16 md:py-24 px-4 sm:px-6 md:px-8 relative overflow-hidden">
             {/* Background accent */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/[0.04] rounded-full blur-[120px] pointer-events-none" />
+            <div className="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-500/[0.04] rounded-full blur-[120px] pointer-events-none" />
 
             <div className="container mx-auto max-w-7xl relative z-10 w-full">
                 {/* Heading */}
@@ -50,10 +50,10 @@ export function SkillsSection({ content }: SkillsSectionProps) {
                     <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-white uppercase leading-none" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
                         {content.skillsTitle || "THE STACK"}
                     </h2>
-                    <p className="text-slate-500 text-sm md:text-lg mt-4 max-w-xl mx-auto font-medium">
+                    <p className="text-slate-400 text-sm md:text-lg mt-4 max-w-xl mx-auto font-medium">
                         Tools and technologies I work with daily.
                     </p>
-                    <div className="h-1 w-24 bg-emerald-600 rounded-full mt-6 mx-auto" />
+                    <div className="h-1 w-24 bg-violet-600 rounded-full mt-6 mx-auto" />
                 </ScrollSection>
 
                 {/* Category Filter */}
@@ -65,9 +65,9 @@ export function SkillsSection({ content }: SkillsSectionProps) {
                                 onClick={() => setActiveCategory(category)}
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className={`px-6 py-3 rounded-full text-xs font-black uppercase tracking-widest transition-all ${
+                                className={`px-6 py-3 rounded-full text-xs font-black uppercase tracking-widest transition-colors ${
                                     activeCategory === category
-                                        ? "bg-emerald-600 text-white shadow-lg shadow-emerald-500/30"
+                                        ? "bg-violet-600 text-white shadow-lg shadow-violet-500/30"
                                         : "bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white border border-white/10"
                                 }`}
                             >
@@ -96,7 +96,7 @@ export function SkillsSection({ content }: SkillsSectionProps) {
                                     key={`${activeCategory}-${index}`}
                                     initial={{ opacity: 0, scale: 0.8 }}
                                     animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ delay: index * 0.05, duration: 0.3 }}
+                                    transition={{ delay: Math.min(index, 12) * 0.03, duration: 0.25 }}
                                     whileHover={{ scale: 1.1, rotate: 2 }}
                                     whileTap={{ scale: 0.95 }}
                                     className="flex flex-col items-center gap-4 group cursor-default"
@@ -104,10 +104,10 @@ export function SkillsSection({ content }: SkillsSectionProps) {
                                     {/* Icon card with 3D effect */}
                                     <motion.div
                                         whileHover={{ 
-                                            boxShadow: "0 0 30px rgba(16, 185, 129, 0.3)",
-                                            borderColor: "rgba(16, 185, 129, 0.5)"
+                                            boxShadow: "0 0 30px rgba(139, 92, 246, 0.3)",
+                                            borderColor: "rgba(139, 92, 246, 0.5)"
                                         }}
-                                        className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center transition-all duration-300 overflow-hidden cursor-pointer interaction-lift"
+                                        className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center transition-colors duration-300 overflow-hidden cursor-pointer"
                                     >
                                         <TechIcon
                                             name={name}
@@ -116,7 +116,7 @@ export function SkillsSection({ content }: SkillsSectionProps) {
                                         />
                                     </motion.div>
                                     {/* Label */}
-                                    <span className="text-[10px] sm:text-xs md:text-sm font-semibold text-slate-500 group-hover:text-emerald-400 uppercase tracking-wider text-center transition-colors duration-200 leading-tight">
+                                    <span className="text-[10px] sm:text-xs md:text-sm font-semibold text-slate-400 group-hover:text-violet-400 uppercase tracking-wider text-center transition-colors duration-200 leading-tight">
                                         {name}
                                     </span>
                                 </motion.div>
@@ -131,7 +131,7 @@ export function SkillsSection({ content }: SkillsSectionProps) {
                         animate={{ opacity: 1 }}
                         className="text-center py-20"
                     >
-                        <p className="text-slate-500 text-lg">No skills in this category.</p>
+                        <p className="text-slate-400 text-lg">No skills in this category.</p>
                     </motion.div>
                 )}
             </div>

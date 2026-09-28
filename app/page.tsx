@@ -84,8 +84,8 @@ const fallbackContent: PortfolioContent = {
   ],
   theme: {
     primaryColor: "slate",
-    primaryGradient: "from-slate-700 via-slate-600 to-green-600",
-    accent: "green-400",
+    primaryGradient: "from-slate-700 via-slate-600 to-violet-600",
+    accent: "violet-400",
     bg: "from-[#0F172A] via-[#1E293B] to-[#0F172A]",
     mode: "dark",
     autoTheme: false,
@@ -138,8 +138,8 @@ export default function Home() {
     return (
       <div className="fixed inset-0 bg-[#0F172A] flex items-center justify-center z-50">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 border-2 border-green-500/30 border-t-green-500 rounded-full animate-spin" />
-          <span className="text-xs text-slate-500 tracking-widest uppercase font-bold">Loading</span>
+          <div className="w-10 h-10 border-2 border-violet-500/30 border-t-violet-500 rounded-full animate-spin" />
+          <span className="text-xs text-slate-400 tracking-widest uppercase font-bold">Loading</span>
         </div>
       </div>
     );

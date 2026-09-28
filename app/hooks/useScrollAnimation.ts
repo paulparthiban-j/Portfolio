@@ -19,27 +19,27 @@ export function useScrollAnimation(options?: IntersectionObserverInit) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const currentRef = ref.current;
+    if (!currentRef) return;
+
+    // Reveal once and stop observing. Toggling back to hidden on exit made
+    // content fade out mid-scroll on phones and re-ran transitions constantly.
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsVisible(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
       },
       {
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px",
+        threshold: 0.05,
+        rootMargin: "0px 0px -40px 0px",
         ...options,
       }
     );
 
-    const currentRef = ref.current;
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
+    observer.observe(currentRef);
+    return () => observer.disconnect();
   }, [options]);
 
   return { ref, isVisible };

@@ -54,7 +54,8 @@ export function Navbar({ content }: NavbarProps) {
         const handleScroll = () => {
             setScrolled(window.scrollY > 50);
         };
-        window.addEventListener("scroll", handleScroll);
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        handleScroll();
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
@@ -72,7 +73,7 @@ export function Navbar({ content }: NavbarProps) {
                 initial={{ y: -100 }}
                 animate={{ y: 0 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 px-4 py-4 md:px-10 ${
+                className={`fixed top-0 left-0 right-0 z-[100] transition-[padding] duration-500 px-4 py-4 md:px-10 ${
                     scrolled ? "md:py-4" : "md:py-8"
                 }`}
             >
@@ -86,7 +87,7 @@ export function Navbar({ content }: NavbarProps) {
                         <motion.div
                             whileHover={{ scale: 1.1, rotate: 5 }}
                             transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                            className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center font-black text-white text-xl shadow-lg shadow-emerald-500/30"
+                            className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-violet-600 flex items-center justify-center font-black text-white text-xl shadow-lg shadow-violet-500/30"
                         >
                             {content.name[0]}
                         </motion.div>
@@ -94,7 +95,7 @@ export function Navbar({ content }: NavbarProps) {
                             <span className="text-white font-black tracking-tighter text-lg uppercase block leading-none" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
                                 {content.name}
                             </span>
-                            <span className="text-emerald-400 font-bold text-[10px] tracking-widest uppercase block mt-1">
+                            <span className="text-violet-400 font-bold text-[10px] tracking-widest uppercase block mt-1">
                                 Senior Software Engineer
                             </span>
                         </div>
@@ -106,10 +107,10 @@ export function Navbar({ content }: NavbarProps) {
                             <a
                                 key={link.href}
                                 href={link.href}
-                                className="text-sm font-black text-slate-400 hover:text-white uppercase tracking-widest transition-colors relative group focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded px-2 py-1"
+                                className="text-sm font-black text-slate-400 hover:text-white uppercase tracking-widest transition-colors relative group focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded px-2 py-1"
                             >
                                 {link.name}
-                                <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-gradient-to-r from-emerald-500 to-emerald-600 group-hover:w-full transition-all duration-300" />
+                                <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-gradient-to-r from-violet-500 to-violet-600 group-hover:w-full transition-all duration-300" />
                             </a>
                         ))}
                         <MagneticButton
@@ -117,7 +118,7 @@ export function Navbar({ content }: NavbarProps) {
                             href="/api/resume"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white text-xs font-black uppercase tracking-widest px-6 py-3 rounded-full shadow-lg shadow-emerald-500/30 transition-all active:scale-95"
+                            className="bg-gradient-to-r from-violet-500 to-violet-600 hover:from-violet-400 hover:to-violet-500 text-white text-xs font-black uppercase tracking-widest px-6 py-3 rounded-full shadow-lg shadow-violet-500/30 transition-colors active:scale-95"
                         >
                             Resume
                         </MagneticButton>
@@ -162,7 +163,7 @@ export function Navbar({ content }: NavbarProps) {
                                 key={link.name}
                                 href={link.href}
                                 onClick={() => setIsOpen(false)}
-                                className="text-3xl font-black text-white uppercase tracking-tighter hover:text-emerald-400 transition-colors"
+                                className="text-3xl font-black text-white uppercase tracking-tighter hover:text-violet-400 transition-colors"
                                 style={{ fontFamily: 'var(--font-space-grotesk)' }}
                             >
                                 {link.name}
@@ -175,7 +176,7 @@ export function Navbar({ content }: NavbarProps) {
                             href="/api/resume"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="mt-4 px-12 py-5 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl text-white font-black uppercase tracking-widest shadow-2xl shadow-emerald-500/30"
+                            className="mt-4 px-12 py-5 bg-gradient-to-r from-violet-500 to-violet-600 rounded-2xl text-white font-black uppercase tracking-widest shadow-2xl shadow-violet-500/30"
                         >
                             Download Resume
                         </motion.a>

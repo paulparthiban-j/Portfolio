@@ -85,22 +85,14 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
             <div className="absolute inset-0 z-0">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black pointer-events-none" />
                 {!isMobile && mounted && (
-                    <motion.div 
-                        className="absolute inset-0 opacity-30 pointer-events-none"
-                        style={{
-                            background: 'var(--gradient-mesh)',
-                        }}
-                        animate={{
-                            backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'],
-                        }}
-                        transition={{
-                            duration: 20,
-                            repeat: Infinity,
-                            ease: "linear",
-                        }}
+                    // Drift via transform (GPU-composited) instead of animating
+                    // background-position, which repainted the whole hero every frame.
+                    <div
+                        className="absolute -inset-[10%] opacity-30 pointer-events-none animate-mesh-drift will-change-transform"
+                        style={{ background: 'var(--gradient-mesh)' }}
                     />
                 )}
-                <Particles />
+                {!isMobile && mounted && <Particles />}
             </div>
 
             <motion.div
@@ -115,29 +107,29 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                     className="flex flex-col items-center mb-8 animate-slide-up"
                     style={{ animationDelay: '0.2s', animationFillMode: 'both' }}
                 >
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-md mb-4 group cursor-pointer hover:bg-emerald-500/20 transition-all duration-300">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-500/10 border border-violet-500/20 backdrop-blur-md mb-4 group cursor-pointer hover:bg-violet-500/20 transition-all duration-300">
                         <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-violet-500"></span>
                         </span>
-                        <span className="text-[10px] md:text-sm font-black tracking-widest text-emerald-400 uppercase">
+                        <span className="text-[10px] md:text-sm font-black tracking-widest text-violet-400 uppercase">
                             {content.currentWork || "Available for new opportunities"}
                         </span>
                     </div>
-                    <span className="text-xs md:text-sm font-black tracking-[0.4em] text-slate-500 uppercase" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
+                    <span className="text-xs md:text-sm font-black tracking-[0.4em] text-slate-400 uppercase" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
                         {content.title || "Full-Stack Developer"}
                     </span>
                 </div>
 
                 {/* Name */}
                 <h1
-                    className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-black mb-10 tracking-tighter leading-[0.85] mix-blend-lighten animate-fade-in"
+                    className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-black mb-10 tracking-tighter leading-[0.85] animate-fade-in"
                     style={{ fontFamily: 'var(--font-space-grotesk)', animationDelay: '0.4s', animationFillMode: 'both' }}
                 >
-                    <div className="block bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-emerald-400 drop-shadow-[0_0_40px_rgba(16,185,129,0.4)]">
+                    <div className="block bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-violet-400 md:drop-shadow-[0_0_40px_rgba(139,92,246,0.4)]">
                         {firstName}
                     </div>
-                    <div className="block mt-2 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-emerald-300 to-white drop-shadow-[0_0_40px_rgba(16,185,129,0.4)]">
+                    <div className="block mt-2 bg-clip-text text-transparent bg-gradient-to-r from-violet-400 via-violet-300 to-white md:drop-shadow-[0_0_40px_rgba(139,92,246,0.4)]">
                         {lastName}
                     </div>
                 </h1>
@@ -158,7 +150,7 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                     <MagneticButton
                         as="a"
                         href="#projects"
-                        className="w-full sm:w-auto group relative px-6 py-3 sm:px-8 sm:py-4 md:px-12 md:py-6 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 rounded-2xl text-white text-sm sm:text-base md:text-lg font-black uppercase transition-all duration-300 shadow-2xl shadow-emerald-500/30 active:scale-95 flex items-center justify-center gap-3 cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+                        className="w-full sm:w-auto group relative px-6 py-3 sm:px-8 sm:py-4 md:px-12 md:py-6 bg-gradient-to-r from-violet-500 to-violet-600 hover:from-violet-400 hover:to-violet-500 rounded-2xl text-white text-sm sm:text-base md:text-lg font-black uppercase transition-colors duration-300 shadow-2xl shadow-violet-500/30 active:scale-95 flex items-center justify-center gap-3 cursor-pointer focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-slate-900"
                     >
                         <span>View Projects</span>
                         <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
@@ -168,7 +160,7 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                         href="/api/resume"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 md:px-12 md:py-6 bg-white/5 backdrop-blur-xl border border-white/10 hover:bg-white/10 hover:border-white/20 rounded-2xl text-white text-sm sm:text-base md:text-lg font-black uppercase transition-all duration-300 active:scale-95 text-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+                        className="w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 md:px-12 md:py-6 bg-white/5 backdrop-blur-xl border border-white/10 hover:bg-white/10 hover:border-white/20 rounded-2xl text-white text-sm sm:text-base md:text-lg font-black uppercase transition-colors duration-300 active:scale-95 text-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-slate-900"
                     >
                         Download Resume
                     </MagneticButton>
@@ -180,12 +172,8 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                 className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none animate-fade-in"
                 style={{ animationDelay: '1.5s', animationFillMode: 'both' }}
             >
-                <motion.div
-                    animate={{ y: [0, 10, 0] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                    className="w-px h-16 bg-gradient-to-b from-emerald-500/50 to-transparent"
-                />
-                <span className="text-[10px] md:text-xs font-black tracking-widest text-slate-500 uppercase">Scroll to explore</span>
+                <div className="w-px h-16 bg-gradient-to-b from-violet-400/70 to-transparent animate-scroll-cue" />
+                <span className="text-[10px] md:text-xs font-black tracking-widest text-slate-400 uppercase">Scroll to explore</span>
             </div>
         </section>
     );

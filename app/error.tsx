@@ -17,7 +17,7 @@ export default function Error({
     return (
         <div className="fixed inset-0 bg-[#0A0A0B] flex items-center justify-center px-6 text-center">
             <div className="flex flex-col items-center gap-4 max-w-md">
-                <span className="text-xs font-black tracking-[0.3em] text-emerald-500 uppercase">
+                <span className="text-xs font-black tracking-[0.3em] text-violet-500 uppercase">
                     Something went wrong
                 </span>
                 <p className="text-slate-400 text-sm">
@@ -26,7 +26,7 @@ export default function Error({
                 <div className="flex gap-3 mt-2">
                     <button
                         onClick={reset}
-                        className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-xs font-black uppercase tracking-widest rounded-full transition-all active:scale-95"
+                        className="px-6 py-3 bg-gradient-to-r from-violet-500 to-violet-600 text-white text-xs font-black uppercase tracking-widest rounded-full transition-all active:scale-95"
                     >
                         Try Again
                     </button>

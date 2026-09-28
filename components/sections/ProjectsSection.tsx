@@ -100,7 +100,7 @@ export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSec
 
                     {projects.length === 0 && (
                         <div className="col-span-full py-20 text-center glass-premium border border-white/5 rounded-2xl md:rounded-3xl">
-                            <p className="text-slate-500 font-bold tracking-widest uppercase text-sm">No projects yet.</p>
+                            <p className="text-slate-400 font-bold tracking-widest uppercase text-sm">No projects yet.</p>
                         </div>
                     )}
                 </div>
@@ -128,7 +128,7 @@ function ProjectCard({ project, index, isMobile, theme, onClick }: { project: Pr
         <CardComponent
             onClick={onClick}
             whileTap={{ scale: 0.97 }}
-            className="group h-full flex flex-col justify-between glass-premium border border-white/10 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 interaction-lift focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-900 hover:border-emerald-500/30 hover:shadow-2xl hover:shadow-emerald-500/10"
+            className="group h-full flex flex-col justify-between glass-premium border border-white/10 rounded-2xl overflow-hidden cursor-pointer transition-[border-color,box-shadow] duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-slate-900 hover:border-violet-500/30 hover:shadow-2xl hover:shadow-violet-500/10"
         >
                 <div className="h-48 sm:h-56 md:h-64 lg:h-72 relative bg-slate-900 overflow-hidden">
                     <Image
@@ -144,7 +144,7 @@ function ProjectCard({ project, index, isMobile, theme, onClick }: { project: Pr
                         unoptimized
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent flex items-end p-6 sm:p-8">
-                         <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-emerald-600 group-hover:border-emerald-400 transition-all duration-300">
+                         <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-violet-600 group-hover:border-violet-400 transition-all duration-300">
                              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                          </div>
                     </div>
@@ -152,7 +152,7 @@ function ProjectCard({ project, index, isMobile, theme, onClick }: { project: Pr
 
                 <div className="p-4 sm:p-6 md:p-8 lg:p-10 flex-1 flex flex-col">
                     <div className="flex justify-between items-start mb-3 sm:mb-4">
-                        <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-white uppercase tracking-tighter leading-tight group-hover:text-emerald-400 transition-colors" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
+                        <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-white uppercase tracking-tighter leading-tight group-hover:text-violet-400 transition-colors" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
                             {project.title}
                         </h3>
                     </div>
@@ -163,7 +163,7 @@ function ProjectCard({ project, index, isMobile, theme, onClick }: { project: Pr
 
                     <div className="mt-auto pt-4 sm:pt-6 border-t border-white/5 flex flex-wrap gap-1.5 sm:gap-2">
                         {techStack.slice(0, 4).map((t, idx) => (
-                            <span key={idx} className="px-2 py-1 sm:px-3 sm:py-1 bg-white/5 border border-white/10 rounded-lg text-[8px] sm:text-[10px] font-black text-slate-300 uppercase tracking-widest group-hover:text-emerald-300 group-hover:bg-emerald-500/5 transition-all">
+                            <span key={idx} className="px-2 py-1 sm:px-3 sm:py-1 bg-white/5 border border-white/10 rounded-lg text-[10px] font-black text-slate-300 uppercase tracking-widest group-hover:text-violet-300 group-hover:bg-violet-500/5 transition-all">
                                 {t}
                             </span>
                         ))}
@@ -205,7 +205,7 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.9, opacity: 0, y: 30 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                className="glass-premium border border-white/15 rounded-3xl md:rounded-5xl w-full max-w-6xl max-h-[92vh] overflow-hidden flex flex-col md:flex-row shadow-2xl shadow-emerald-500/10"
+                className="glass-premium border border-white/15 rounded-3xl md:rounded-5xl w-full max-w-6xl max-h-[92vh] overflow-hidden flex flex-col md:flex-row shadow-2xl shadow-violet-500/10"
                 onClick={e => e.stopPropagation()}
             >
                 <div className="w-full md:w-[60%] relative h-64 md:h-auto overflow-hidden bg-slate-900 border-b md:border-b-0 md:border-r border-white/10">
@@ -222,7 +222,7 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
 
                 <div className="w-full md:w-[40%] p-10 md:p-14 md:py-20 flex flex-col bg-slate-950/20 overflow-y-auto">
                     <div className="flex justify-between items-start mb-10">
-                        <div className="px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-black tracking-widest text-emerald-400 uppercase">
+                        <div className="px-3 py-1.5 rounded-lg bg-violet-500/10 border border-violet-500/20 text-[10px] font-black tracking-widest text-violet-400 uppercase">
                             Project Overview
                         </div>
                         <button onClick={onClose} aria-label="Close project details" className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/5 border border-white/10 transition-all active:scale-90">
@@ -248,19 +248,19 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                         )}
 
                         {project.solution && (
-                            <section className="p-6 bg-emerald-500/5 border border-emerald-500/10 rounded-2xl">
-                                <h4 className="text-[10px] font-black tracking-widest text-emerald-400 uppercase mb-3">The Solution</h4>
+                            <section className="p-6 bg-violet-500/5 border border-violet-500/10 rounded-2xl">
+                                <h4 className="text-[10px] font-black tracking-widest text-violet-400 uppercase mb-3">The Solution</h4>
                                 <p className="text-slate-300 text-sm leading-relaxed">{project.solution}</p>
                             </section>
                         )}
 
                         {project.impact && project.impact.length > 0 && (
                             <section>
-                                <h4 className="text-[10px] font-black tracking-widest text-indigo-500 uppercase mb-4">Core Impact</h4>
+                                <h4 className="text-[10px] font-black tracking-widest text-fuchsia-500 uppercase mb-4">Core Impact</h4>
                                 <ul className="space-y-3">
                                     {project.impact.map((item, i) => (
                                         <li key={i} className="flex items-start gap-3 text-slate-300 text-sm">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0" />
+                                            <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-500 mt-1.5 shrink-0" />
                                             <span className="font-bold">{item}</span>
                                         </li>
                                     ))}
@@ -269,7 +269,7 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                         )}
 
                         <section className="pt-10 border-t border-white/5">
-                            <h4 className="text-[10px] font-black tracking-widest text-slate-500 uppercase mb-6">Technical Architecture</h4>
+                            <h4 className="text-[10px] font-black tracking-widest text-slate-400 uppercase mb-6">Technical Architecture</h4>
                             
                             <div className="space-y-8">
                                 <div className="flex flex-wrap gap-2">
@@ -292,7 +292,7 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
 
                     <div className="mt-12 flex flex-col sm:flex-row gap-4 pt-10 border-t border-white/5">
                         {project.link && (
-                            <a href={project.link} target="_blank" rel="noopener noreferrer" className="flex-1 py-4 bg-indigo-600 hover:bg-indigo-500 rounded-2xl text-center text-white text-sm font-black transition-all shadow-xl shadow-indigo-500/20 active:scale-95">
+                            <a href={project.link} target="_blank" rel="noopener noreferrer" className="flex-1 py-4 bg-fuchsia-600 hover:bg-fuchsia-500 rounded-2xl text-center text-white text-sm font-black transition-all shadow-xl shadow-fuchsia-500/20 active:scale-95">
                                 Live Preview
                             </a>
                         )}

@@ -115,7 +115,7 @@ export function Footer({ content }: FooterProps) {
 
     return (
         <footer className="w-full bg-[#0A0A0B] py-16 md:py-24 px-4 sm:px-6 md:px-8 relative overflow-hidden border-t border-white/5">
-            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-emerald-500/[0.04] rounded-full blur-[120px] pointer-events-none" />
+            <div className="hidden md:block absolute top-0 right-0 w-[400px] h-[400px] bg-violet-500/[0.04] rounded-full blur-[120px] pointer-events-none" />
 
             <div className="container mx-auto max-w-6xl relative z-10">
                 <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-24">
@@ -124,11 +124,11 @@ export function Footer({ content }: FooterProps) {
                         <div className="flex flex-col gap-8">
                             <div>
                                 <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black text-white tracking-tighter leading-[0.8] mb-6 sm:mb-8 uppercase" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
-                                    LET'S BUILD<br />SOMETHING<br /><span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-emerald-600">GREAT</span>
+                                    LET'S BUILD<br />SOMETHING<br /><span className="bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-violet-600">GREAT</span>
                                 </h2>
                                 <p className="text-xs sm:text-sm md:text-base lg:text-xl leading-tight max-w-md font-bold text-slate-400">
                                     I'm currently
-                                    <span className="text-emerald-400"> open to new opportunities</span> — reach out if you have something worth building.
+                                    <span className="text-violet-400"> open to new opportunities</span> — reach out if you have something worth building.
                                 </p>
                             </div>
 
@@ -136,16 +136,16 @@ export function Footer({ content }: FooterProps) {
                             <div className="flex flex-col gap-3">
                                 <a
                                     href={`mailto:${content.email}`}
-                                    className="text-emerald-400 hover:text-white transition-colors font-semibold text-lg flex items-center gap-2"
+                                    className="text-violet-400 hover:text-white transition-colors font-semibold text-lg flex items-center gap-2"
                                 >
-                                    <span className="text-slate-600">→</span> {content.email}
+                                    <span className="text-slate-400">→</span> {content.email}
                                 </a>
                                 {content.phone && (
                                     <a
                                         href={`tel:${content.phone}`}
                                         className="text-slate-400 hover:text-white transition-colors font-medium text-base flex items-center gap-2"
                                     >
-                                        <span className="text-slate-600">→</span> {content.phone}
+                                        <span className="text-slate-400">→</span> {content.phone}
                                     </a>
                                 )}
                             </div>
@@ -159,7 +159,7 @@ export function Footer({ content }: FooterProps) {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         aria-label={s.label}
-                                        className="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-slate-400 hover:bg-emerald-600 hover:border-emerald-500 hover:text-white transition-all duration-300"
+                                        className="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-slate-400 hover:bg-violet-600 hover:border-violet-500 hover:text-white transition-all duration-300"
                                     >
                                         {s.icon}
                                     </a>
@@ -179,7 +179,7 @@ export function Footer({ content }: FooterProps) {
                         >
                             {formStatus === "sent" ? (
                                 <div className="flex flex-col items-center justify-center py-12 text-center gap-4">
-                                    <div className="w-16 h-16 rounded-full bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center text-2xl">✓</div>
+                                    <div className="w-16 h-16 rounded-full bg-violet-600/20 border border-violet-500/30 flex items-center justify-center text-2xl">✓</div>
                                     <h3 className="text-2xl font-black text-white">Message Sent!</h3>
                                     <p className="text-slate-400 text-base">I'll get back to you soon.</p>
                                 </div>
@@ -187,7 +187,7 @@ export function Footer({ content }: FooterProps) {
                                 <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                                     <div className="grid sm:grid-cols-2 gap-4">
                                         <div className="flex flex-col gap-2">
-                                            <label htmlFor="name" className="text-xs font-bold uppercase tracking-widest text-slate-500">Name</label>
+                                            <label htmlFor="name" className="text-xs font-bold uppercase tracking-widest text-slate-400">Name</label>
                                             <MagneticInput className="w-full">
                                                 <input
                                                     id="name"
@@ -195,12 +195,12 @@ export function Footer({ content }: FooterProps) {
                                                     required
                                                     type="text"
                                                     placeholder="Your Name"
-                                                    className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/50 transition-all hover:border-emerald-500/30"
+                                                    className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-400 focus:outline-none focus:border-violet-500/50 transition-all hover:border-violet-500/30"
                                                 />
                                             </MagneticInput>
                                         </div>
                                         <div className="flex flex-col gap-2">
-                                            <label htmlFor="email" className="text-xs font-bold uppercase tracking-widest text-slate-500">Email</label>
+                                            <label htmlFor="email" className="text-xs font-bold uppercase tracking-widest text-slate-400">Email</label>
                                             <MagneticInput className="w-full">
                                                 <input
                                                     id="email"
@@ -208,13 +208,13 @@ export function Footer({ content }: FooterProps) {
                                                     required
                                                     type="email"
                                                     placeholder="you@example.com"
-                                                    className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/50 transition-all hover:border-emerald-500/30"
+                                                    className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-400 focus:outline-none focus:border-violet-500/50 transition-all hover:border-violet-500/30"
                                                 />
                                             </MagneticInput>
                                         </div>
                                     </div>
                                     <div className="flex flex-col gap-2">
-                                        <label htmlFor="message" className="text-xs font-bold uppercase tracking-widest text-slate-500">Message</label>
+                                        <label htmlFor="message" className="text-xs font-bold uppercase tracking-widest text-slate-400">Message</label>
                                         <MagneticInput className="w-full">
                                             <textarea
                                                 id="message"
@@ -222,7 +222,7 @@ export function Footer({ content }: FooterProps) {
                                                 required
                                                 rows={4}
                                                 placeholder="Tell me about your project..."
-                                                className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/50 transition-all resize-none hover:border-emerald-500/30"
+                                                className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-400 focus:outline-none focus:border-violet-500/50 transition-all resize-none hover:border-violet-500/30"
                                             />
                                         </MagneticInput>
                                     </div>
@@ -231,7 +231,7 @@ export function Footer({ content }: FooterProps) {
                                         disabled={formStatus === "sending"}
                                         whileHover={{ scale: 1.02 }}
                                         whileTap={{ scale: 0.98 }}
-                                        className="w-full py-4 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-black text-sm uppercase tracking-widest rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center min-h-[56px] shadow-lg shadow-emerald-500/20"
+                                        className="w-full py-4 bg-gradient-to-r from-violet-600 to-violet-700 hover:from-violet-500 hover:to-violet-600 text-white font-black text-sm uppercase tracking-widest rounded-xl transition-colors active:scale-[0.98] disabled:opacity-50 flex items-center justify-center min-h-[56px] shadow-lg shadow-violet-500/20"
                                     >
                                         {formStatus === "idle" ? "Send Message" : formStatus === "sending" ? "Sending…" : "Sent!"}
                                     </motion.button>
@@ -243,10 +243,10 @@ export function Footer({ content }: FooterProps) {
 
                 {/* Bottom bar */}
                 <div className="mt-20 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <p className="text-sm text-slate-600 font-medium">
+                    <p className="text-sm text-slate-400 font-medium">
                         © {new Date().getFullYear()} {content.name} — All rights reserved.
                     </p>
-                    <p className="text-xs text-slate-700 font-mono">Built with Next.js + Framer Motion</p>
+                    <p className="text-xs text-slate-500 font-mono">Built with Next.js + Framer Motion</p>
                 </div>
             </div>
         </footer>

@@ -105,14 +105,14 @@ export function TechIcon({ name, icon, className = "", theme }: TechIconProps) {
 
     if (error || NO_ICON_AVAILABLE.has(baseSlug) || NO_ICON_AVAILABLE.has(slug)) {
         return (
-            <div className={`${className} bg-gradient-to-br ${theme?.primaryGradient || 'from-indigo-500 to-purple-600'} text-white flex items-center justify-center text-3xl font-bold shadow-lg`}>
+            <div className={`${className} bg-gradient-to-br ${theme?.primaryGradient || 'from-fuchsia-500 to-purple-600'} text-white flex items-center justify-center text-sm sm:text-lg md:text-2xl font-bold rounded-lg shadow-lg`}>
                 {name.charAt(0)}
             </div>
         );
     }
 
     return (
-        <div className={`${className} p-3 flex items-center justify-center`}>
+        <div className={`${className} p-0.5 flex items-center justify-center`}>
             <img
                 src={iconUrl}
                 alt={name}

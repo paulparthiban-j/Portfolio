@@ -1,100 +1,86 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
+
+const TRAIL_LENGTH = 5;
 
 export function CustomCursor() {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
-    const [isVisible, setIsVisible] = useState(false);
-    const [isHovering, setIsHovering] = useState(false);
-    const trailRef = useRef<{ x: number; y: number }[]>([]);
-    const animationRef = useRef<number | null>(null);
+    const dotsRef = useRef<(HTMLDivElement | null)[]>([]);
 
     useEffect(() => {
-        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-        if (isTouchDevice) return;
+        const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (!finePointer || reducedMotion) return;
 
-        setIsVisible(true);
-        
-        // Initialize trail
-        trailRef.current = Array(5).fill({ x: 0, y: 0 });
+        // Positions live in refs and are written straight to transforms, so
+        // moving the mouse never re-renders React.
+        const mouse = { x: -100, y: -100 };
+        const trail = Array.from({ length: TRAIL_LENGTH }, () => ({ x: -100, y: -100 }));
+        let hovering = false;
+        let frame: number | null = null;
+
+        const render = () => {
+            let settled = true;
+            trail.forEach((pos, i) => {
+                const target = i === 0 ? mouse : trail[i - 1];
+                const ease = i === 0 ? 1 : 0.35;
+                pos.x += (target.x - pos.x) * ease;
+                pos.y += (target.y - pos.y) * ease;
+                if (Math.abs(target.x - pos.x) > 0.1 || Math.abs(target.y - pos.y) > 0.1) settled = false;
+
+                const el = dotsRef.current[i];
+                if (el) {
+                    const scale = i === 0 && hovering ? 3 : 1;
+                    el.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0) translate(-50%, -50%) scale(${scale})`;
+                }
+            });
+            // Stop the loop once the trail has caught up; restart on next move
+            frame = settled ? null : requestAnimationFrame(render);
+        };
+
+        const kick = () => {
+            if (frame === null) frame = requestAnimationFrame(render);
+        };
 
         const handleMouseMove = (e: MouseEvent) => {
-            setPosition({ x: e.clientX, y: e.clientY });
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            kick();
         };
-
-        const animateTrail = () => {
-            trailRef.current = trailRef.current.map((pos, i) => {
-                if (i === 0) {
-                    return position;
-                }
-                const prev = trailRef.current[i - 1];
-                return {
-                    x: pos.x + (prev.x - pos.x) * 0.3,
-                    y: pos.y + (prev.y - pos.y) * 0.3,
-                };
-            });
-            animationRef.current = requestAnimationFrame(animateTrail);
-        };
-
-        animateTrail();
 
         const handleMouseOver = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
-            if (
-                target.tagName === 'A' ||
-                target.tagName === 'BUTTON' ||
-                target.closest('a') ||
-                target.closest('button') ||
-                target.classList.contains('cursor-pointer')
-            ) {
-                setIsHovering(true);
-            } else {
-                setIsHovering(false);
-            }
+            hovering = !!target.closest("a, button, .cursor-pointer");
+            kick();
         };
 
-        window.addEventListener('mousemove', handleMouseMove, { passive: true });
-        window.addEventListener('mouseover', handleMouseOver);
+        window.addEventListener("mousemove", handleMouseMove, { passive: true });
+        window.addEventListener("mouseover", handleMouseOver, { passive: true });
 
         return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('mouseover', handleMouseOver);
-            if (animationRef.current) {
-                cancelAnimationFrame(animationRef.current);
-            }
+            window.removeEventListener("mousemove", handleMouseMove);
+            window.removeEventListener("mouseover", handleMouseOver);
+            if (frame !== null) cancelAnimationFrame(frame);
         };
     }, []);
 
-    if (!isVisible) return null;
-
     return (
         <>
-            {/* Trail dots */}
-            {trailRef.current.map((pos, i) => (
+            {Array.from({ length: TRAIL_LENGTH }, (_, i) => (
                 <div
                     key={i}
-                    className="fixed pointer-events-none rounded-full bg-emerald-500/30"
+                    ref={(el) => { dotsRef.current[i] = el; }}
+                    aria-hidden="true"
+                    className="hidden [@media(hover:hover)_and_(pointer:fine)]:block motion-reduce:!hidden fixed top-0 left-0 pointer-events-none rounded-full bg-violet-400/40 will-change-transform"
                     style={{
-                        left: `${pos.x}px`,
-                        top: `${pos.y}px`,
                         width: `${8 - i * 1.5}px`,
                         height: `${8 - i * 1.5}px`,
-                        transform: 'translate(-50%, -50%)',
-                        opacity: 0.5 - i * 0.1,
-                        zIndex: 9998 - i,
+                        opacity: 0.6 - i * 0.1,
+                        zIndex: 9999 - i,
+                        transform: "translate3d(-100px, -100px, 0)",
                     }}
                 />
             ))}
-            {/* Main cursor */}
-            <div
-                className={`custom-cursor pointer-events-none ${isHovering ? "hovering" : ""}`}
-                style={{
-                    left: `${position.x}px`,
-                    top: `${position.y}px`,
-                    transform: `translate(-50%, -50%) ${isHovering ? 'scale(3)' : 'scale(1)'}`,
-                    zIndex: 9999,
-                }}
-            />
         </>
     );
 }

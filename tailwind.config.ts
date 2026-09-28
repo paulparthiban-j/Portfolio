@@ -11,13 +11,13 @@ const config: Config = {
       colors: {
         primary: "#1E293B", // Slate 800
         secondary: "#334155", // Slate 700
-        cta: "#22C55E", // Green 500
+        cta: "#8B5CF6", // Violet 500
         background: "#0F172A", // Slate 900
         foreground: "#F8FAFC", // Slate 50
         accent: {
-          light: "#4ADE80", // Green 400
-          DEFAULT: "#22C55E", // Green 500
-          dark: "#16A34A", // Green 600
+          light: "#A78BFA", // Violet 400
+          DEFAULT: "#8B5CF6", // Violet 500
+          dark: "#7C3AED", // Violet 600
         },
         card: {
           DEFAULT: "rgba(255, 255, 255, 0.03)",
@@ -46,11 +46,11 @@ const config: Config = {
         dark: {
           "primary": "#1E293B",
           "secondary": "#334155",
-          "accent": "#22C55E",
+          "accent": "#8B5CF6",
           "neutral": "#334155",
           "base-100": "#0F172A",
           "info": "#3b82f6",
-          "success": "#22C55E",
+          "success": "#8B5CF6",
           "warning": "#eab308",
           "error": "#ef4444",
         },

@@ -1,41 +1,37 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import Lenis from 'lenis';
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
-  const lenisRef = useRef<Lenis | null>(null);
-
   useEffect(() => {
-    // Check for reduced motion preference
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    
-    if (prefersReducedMotion) {
+    // Touch devices already have native momentum scrolling; running Lenis
+    // there only adds a permanent rAF loop and can make scrolling feel laggy.
+    const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+
+    if (prefersReducedMotion || isTouch) {
       return;
     }
 
-    // Initialize Lenis
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 1,
-      touchMultiplier: 2,
       infinite: false,
     });
 
-    lenisRef.current = lenis;
-
-    // Integrate with requestAnimationFrame
+    let frame: number;
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      frame = requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf);
+    frame = requestAnimationFrame(raf);
 
-    // Cleanup
     return () => {
+      cancelAnimationFrame(frame);
       lenis.destroy();
     };
   }, []);
