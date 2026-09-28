@@ -24,7 +24,7 @@ export function TechIcon({ name, icon, className = "", theme }: TechIconProps) {
     if (icon && (icon.startsWith('http') || icon.startsWith('/') || icon.startsWith('data:'))) {
         return (
             <div className={`${className} overflow-hidden shadow-lg`}>
-                <img src={icon} alt={name} className="w-full h-full object-contain" />
+                <img src={icon} alt={name} loading="lazy" decoding="async" className="w-full h-full object-contain" />
             </div>
         );
     }
@@ -113,9 +113,13 @@ export function TechIcon({ name, icon, className = "", theme }: TechIconProps) {
 
     return (
         <div className={`${className} p-0.5 flex items-center justify-center`}>
+            {/* Lazy: otherwise the server HTML preloads every skill icon at high
+                priority, starving the fonts and delaying the hero */}
             <img
                 src={iconUrl}
                 alt={name}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-contain transition-transform group-hover:scale-110"
                 onError={() => setError(true)}
             />
