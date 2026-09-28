@@ -1,7 +1,7 @@
 "use client";
 
 import { PortfolioContent } from "@/types/portfolio";
-import { ScrollSection } from "@/components/ui/ScrollSection";
+import { staggerContainer, riseItem, inViewOnce, EASE_OUT_EXPO } from "@/components/ui/motion";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useState, useRef } from "react";
 
@@ -120,20 +120,43 @@ export function Footer({ content }: FooterProps) {
             <div className="container mx-auto max-w-6xl relative z-10">
                 <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-24">
                     {/* Left: contact info */}
-                    <ScrollSection animationType="slide-right" className="w-full">
+                    <motion.div
+                        className="w-full"
+                        initial="hidden"
+                        whileInView="show"
+                        viewport={inViewOnce}
+                        variants={staggerContainer(0.1)}
+                    >
                         <div className="flex flex-col gap-8">
                             <div>
-                                <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black text-white tracking-tighter leading-[0.8] mb-6 sm:mb-8 uppercase" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
-                                    LET'S BUILD<br />SOMETHING<br /><span className="bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-violet-600">GREAT</span>
+                                {/* Each line slides up out of its own mask */}
+                                <h2
+                                    aria-label="Let's build something great"
+                                    className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black text-white tracking-tighter leading-[0.8] mb-6 sm:mb-8 uppercase"
+                                    style={{ fontFamily: 'var(--font-space-grotesk)' }}
+                                >
+                                    {["LET'S BUILD", "SOMETHING", "GREAT"].map((line, i) => (
+                                        <span key={line} aria-hidden="true" className="block overflow-hidden pb-[0.1em] -mb-[0.1em]">
+                                            <motion.span
+                                                className={`block ${i === 2 ? "bg-clip-text text-transparent bg-gradient-to-r from-violet-400 via-fuchsia-400 to-violet-600" : ""}`}
+                                                variants={{
+                                                    hidden: { y: "110%", skewY: 6 },
+                                                    show: { y: "0%", skewY: 0, transition: { duration: 0.9, ease: EASE_OUT_EXPO } },
+                                                }}
+                                            >
+                                                {line}
+                                            </motion.span>
+                                        </span>
+                                    ))}
                                 </h2>
-                                <p className="text-xs sm:text-sm md:text-base lg:text-xl leading-tight max-w-md font-bold text-slate-400">
+                                <motion.p variants={riseItem} className="text-xs sm:text-sm md:text-base lg:text-xl leading-tight max-w-md font-bold text-slate-400">
                                     I'm currently
                                     <span className="text-violet-400"> open to new opportunities</span> — reach out if you have something worth building.
-                                </p>
+                                </motion.p>
                             </div>
 
                             {/* Contact details */}
-                            <div className="flex flex-col gap-3">
+                            <motion.div variants={riseItem} className="flex flex-col gap-3">
                                 <a
                                     href={`mailto:${content.email}`}
                                     className="text-violet-400 hover:text-white transition-colors font-semibold text-lg flex items-center gap-2"
@@ -148,41 +171,57 @@ export function Footer({ content }: FooterProps) {
                                         <span className="text-slate-400">→</span> {content.phone}
                                     </a>
                                 )}
-                            </div>
+                            </motion.div>
 
                             {/* Social links */}
-                            <div className="flex gap-3">
+                            <motion.div variants={staggerContainer(0.08)} className="flex gap-3">
                                 {socialLinks.map((s) => (
-                                    <a
+                                    <motion.a
+                                        variants={{
+                                            hidden: { opacity: 0, scale: 0, rotate: -30 },
+                                            show: { opacity: 1, scale: 1, rotate: 0, transition: { type: "spring", stiffness: 400, damping: 15 } },
+                                        }}
+                                        whileHover={{ y: -6, rotate: -8 }}
+                                        whileTap={{ scale: 0.9 }}
                                         key={s.label}
                                         href={s.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         aria-label={s.label}
-                                        className="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-slate-400 hover:bg-violet-600 hover:border-violet-500 hover:text-white transition-all duration-300"
+                                        className="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-slate-400 hover:bg-violet-600 hover:border-violet-500 hover:text-white transition-colors duration-300"
                                     >
                                         {s.icon}
-                                    </a>
+                                    </motion.a>
                                 ))}
-                            </div>
+                            </motion.div>
                         </div>
-                    </ScrollSection>
+                    </motion.div>
 
                     {/* Right: contact form */}
-                    <ScrollSection animationType="slide-left" className="w-full">
+                    <div className="w-full [perspective:1200px]">
                         <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5 }}
+                            initial={{ opacity: 0, y: 60, rotateY: -18 }}
+                            whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+                            viewport={inViewOnce}
+                            transition={{ type: "spring", stiffness: 70, damping: 16 }}
                             className="bg-white/[0.03] border border-white/10 rounded-2xl md:rounded-3xl p-6 sm:p-8 md:p-10"
                         >
                             {formStatus === "sent" ? (
-                                <div className="flex flex-col items-center justify-center py-12 text-center gap-4">
-                                    <div className="w-16 h-16 rounded-full bg-violet-600/20 border border-violet-500/30 flex items-center justify-center text-2xl">✓</div>
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ type: "spring", stiffness: 200, damping: 18 }}
+                                    className="flex flex-col items-center justify-center py-12 text-center gap-4"
+                                >
+                                    <motion.div
+                                        initial={{ scale: 0, rotate: -90 }}
+                                        animate={{ scale: 1, rotate: 0 }}
+                                        transition={{ type: "spring", stiffness: 300, damping: 12, delay: 0.1 }}
+                                        className="w-16 h-16 rounded-full bg-violet-600/20 border border-violet-500/30 flex items-center justify-center text-2xl"
+                                    >✓</motion.div>
                                     <h3 className="text-2xl font-black text-white">Message Sent!</h3>
                                     <p className="text-slate-400 text-base">I'll get back to you soon.</p>
-                                </div>
+                                </motion.div>
                             ) : (
                                 <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                                     <div className="grid sm:grid-cols-2 gap-4">
@@ -238,7 +277,7 @@ export function Footer({ content }: FooterProps) {
                                 </form>
                             )}
                         </motion.div>
-                    </ScrollSection>
+                    </div>
                 </div>
 
                 {/* Bottom bar */}

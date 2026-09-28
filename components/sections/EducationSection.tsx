@@ -1,8 +1,8 @@
 "use client";
 
 import { PortfolioContent } from "@/types/portfolio";
-import { ScrollSection } from "@/components/ui/ScrollSection";
 import { motion } from "framer-motion";
+import { SectionHeading, SpotlightCard, staggerContainer, inViewOnce } from "@/components/ui/motion";
 
 interface EducationSectionProps {
     content: PortfolioContent;
@@ -20,34 +20,39 @@ export function EducationSection({ content }: EducationSectionProps) {
             <div className="hidden md:block absolute bottom-0 left-0 w-[400px] h-[400px] bg-violet-500/[0.04] rounded-full blur-[120px] pointer-events-none" />
 
             <div className="container mx-auto max-w-6xl relative z-10 w-full">
-                <ScrollSection animationType="slide-down" className="mb-16 md:mb-20 text-center">
-                    <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-white uppercase leading-none" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
-                        {content.educationTitle || "EDUCATION"}
-                    </h2>
-                    <div className="h-1 w-24 bg-violet-600 rounded-full mt-6 mx-auto" />
-                </ScrollSection>
+                <SectionHeading title={content.educationTitle || "EDUCATION"} className="mb-16 md:mb-20" />
 
                 {education.length === 0 ? (
                     <p className="text-slate-400 text-center text-lg">No education listed yet.</p>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6">
+                    <motion.div
+                        className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 [perspective:1200px]"
+                        initial="hidden"
+                        whileInView="show"
+                        viewport={inViewOnce}
+                        variants={staggerContainer(0.15)}
+                    >
                         {education.map((edu, index) => (
-                            <motion.div
+                            <SpotlightCard
                                 key={index}
-                                initial={{ opacity: 0, y: 24 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.1, duration: 0.5 }}
-                                whileHover={{ y: -4 }}
-                                whileTap={{ scale: 0.99 }}
-                                className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 md:p-8 hover:border-violet-500/30 hover:bg-white/[0.05] transition-colors duration-200 flex flex-col gap-4 relative cursor-pointer"
+                                variants={{
+                                    hidden: { opacity: 0, rotateY: index % 2 ? -35 : 35, x: index % 2 ? 60 : -60 },
+                                    show: { opacity: 1, rotateY: 0, x: 0, transition: { type: "spring", stiffness: 80, damping: 16 } },
+                                }}
+                                className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 md:p-8 hover:bg-white/[0.05] transition-colors duration-200 flex flex-col gap-4"
                             >
                                 {/* Year badge */}
-                                <div className="absolute top-6 right-6">
+                                <motion.div
+                                    className="absolute top-6 right-6"
+                                    initial={{ scale: 0, rotate: -20 }}
+                                    whileInView={{ scale: 1, rotate: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ type: "spring", stiffness: 400, damping: 14, delay: 0.4 + index * 0.15 }}
+                                >
                                     <span className="text-xs font-black text-violet-400 bg-violet-500/10 border border-violet-500/20 px-3 py-1 rounded-full uppercase tracking-widest">
                                         {edu.year}
                                     </span>
-                                </div>
+                                </motion.div>
 
                                 {/* Degree */}
                                 <h3 className="text-xl md:text-2xl font-black text-white tracking-tight leading-snug pr-20">
@@ -70,9 +75,9 @@ export function EducationSection({ content }: EducationSectionProps) {
                                         </div>
                                     )}
                                 </div>
-                            </motion.div>
+                            </SpotlightCard>
                         ))}
-                    </div>
+                    </motion.div>
                 )}
             </div>
         </section>

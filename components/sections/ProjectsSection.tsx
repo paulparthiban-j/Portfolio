@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useMemo, useCallback, useRef, useEffect } from "react";
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useState, useMemo, useCallback, useRef, useEffect, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
+import { motion, AnimatePresence, useMotionValue, useSpring, useMotionTemplate } from "framer-motion";
 import { PortfolioContent, Project, Theme } from "@/types/portfolio";
-import { ScrollSection } from "@/components/ui/ScrollSection";
+import { SectionHeading, staggerContainer, flipItem, inViewOnce, EASE_OUT_EXPO } from "@/components/ui/motion";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import Image from "next/image";
@@ -14,41 +15,58 @@ interface ProjectsSectionProps {
     sectionIndex?: number;
 }
 
+const noopSubscribe = () => () => {};
+
 // 3D Tilt Card Component
 function TiltCard({ children, className, onClick }: { children: React.ReactNode; className?: string; onClick?: () => void }) {
     const ref = useRef<HTMLDivElement>(null);
     const x = useMotionValue(0);
     const y = useMotionValue(0);
+    const glareX = useMotionValue(50);
+    const glareY = useMotionValue(50);
+    const glareOpacity = useSpring(0, { stiffness: 200, damping: 25 });
 
     const handleMouseMove = (e: React.MouseEvent) => {
         if (!ref.current) return;
         const rect = ref.current.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        const rotateX = (e.clientY - centerY) / 10;
-        const rotateY = (e.clientX - centerX) / 10;
-        x.set(rotateX);
-        y.set(rotateY);
+        const px = (e.clientX - rect.left) / rect.width;
+        const py = (e.clientY - rect.top) / rect.height;
+        // Gentle tilt (max ~8deg) towards the pointer
+        x.set((0.5 - py) * 16);
+        y.set((px - 0.5) * 16);
+        glareX.set(px * 100);
+        glareY.set(py * 100);
+        glareOpacity.set(1);
     };
 
     const handleMouseLeave = () => {
         x.set(0);
         y.set(0);
+        glareOpacity.set(0);
     };
 
     const rotateX = useSpring(x, { stiffness: 200, damping: 20 });
     const rotateY = useSpring(y, { stiffness: 200, damping: 20 });
+    const glare = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.12), transparent 55%)`;
 
     return (
         <motion.div
             ref={ref}
-            style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+            style={{ rotateX, rotateY, transformPerspective: 1000 }}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             onClick={onClick}
-            className={className}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className={`relative ${className}`}
         >
             {children}
+            <motion.div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 z-20 rounded-[inherit]"
+                style={{ background: glare, opacity: glareOpacity }}
+            />
         </motion.div>
     );
 }
@@ -56,6 +74,7 @@ function TiltCard({ children, className, onClick }: { children: React.ReactNode;
 export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSectionProps) {
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
     const isMobile = useIsMobile();
+    const isClient = useSyncExternalStore(noopSubscribe, () => true, () => false);
 
     if (!content) return null;
 
@@ -70,24 +89,21 @@ export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSec
             <div className="absolute inset-0 bg-[#0a0a0b] z-0" />
             
             <div className="container mx-auto max-w-7xl relative z-10 w-full">
-                <ScrollSection animationType="slide-down" className="mb-16 md:mb-20 text-center">
-                    <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-white mb-4 leading-none" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
-                        {content.projectsTitle || 'PROJECTS'}
-                    </h2>
-                    <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto font-medium">
-                        Systems designed and built end-to-end.
-                    </p>
-                </ScrollSection>
+                <SectionHeading
+                    title={content.projectsTitle || "PROJECTS"}
+                    subtitle="Systems designed and built end-to-end."
+                    className="mb-16 md:mb-20"
+                />
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 relative">
+                <motion.div
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 relative [perspective:1200px]"
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={inViewOnce}
+                    variants={staggerContainer(0.12)}
+                >
                     {projects.map((project, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1, duration: 0.5 }}
-                        >
+                        <motion.div key={index} variants={flipItem} style={{ transformOrigin: "50% 100%" }}>
                             <ProjectCard 
                                 project={project} 
                                 index={index} 
@@ -103,18 +119,23 @@ export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSec
                             <p className="text-slate-400 font-bold tracking-widest uppercase text-sm">No projects yet.</p>
                         </div>
                     )}
-                </div>
+                </motion.div>
             </div>
 
-            <AnimatePresence>
-                {selectedProject && (
-                    <ProjectModal 
-                        project={selectedProject} 
-                        onClose={() => setSelectedProject(null)} 
-                        theme={content.theme}
-                    />
-                )}
-            </AnimatePresence>
+            {/* Portalled to <body>: inside <main> (a z-10 stacking context) the
+                fixed navbar was drawn on top of the modal */}
+            {isClient && createPortal(
+                <AnimatePresence>
+                    {selectedProject && (
+                        <ProjectModal
+                            project={selectedProject}
+                            onClose={() => setSelectedProject(null)}
+                            theme={content.theme}
+                        />
+                    )}
+                </AnimatePresence>,
+                document.body
+            )}
         </AnimatedSection>
     );
 }
@@ -127,7 +148,7 @@ function ProjectCard({ project, index, isMobile, theme, onClick }: { project: Pr
     return (
         <CardComponent
             onClick={onClick}
-            whileTap={{ scale: 0.97 }}
+            {...(isMobile ? { whileTap: { scale: 0.97 } } : {})}
             className="group h-full flex flex-col justify-between glass-premium border border-white/10 rounded-2xl overflow-hidden cursor-pointer transition-[border-color,box-shadow] duration-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-slate-900 hover:border-violet-500/30 hover:shadow-2xl hover:shadow-violet-500/10"
         >
                 <div className="h-48 sm:h-56 md:h-64 lg:h-72 relative bg-slate-900 overflow-hidden">
@@ -209,6 +230,12 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                 onClick={e => e.stopPropagation()}
             >
                 <div className="w-full md:w-[60%] relative h-64 md:h-auto overflow-hidden bg-slate-900 border-b md:border-b-0 md:border-r border-white/10">
+                    <motion.div
+                        className="absolute inset-0"
+                        initial={{ scale: 1.25 }}
+                        animate={{ scale: 1 }}
+                        transition={{ duration: 1.2, ease: EASE_OUT_EXPO }}
+                    >
                     <Image
                         src={project.icon || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&auto=format&fit=crop&q=90"}
                         alt={project.title}
@@ -218,9 +245,15 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                         loading="lazy"
                         quality={80}
                     />
+                    </motion.div>
                 </div>
 
-                <div className="w-full md:w-[40%] p-10 md:p-14 md:py-20 flex flex-col bg-slate-950/20 overflow-y-auto">
+                <motion.div
+                    className="w-full md:w-[40%] p-10 md:p-14 md:py-20 flex flex-col bg-slate-950/20 overflow-y-auto"
+                    initial="hidden"
+                    animate="show"
+                    variants={staggerContainer(0.07, 0.15)}
+                >
                     <div className="flex justify-between items-start mb-10">
                         <div className="px-3 py-1.5 rounded-lg bg-violet-500/10 border border-violet-500/20 text-[10px] font-black tracking-widest text-violet-400 uppercase">
                             Project Overview
@@ -231,31 +264,31 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                     </div>
 
                     <div className="space-y-12">
-                        <section>
+                        <motion.section variants={modalItem}>
                             <h2 className="text-4xl md:text-5xl font-black text-white mb-6 uppercase tracking-tighter leading-none" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
                                 {project.title}
                             </h2>
                             <p className="text-slate-400 text-lg leading-relaxed font-medium">
                                 {project.description}
                             </p>
-                        </section>
+                        </motion.section>
 
                         {project.problem && (
-                            <section className="p-6 bg-red-500/5 border border-red-500/10 rounded-2xl">
+                            <motion.section variants={modalItem} className="p-6 bg-red-500/5 border border-red-500/10 rounded-2xl">
                                 <h4 className="text-[10px] font-black tracking-widest text-red-400 uppercase mb-3">The Problem</h4>
                                 <p className="text-slate-300 text-sm leading-relaxed">{project.problem}</p>
-                            </section>
+                            </motion.section>
                         )}
 
                         {project.solution && (
-                            <section className="p-6 bg-violet-500/5 border border-violet-500/10 rounded-2xl">
+                            <motion.section variants={modalItem} className="p-6 bg-violet-500/5 border border-violet-500/10 rounded-2xl">
                                 <h4 className="text-[10px] font-black tracking-widest text-violet-400 uppercase mb-3">The Solution</h4>
                                 <p className="text-slate-300 text-sm leading-relaxed">{project.solution}</p>
-                            </section>
+                            </motion.section>
                         )}
 
                         {project.impact && project.impact.length > 0 && (
-                            <section>
+                            <motion.section variants={modalItem}>
                                 <h4 className="text-[10px] font-black tracking-widest text-fuchsia-500 uppercase mb-4">Core Impact</h4>
                                 <ul className="space-y-3">
                                     {project.impact.map((item, i) => (
@@ -265,10 +298,10 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                                         </li>
                                     ))}
                                 </ul>
-                            </section>
+                            </motion.section>
                         )}
 
-                        <section className="pt-10 border-t border-white/5">
+                        <motion.section variants={modalItem} className="pt-10 border-t border-white/5">
                             <h4 className="text-[10px] font-black tracking-widest text-slate-400 uppercase mb-6">Technical Architecture</h4>
                             
                             <div className="space-y-8">
@@ -287,10 +320,10 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                                     </div>
                                 )}
                             </div>
-                        </section>
+                        </motion.section>
                     </div>
 
-                    <div className="mt-12 flex flex-col sm:flex-row gap-4 pt-10 border-t border-white/5">
+                    <motion.div variants={modalItem} className="mt-12 flex flex-col sm:flex-row gap-4 pt-10 border-t border-white/5">
                         {project.link && (
                             <a href={project.link} target="_blank" rel="noopener noreferrer" className="flex-1 py-4 bg-fuchsia-600 hover:bg-fuchsia-500 rounded-2xl text-center text-white text-sm font-black transition-all shadow-xl shadow-fuchsia-500/20 active:scale-95">
                                 Live Preview
@@ -301,9 +334,14 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                                 View Source
                             </a>
                         )}
-                    </div>
-                </div>
+                    </motion.div>
+                </motion.div>
             </motion.div>
         </motion.div>
     );
 }
+
+const modalItem = {
+    hidden: { opacity: 0, x: 24 },
+    show: { opacity: 1, x: 0, transition: { duration: 0.5, ease: EASE_OUT_EXPO } },
+};

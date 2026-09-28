@@ -2,7 +2,7 @@
 
 import { PortfolioContent, CustomSection } from "@/types/portfolio";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
-import { ScrollSection } from "@/components/ui/ScrollSection";
+import { SectionHeading } from "@/components/ui/motion";
 
 interface CustomSectionsProps {
     content: PortfolioContent;
@@ -28,11 +28,7 @@ export function CustomSections({ content, isActive, sectionIndex }: CustomSectio
                         <div className="absolute inset-0 bg-black/80 backdrop-blur-3xl z-0" />
                         
                         <div className="container mx-auto max-w-7xl relative z-10">
-                            <ScrollSection animationType="slide-down" className="mb-24 text-center">
-                                <h2 className="text-6xl md:text-9xl font-black tracking-tighter text-white uppercase">
-                                    {section.title}
-                                </h2>
-                            </ScrollSection>
+                            <SectionHeading title={section.title} className="mb-24" />
 
                             <div className="max-w-4xl mx-auto">
                                 <div className="glass-premium rounded-[3rem] p-10 md:p-20 border-white/5 relative group">

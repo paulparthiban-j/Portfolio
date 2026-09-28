@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PortfolioContent, Skill } from "@/types/portfolio";
-import { ScrollSection } from "@/components/ui/ScrollSection";
+import { SectionHeading, staggerContainer, inViewOnce, EASE_OUT_EXPO } from "@/components/ui/motion";
 import { TechIcon } from "@/components/ui/TechIcon";
 
 interface SkillsSectionProps {
@@ -45,85 +45,99 @@ export function SkillsSection({ content }: SkillsSectionProps) {
             <div className="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-500/[0.04] rounded-full blur-[120px] pointer-events-none" />
 
             <div className="container mx-auto max-w-7xl relative z-10 w-full">
-                {/* Heading */}
-                <ScrollSection animationType="slide-down" className="mb-16 md:mb-20 text-center">
-                    <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-white uppercase leading-none" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
-                        {content.skillsTitle || "THE STACK"}
-                    </h2>
-                    <p className="text-slate-400 text-sm md:text-lg mt-4 max-w-xl mx-auto font-medium">
-                        Tools and technologies I work with daily.
-                    </p>
-                    <div className="h-1 w-24 bg-violet-600 rounded-full mt-6 mx-auto" />
-                </ScrollSection>
+                <SectionHeading
+                    title={content.skillsTitle || "THE STACK"}
+                    subtitle="Tools and technologies I work with daily."
+                    className="mb-16 md:mb-20"
+                />
 
-                {/* Category Filter */}
-                <ScrollSection animationType="fade-in" className="mb-12">
-                    <div className="flex flex-wrap justify-center gap-3">
-                        {categories.map((category) => (
+                {/* Category Filter - the active pill slides between tabs (shared layoutId) */}
+                <motion.div
+                    className="mb-12 flex flex-wrap justify-center gap-2 md:gap-3"
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={inViewOnce}
+                    variants={staggerContainer(0.05)}
+                >
+                    {categories.map((category) => {
+                        const active = activeCategory === category;
+                        return (
                             <motion.button
                                 key={category}
                                 onClick={() => setActiveCategory(category)}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className={`px-6 py-3 rounded-full text-xs font-black uppercase tracking-widest transition-colors ${
-                                    activeCategory === category
-                                        ? "bg-violet-600 text-white shadow-lg shadow-violet-500/30"
-                                        : "bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white border border-white/10"
+                                variants={{
+                                    hidden: { opacity: 0, y: 16 },
+                                    show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE_OUT_EXPO } },
+                                }}
+                                whileHover={{ y: -2 }}
+                                whileTap={{ scale: 0.94 }}
+                                aria-pressed={active}
+                                className={`relative px-5 md:px-6 py-3 rounded-full text-xs font-black uppercase tracking-widest transition-colors duration-300 ${
+                                    active ? "text-white" : "text-slate-400 hover:text-white bg-white/5 border border-white/10"
                                 }`}
                             >
-                                {category}
+                                {active && (
+                                    <motion.span
+                                        layoutId="skills-active-pill"
+                                        className="absolute inset-0 rounded-full bg-violet-600 shadow-lg shadow-violet-500/30"
+                                        transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                                    />
+                                )}
+                                <span className="relative">{category}</span>
                             </motion.button>
-                        ))}
-                    </div>
-                </ScrollSection>
+                        );
+                    })}
+                </motion.div>
 
-                {/* Skills grid */}
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={activeCategory}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.3 }}
-                        className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4 md:gap-6 lg:gap-8"
-                    >
+                {/* Skills grid - items keep their identity across filters, so the
+                    ones that stay glide to their new slots while the rest pop out */}
+                <motion.div
+                    layout
+                    className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4 md:gap-6 lg:gap-8"
+                >
+                    <AnimatePresence mode="popLayout" initial={false}>
                         {filteredSkills.map((skill: string | Skill, index: number) => {
                             const name = typeof skill === "string" ? skill : skill.name;
                             const icon = typeof skill === "string" ? "" : (skill.icon || "");
 
                             return (
                                 <motion.div
-                                    key={`${activeCategory}-${index}`}
-                                    initial={{ opacity: 0, scale: 0.8 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ delay: Math.min(index, 12) * 0.03, duration: 0.25 }}
-                                    whileHover={{ scale: 1.1, rotate: 2 }}
-                                    whileTap={{ scale: 0.95 }}
+                                    key={name}
+                                    layout
+                                    initial={{ opacity: 0, scale: 0.6, y: 24 }}
+                                    whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                                    viewport={{ once: true, margin: "0px 0px -40px 0px" }}
+                                    exit={{ opacity: 0, scale: 0.6, transition: { duration: 0.2 } }}
+                                    transition={{
+                                        type: "spring",
+                                        stiffness: 260,
+                                        damping: 22,
+                                        delay: (index % 6) * 0.04,
+                                    }}
                                     className="flex flex-col items-center gap-4 group cursor-default"
                                 >
-                                    {/* Icon card with 3D effect */}
                                     <motion.div
-                                        whileHover={{ 
-                                            boxShadow: "0 0 30px rgba(139, 92, 246, 0.3)",
-                                            borderColor: "rgba(139, 92, 246, 0.5)"
-                                        }}
-                                        className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center transition-colors duration-300 overflow-hidden cursor-pointer"
+                                        whileHover={{ y: -8, rotate: -4, scale: 1.08 }}
+                                        whileTap={{ scale: 0.92 }}
+                                        transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                                        className="relative w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center overflow-hidden cursor-pointer group-hover:border-violet-500/50 group-hover:shadow-[0_0_30px_rgba(139,92,246,0.3)] transition-[border-color,box-shadow] duration-300"
                                     >
+                                        {/* Sheen that sweeps across on hover */}
+                                        <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
                                         <TechIcon
                                             name={name}
                                             icon={icon}
                                             className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12"
                                         />
                                     </motion.div>
-                                    {/* Label */}
                                     <span className="text-[10px] sm:text-xs md:text-sm font-semibold text-slate-400 group-hover:text-violet-400 uppercase tracking-wider text-center transition-colors duration-200 leading-tight">
                                         {name}
                                     </span>
                                 </motion.div>
                             );
                         })}
-                    </motion.div>
-                </AnimatePresence>
+                    </AnimatePresence>
+                </motion.div>
 
                 {filteredSkills.length === 0 && (
                     <motion.div
