@@ -211,28 +211,16 @@ body {
   left: 100%;
 }
 
-/* Grainy/Noise Overlay via inline SVG (Safer + Embedded) */
-.noise-overlay::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 9999;
-  pointer-events: none;
-  opacity: 0.025;
-  /* Inline Base64 SVG Noise */
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+/* Grain texture. Painted as part of the body background rather than as a
+   fixed full-screen overlay: the overlay sat above everything as its own
+   layer and had to be blended over the whole viewport on every frame. */
+.noise-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
 }
 
 /* Reduced Motion & Mobile Performance */
 @media (max-width: 768px) {
-  .noise-overlay::before {
-    display: none;
-    /* Hide on mobile to save battery/perf */
-  }
-
   .interaction-lift:hover {
     transform: none;
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.12);
@@ -514,21 +502,6 @@ html {
   }
 }
 
-@keyframes mesh-drift {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-
-  50% {
-    transform: translate3d(-4%, 3%, 0) scale(1.08);
-  }
-}
-
-.animate-mesh-drift {
-  animation: mesh-drift 24s ease-in-out infinite;
-}
-
 @keyframes scroll-cue {
   0%,
   100% {
@@ -552,6 +525,51 @@ html {
   100% {
     background-position: 1000px 0;
   }
+}
+
+/* Hero aurora orbs and floating badges: translate only, so the compositor
+   can move the existing raster without repainting */
+@keyframes orb-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  33% { transform: translate3d(4%, -6%, 0); }
+  66% { transform: translate3d(-5%, 4%, 0); }
+}
+
+/* Desktop only, where the pointer parallax also moves them; phones keep the
+   orbs still (a full-screen moving gradient is costly on mobile GPUs) */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .animate-orb-float {
+    animation: orb-float 24s ease-in-out infinite;
+  }
+}
+
+@keyframes badge-float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-2deg); }
+  50% { transform: translate3d(0, -14px, 0) rotate(2deg); }
+}
+
+.animate-badge-float {
+  animation: badge-float 6s ease-in-out infinite;
+}
+
+@keyframes cta-shine {
+  0%, 60% { transform: translateX(0) skewX(-20deg); }
+  100% { transform: translateX(450%) skewX(-20deg); }
+}
+
+/* One sweep after the hero lands, then again on hover - not an endless loop */
+.animate-cta-shine {
+  animation: cta-shine 1.8s cubic-bezier(0.4, 0, 0.2, 1) 1.6s 1 both;
+}
+
+.group:hover .animate-cta-shine {
+  animation: cta-shine 1.1s cubic-bezier(0.4, 0, 0.2, 1) 0s 1 both;
+  animation-name: cta-shine-hover;
+}
+
+@keyframes cta-shine-hover {
+  from { transform: translateX(0) skewX(-20deg); }
+  to { transform: translateX(450%) skewX(-20deg); }
 }
 
 @keyframes card-sheen {

@@ -26,7 +26,7 @@ export function Particles() {
     let height = 0;
 
     const resizeCanvas = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       width = canvas.clientWidth;
       height = canvas.clientHeight;
       canvas.width = width * dpr;
@@ -48,8 +48,13 @@ export function Particles() {
 
     let frame: number | null = null;
     let onScreen = true;
+    let lastDraw = 0;
 
-    const draw = () => {
+    // Particles drift slowly, so 30fps looks the same as 60 at half the cost
+    const draw = (now: number) => {
+      frame = requestAnimationFrame(draw);
+      if (now - lastDraw < 32) return;
+      lastDraw = now;
       ctx.clearRect(0, 0, width, height);
 
       for (const particle of particles) {
@@ -67,8 +72,6 @@ export function Particles() {
         ctx.fillStyle = `rgba(167, 139, 250, ${particle.opacity})`;
         ctx.fill();
       }
-
-      frame = requestAnimationFrame(draw);
     };
 
     // Only spend frames while the hero is on screen and the tab is visible

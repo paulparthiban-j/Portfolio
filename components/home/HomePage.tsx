@@ -2,7 +2,6 @@
 
 import { MotionConfig } from "framer-motion";
 import { PortfolioContent } from "@/types/portfolio";
-import { ParticleBackground } from "@/components/sections/ParticleBackground";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { Navbar } from "@/components/ui/Navbar";
 import { IntroCurtain } from "@/components/ui/IntroCurtain";
@@ -28,7 +27,6 @@ export function HomePage({ content }: { content: PortfolioContent }) {
     <MotionConfig reducedMotion="user">
       <div className={`min-h-screen relative ${content.theme?.mode === "light" ? "bg-slate-50 text-slate-900" : "bg-[#0A0A0B] text-white"}`}>
         <IntroCurtain name={content.name} />
-        <ParticleBackground theme={content.theme} />
         <Navbar content={content} />
         <main className="relative z-10" role="main">
           <div id="hero" aria-label="Hero section"><HeroSection content={content} /></div>

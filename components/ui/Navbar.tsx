@@ -73,14 +73,14 @@ export function Navbar({ content }: NavbarProps) {
                 initial={{ y: -100 }}
                 animate={{ y: 0 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className={`fixed top-0 left-0 right-0 z-[100] transition-[padding] duration-500 px-4 py-4 md:px-10 ${
-                    scrolled ? "md:py-4" : "md:py-8"
-                }`}
+                className="fixed top-0 left-0 right-0 z-[100] px-4 py-4 md:px-10"
             >
-                <div className={`max-w-7xl mx-auto flex items-center justify-between transition-all duration-500 ${
-                    scrolled 
-                    ? "bg-black/80 backdrop-blur-2xl border border-white/10 p-3 md:px-8 rounded-2xl md:rounded-full shadow-2xl shadow-black/50" 
-                    : "bg-transparent p-3"
+                {/* Scrolled state changes only paint + transform (no padding/size
+                    animation), so it never triggers layout or layout shifts */}
+                <div className={`max-w-7xl mx-auto flex items-center justify-between p-3 md:px-8 rounded-2xl md:rounded-full border transition-[transform,background-color,border-color,box-shadow] duration-500 ${
+                    scrolled
+                    ? "bg-black/85 backdrop-blur-md border-white/10 shadow-2xl shadow-black/50"
+                    : "bg-transparent border-transparent md:translate-y-4"
                 }`}>
                     {/* Logo */}
                     <a href="#" className="flex items-center gap-3 group">
