@@ -226,28 +226,64 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
     }, []);
 
     // Phones have no pointer, so device tilt drives the same motion values
-    // (name tilt + aurora parallax). Android exposes it without a prompt; iOS
-    // needs a permission dialog, which we don't trigger - iOS keeps the scroll
-    // and ambient motion instead.
+    // (name tilt + aurora parallax). Android exposes it directly. iOS 13+ only
+    // allows it after DeviceOrientationEvent.requestPermission(), which must be
+    // called from a tap: we ask on the first tap on an empty part of the hero
+    // (never on a link/button, so the CTAs still just work), and never again
+    // once the visitor has said no.
     useEffect(() => {
+        const section = containerRef.current;
         const touch = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
         const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        const DOE = window.DeviceOrientationEvent as unknown as { requestPermission?: unknown } | undefined;
-        if (!touch || reduced || !DOE || typeof DOE.requestPermission === "function") return;
+        const DOE = window.DeviceOrientationEvent as unknown as
+            | { requestPermission?: () => Promise<"granted" | "denied"> }
+            | undefined;
+        if (!section || !touch || reduced || !DOE) return;
 
         let baseBeta: number | null = null;
         const clamp = (v: number) => Math.max(-0.5, Math.min(0.5, v));
         const onOrient = (e: DeviceOrientationEvent) => {
             if (e.beta == null || e.gamma == null) return;
             if (window.scrollY > window.innerHeight) return; // hero off screen
-            // Measure relative to how the phone was held when the page opened
+            // Measure relative to how the phone was held when tilt started
             if (baseBeta === null) baseBeta = e.beta;
             // Rounded so sensor noise doesn't keep the springs busy
             pointerX.set(Math.round(clamp(e.gamma / 40) * 50) / 50);
             pointerY.set(Math.round(clamp((e.beta - baseBeta) / 40) * 50) / 50);
         };
-        window.addEventListener("deviceorientation", onOrient);
-        return () => window.removeEventListener("deviceorientation", onOrient);
+        const listen = () => window.addEventListener("deviceorientation", onOrient);
+
+        const PERMISSION_KEY = "hero-tilt-permission";
+        let askOnTap: ((e: Event) => void) | null = null;
+
+        if (typeof DOE.requestPermission !== "function") {
+            listen(); // Android and other browsers: no prompt needed
+        } else {
+            let stored: string | null = null;
+            try { stored = localStorage.getItem(PERMISSION_KEY); } catch { /* storage blocked */ }
+            // Granted on an earlier visit: listen straight away (tapping will
+            // re-confirm silently if Safari needs it)
+            if (stored === "granted") listen();
+            if (stored !== "denied") {
+                const requestPermission = DOE.requestPermission;
+                askOnTap = (e: Event) => {
+                    if ((e.target as HTMLElement).closest("a, button")) return;
+                    section.removeEventListener("click", askOnTap!);
+                    requestPermission()
+                        .then((state) => {
+                            try { localStorage.setItem(PERMISSION_KEY, state); } catch { /* storage blocked */ }
+                            if (state === "granted") listen();
+                        })
+                        .catch(() => { /* not a user gesture or unsupported */ });
+                };
+                section.addEventListener("click", askOnTap);
+            }
+        }
+
+        return () => {
+            window.removeEventListener("deviceorientation", onOrient);
+            if (askOnTap) section.removeEventListener("click", askOnTap);
+        };
     }, [pointerX, pointerY]);
 
     const handlePointerMove = (e: React.PointerEvent) => {
