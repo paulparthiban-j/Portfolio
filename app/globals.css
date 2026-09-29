@@ -1338,3 +1338,46 @@ html.intro-seen .intro-curtain {
     transform: none;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Skip rendering off-screen sections                                   */
+/* ------------------------------------------------------------------ */
+
+/* The browser skips style, layout and paint for a section until it nears the
+   viewport - on a phone that took the first full-page render from ~900
+   elements to just the hero. contain-intrinsic-size gives each section a
+   placeholder height (measured per breakpoint) so the scrollbar and anchor
+   jumps stay close; "auto" makes the browser remember the real height once a
+   section has been rendered. Fixed-position overlays (the project modal) are
+   portalled to <body>, so the containment this implies doesn't affect them. */
+#about, #skills, #projects, #experience, #credibility, #education, #contact {
+  content-visibility: auto;
+}
+
+#about { contain-intrinsic-size: auto 1440px; }
+#skills { contain-intrinsic-size: auto 1840px; }
+#projects { contain-intrinsic-size: auto 3280px; }
+#experience { contain-intrinsic-size: auto 1690px; }
+#credibility { contain-intrinsic-size: auto 1640px; }
+#education { contain-intrinsic-size: auto 600px; }
+#contact { contain-intrinsic-size: auto 1090px; }
+
+@media (min-width: 768px) {
+  #about { contain-intrinsic-size: auto 1690px; }
+  #skills { contain-intrinsic-size: auto 1960px; }
+  #projects { contain-intrinsic-size: auto 2940px; }
+  #experience { contain-intrinsic-size: auto 1630px; }
+  #credibility { contain-intrinsic-size: auto 1530px; }
+  #education { contain-intrinsic-size: auto 580px; }
+  #contact { contain-intrinsic-size: auto 1180px; }
+}
+
+@media (min-width: 1280px) {
+  #about { contain-intrinsic-size: auto 1060px; }
+  #skills { contain-intrinsic-size: auto 1670px; }
+  #projects { contain-intrinsic-size: auto 2480px; }
+  #experience { contain-intrinsic-size: auto 1310px; }
+  #credibility { contain-intrinsic-size: auto 1200px; }
+  #education { contain-intrinsic-size: auto 530px; }
+  #contact { contain-intrinsic-size: auto 930px; }
+}

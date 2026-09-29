@@ -1,0 +1,8 @@
+/* Admin-only styles: DaisyUI's theme (base) and components on top of the
+   site's global CSS. Kept out of app/globals.css so public pages don't load
+   them. No @tailwind utilities here: the global stylesheet already contains
+   every utility the admin pages use, and repeating them here would change
+   the cascade order. */
+@config "../../tailwind.admin.config.ts";
+@tailwind base;
+@tailwind components;

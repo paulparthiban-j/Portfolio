@@ -39,24 +39,10 @@ const config: Config = {
       }
     },
   },
-  plugins: [require("daisyui")],
-  daisyui: {
-    themes: [
-      {
-        dark: {
-          "primary": "#1E293B",
-          "secondary": "#334155",
-          "accent": "#8B5CF6",
-          "neutral": "#334155",
-          "base-100": "#0F172A",
-          "info": "#3b82f6",
-          "success": "#8B5CF6",
-          "warning": "#eab308",
-          "error": "#ef4444",
-        },
-      },
-    ],
-  },
+  // DaisyUI is only used by the admin pages, so it lives in
+  // tailwind.admin.config.ts and is loaded by app/admin/admin.css. Here it
+  // added ~64 KB of render-blocking CSS to every public page view.
+  plugins: [],
 };
 
 export default config;
