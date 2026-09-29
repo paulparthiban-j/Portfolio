@@ -78,6 +78,8 @@ function GradientLetters({ text, gradient, startIndex, className = "" }: {
                             <m.span
                                 key={i}
                                 className="inline-block"
+                                // whileTap makes Framer add tabindex=0; keep it out of the tab order (parent is aria-hidden)
+                                tabIndex={-1}
                                 whileHover={{ y: "-0.12em", rotate: i % 2 ? 4 : -4, transition: { type: "spring", stiffness: 500, damping: 12 } }}
                                 whileTap={{ y: "-0.12em", rotate: i % 2 ? 4 : -4, scale: 1.08, transition: { type: "spring", stiffness: 500, damping: 12 } }}
                             >
