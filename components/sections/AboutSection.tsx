@@ -35,8 +35,10 @@ export function AboutSection({ content }: AboutSectionProps) {
                     {/* Main description card - spans 2 columns */}
                     <m.div
                         className="lg:col-span-2 w-full"
-                        initial={{ opacity: 0, x: -60, rotate: -2 }}
-                        whileInView={{ opacity: 1, x: 0, rotate: 0 }}
+                        // No opacity fade: this paragraph is often the largest text in the first
+                        // viewport, and starting at opacity 0 delays Largest Contentful Paint until hydration
+                        initial={{ x: -60, rotate: -2 }}
+                        whileInView={{ x: 0, rotate: 0 }}
                         viewport={inViewOnce}
                         transition={{ duration: 0.9, ease: EASE_OUT_EXPO }}
                     >

@@ -20,6 +20,8 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains-mono",
   display: "swap",
+  // Only used by the footer: don't preload it ahead of the hero
+  preload: false,
 });
 
 export const viewport: Viewport = {
