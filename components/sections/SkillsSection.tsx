@@ -130,7 +130,7 @@ export function SkillsSection({ content }: SkillsSectionProps) {
                                             className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12"
                                         />
                                     </motion.div>
-                                    <span className="text-[10px] sm:text-xs md:text-sm font-semibold text-slate-400 group-hover:text-violet-400 uppercase tracking-wider text-center transition-colors duration-200 leading-tight">
+                                    <span className="text-[11px] sm:text-xs md:text-sm font-semibold text-slate-400 group-hover:text-violet-400 uppercase tracking-wider text-center transition-colors duration-200 leading-tight">
                                         {name}
                                     </span>
                                 </motion.div>

@@ -10,7 +10,7 @@ export function LiveBadge({ label = "Live", className = "" }: LiveBadgeProps) {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-current opacity-75" />
                 <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-current" />
             </span>
-            <span className="text-[9px] font-black uppercase tracking-[0.2em] whitespace-nowrap">{label}</span>
+            <span className="text-[11px] font-black uppercase tracking-[0.2em] whitespace-nowrap">{label}</span>
         </span>
     );
 }

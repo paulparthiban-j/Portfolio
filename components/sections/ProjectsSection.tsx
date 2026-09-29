@@ -184,7 +184,7 @@ function ProjectCard({ project, index, isMobile, theme, onClick }: { project: Pr
 
                     <div className="mt-auto pt-4 sm:pt-6 border-t border-white/5 flex flex-wrap gap-1.5 sm:gap-2">
                         {techStack.slice(0, 4).map((t, idx) => (
-                            <span key={idx} className="px-2 py-1 sm:px-3 sm:py-1 bg-white/5 border border-white/10 rounded-lg text-[10px] font-black text-slate-300 uppercase tracking-widest group-hover:text-violet-300 group-hover:bg-violet-500/5 transition-all">
+                            <span key={idx} className="px-2 py-1 sm:px-3 sm:py-1 bg-white/5 border border-white/10 rounded-lg text-[11px] font-black text-slate-300 uppercase tracking-widest group-hover:text-violet-300 group-hover:bg-violet-500/5 transition-all">
                                 {t}
                             </span>
                         ))}
@@ -255,7 +255,7 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                     variants={staggerContainer(0.07, 0.15)}
                 >
                     <div className="flex justify-between items-start mb-10">
-                        <div className="px-3 py-1.5 rounded-lg bg-violet-500/10 border border-violet-500/20 text-[10px] font-black tracking-widest text-violet-400 uppercase">
+                        <div className="px-3 py-1.5 rounded-lg bg-violet-500/10 border border-violet-500/20 text-[11px] font-black tracking-widest text-violet-400 uppercase">
                             Project Overview
                         </div>
                         <button onClick={onClose} aria-label="Close project details" className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/5 border border-white/10 transition-all active:scale-90">
@@ -275,21 +275,21 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
 
                         {project.problem && (
                             <motion.section variants={modalItem} className="p-6 bg-red-500/5 border border-red-500/10 rounded-2xl">
-                                <h4 className="text-[10px] font-black tracking-widest text-red-400 uppercase mb-3">The Problem</h4>
+                                <h4 className="text-[11px] font-black tracking-widest text-red-400 uppercase mb-3">The Problem</h4>
                                 <p className="text-slate-300 text-sm leading-relaxed">{project.problem}</p>
                             </motion.section>
                         )}
 
                         {project.solution && (
                             <motion.section variants={modalItem} className="p-6 bg-violet-500/5 border border-violet-500/10 rounded-2xl">
-                                <h4 className="text-[10px] font-black tracking-widest text-violet-400 uppercase mb-3">The Solution</h4>
+                                <h4 className="text-[11px] font-black tracking-widest text-violet-400 uppercase mb-3">The Solution</h4>
                                 <p className="text-slate-300 text-sm leading-relaxed">{project.solution}</p>
                             </motion.section>
                         )}
 
                         {project.impact && project.impact.length > 0 && (
                             <motion.section variants={modalItem}>
-                                <h4 className="text-[10px] font-black tracking-widest text-fuchsia-500 uppercase mb-4">Core Impact</h4>
+                                <h4 className="text-[11px] font-black tracking-widest text-fuchsia-500 uppercase mb-4">Core Impact</h4>
                                 <ul className="space-y-3">
                                     {project.impact.map((item, i) => (
                                         <li key={i} className="flex items-start gap-3 text-slate-300 text-sm">
@@ -302,12 +302,12 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                         )}
 
                         <motion.section variants={modalItem} className="pt-10 border-t border-white/5">
-                            <h4 className="text-[10px] font-black tracking-widest text-slate-400 uppercase mb-6">Technical Architecture</h4>
+                            <h4 className="text-[11px] font-black tracking-widest text-slate-400 uppercase mb-6">Technical Architecture</h4>
                             
                             <div className="space-y-8">
                                 <div className="flex flex-wrap gap-2">
                                     {techStack.map((t, i) => (
-                                        <span key={i} className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-lg text-[10px] font-black text-white uppercase tracking-wider">
+                                        <span key={i} className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-lg text-[11px] font-black text-white uppercase tracking-wider">
                                             {t}
                                         </span>
                                     ))}
@@ -315,7 +315,7 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                                 
                                 {project.architecture && (
                                     <div className="p-6 bg-white/5 rounded-2xl border border-white/10">
-                                        <h5 className="text-[10px] font-black tracking-widest text-slate-400 uppercase mb-2 italic">How I built this</h5>
+                                        <h5 className="text-[11px] font-black tracking-widest text-slate-400 uppercase mb-2 italic">How I built this</h5>
                                         <p className="text-slate-400 text-xs leading-relaxed">{project.architecture}</p>
                                     </div>
                                 )}

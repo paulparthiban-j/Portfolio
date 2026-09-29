@@ -105,7 +105,7 @@ function ExperienceItem({ exp, index }: { exp: Experience; index: number }) {
                         show: { opacity: 1, scale: 1, rotate: 0, transition: { type: "spring", stiffness: 300, damping: 18, delay: 0.35 } },
                     }}
                 >
-                    <span className="text-[10px] md:text-xs font-black text-violet-300 bg-violet-500/15 border border-violet-500/30 px-3 py-1 sm:px-4 sm:py-2 rounded-xl uppercase tracking-[0.2em] whitespace-nowrap">
+                    <span className="text-[11px] md:text-xs font-black text-violet-300 bg-violet-500/15 border border-violet-500/30 px-3 py-1 sm:px-4 sm:py-2 rounded-xl uppercase tracking-[0.2em] whitespace-nowrap">
                         {exp.duration}
                     </span>
                 </motion.div>

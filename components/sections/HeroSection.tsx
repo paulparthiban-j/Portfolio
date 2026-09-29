@@ -349,7 +349,7 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-violet-500"></span>
                         </span>
-                        <span className="text-[10px] md:text-sm font-black tracking-widest text-violet-400 uppercase">
+                        <span className="text-[11px] md:text-sm font-black tracking-widest text-violet-400 uppercase">
                             {content.currentWork || "Available for new opportunities"}
                         </span>
                     </div>
@@ -430,7 +430,7 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                 style={{ ["--d" as string]: "1.1s" }}
             >
                 <div className="w-px h-12 bg-gradient-to-b from-violet-400/70 to-transparent animate-scroll-cue" />
-                <span className="text-[10px] md:text-xs font-black tracking-widest text-slate-400 uppercase">Scroll to explore</span>
+                <span className="text-[11px] md:text-xs font-black tracking-widest text-slate-400 uppercase">Scroll to explore</span>
             </div>
         </section>
     );

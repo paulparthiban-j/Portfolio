@@ -14,7 +14,9 @@ const DURATION = 1600;
 export function Counter({ target, suffix = "", className = "" }: CounterProps) {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  // Bottom margin only: a margin on all sides shrank the "viewport" to a thin
+  // centre strip on narrow phones, so left-column counters never started
+  const isInView = useInView(ref, { once: true, margin: "0px 0px -60px 0px" });
 
   useEffect(() => {
     if (!isInView) return;

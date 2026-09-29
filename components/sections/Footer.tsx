@@ -156,17 +156,17 @@ export function Footer({ content }: FooterProps) {
                             </div>
 
                             {/* Contact details */}
-                            <motion.div variants={riseItem} className="flex flex-col gap-3">
+                            <motion.div variants={riseItem} className="flex flex-col">
                                 <a
                                     href={`mailto:${content.email}`}
-                                    className="text-violet-400 hover:text-white transition-colors font-semibold text-lg flex items-center gap-2"
+                                    className="text-violet-400 hover:text-white transition-colors font-semibold text-base sm:text-lg flex items-center gap-2 min-h-[44px] [overflow-wrap:anywhere]"
                                 >
                                     <span className="text-slate-400">→</span> {content.email}
                                 </a>
                                 {content.phone && (
                                     <a
                                         href={`tel:${content.phone}`}
-                                        className="text-slate-400 hover:text-white transition-colors font-medium text-base flex items-center gap-2"
+                                        className="text-slate-400 hover:text-white transition-colors font-medium text-base flex items-center gap-2 min-h-[44px]"
                                     >
                                         <span className="text-slate-400">→</span> {content.phone}
                                     </a>

@@ -38,14 +38,17 @@ export function GithubStats() {
                     <div className="text-xl font-black text-white">
                         <Counter target={stats.publicRepos} suffix="+" />
                     </div>
-                    <div className="text-[10px] text-white/75 uppercase tracking-widest font-bold">Public Repos</div>
+                    <div className="text-[11px] text-white/75 uppercase tracking-widest font-bold">Public Repos</div>
                 </div>
-                <div>
-                    <div className="text-xl font-black text-white">
-                        <Counter target={stats.followers} />
+                {/* A zero reads as a negative on a portfolio; only show it once it counts */}
+                {stats.followers > 0 && (
+                    <div>
+                        <div className="text-xl font-black text-white">
+                            <Counter target={stats.followers} />
+                        </div>
+                        <div className="text-[11px] text-white/75 uppercase tracking-widest font-bold">Followers</div>
                     </div>
-                    <div className="text-[10px] text-white/75 uppercase tracking-widest font-bold">Followers</div>
-                </div>
+                )}
             </div>
         </div>
     );

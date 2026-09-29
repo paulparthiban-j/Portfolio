@@ -95,16 +95,20 @@ export function AboutSection({ content }: AboutSectionProps) {
                                 key={i}
                                 variants={riseItem}
                                 color={i % 2 === 0 ? "139, 92, 246" : "217, 70, 239"}
-                                className={`h-full rounded-3xl ${i === 0 ? "col-span-2 row-span-2" : ""}`}
+                                // First tile is the wide feature; an odd tile left over at the end
+                                // spans the row instead of leaving an empty cell
+                                className={`h-full rounded-3xl ${i === 0 ? "col-span-2 row-span-2" : ""} ${i > 0 && i === stats.length - 1 && (stats.length - 1) % 2 === 1 ? "col-span-2" : ""}`}
                             >
-                                <div className="relative text-center p-6 md:p-12 bg-white/[0.03] border border-white/10 rounded-3xl h-full flex flex-col justify-center overflow-hidden">
+                                <div className="relative text-center px-3 py-6 sm:p-6 md:p-12 bg-white/[0.03] border border-white/10 rounded-3xl h-full flex flex-col justify-center overflow-hidden">
+                                    {/* In flow above the number on phones (pinned to the corner it overlapped
+                                        the value on narrow tiles); corner badge from sm up */}
                                     {stat.label === "Years Experience" && (
-                                        <LiveBadge label="Auto-updating" className="absolute top-4 right-4 md:top-6 md:right-6 text-violet-400" />
+                                        <LiveBadge label="Auto-updating" className="self-center mb-3 sm:mb-0 sm:absolute sm:top-4 sm:right-4 md:top-6 md:right-6 text-violet-400" />
                                     )}
                                     <div className="text-4xl md:text-7xl font-black text-white mb-3">
                                         <Counter target={stat.number} suffix={stat.suffix} className={`bg-gradient-to-br ${i % 2 === 0 ? "from-violet-400 to-violet-600" : "from-fuchsia-400 to-fuchsia-600"} bg-clip-text text-transparent`} />
                                     </div>
-                                    <div className="text-[10px] md:text-xs text-slate-400 font-black uppercase tracking-[0.2em] truncate w-full px-2" title={stat.label}>
+                                    <div className="text-[11px] md:text-xs text-slate-400 font-black uppercase tracking-[0.08em] sm:tracking-[0.12em] md:tracking-[0.2em] leading-snug w-full break-words">
                                         {stat.label}
                                     </div>
                                 </div>

@@ -91,25 +91,25 @@ export function Navbar({ content }: NavbarProps) {
                         >
                             {content.name[0]}
                         </motion.div>
-                        {/* Hidden from md to xl: next to the full desktop link row there
+                        {/* Hidden from lg to xl: next to the full desktop link row there
                             isn't room, and it wrapped onto four lines, making the bar taller */}
-                        <div className="hidden sm:block md:hidden xl:block whitespace-nowrap">
+                        <div className="hidden sm:block lg:hidden xl:block whitespace-nowrap">
                             <span className="text-white font-black tracking-tighter text-lg uppercase block leading-none" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
                                 {content.name}
                             </span>
-                            <span className="text-violet-400 font-bold text-[10px] tracking-widest uppercase block mt-1">
+                            <span className="text-violet-400 font-bold text-[11px] tracking-widest uppercase block mt-1">
                                 Senior Software Engineer
                             </span>
                         </div>
                     </a>
 
                     {/* Desktop Navigation */}
-                    <nav className="hidden md:flex items-center gap-8" aria-label="Main navigation">
+                    <nav className="hidden lg:flex items-center gap-6 xl:gap-8" aria-label="Main navigation">
                         {navLinks.map((link) => (
                             <a
                                 key={link.href}
                                 href={link.href}
-                                className="text-sm font-black text-slate-400 hover:text-white uppercase tracking-widest transition-colors relative group focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded px-2 py-1"
+                                className="text-sm font-black text-slate-400 hover:text-white uppercase tracking-widest transition-colors relative group focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded px-2 py-3"
                             >
                                 {link.name}
                                 <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-gradient-to-r from-violet-500 to-violet-600 group-hover:w-full transition-all duration-300" />
@@ -130,7 +130,7 @@ export function Navbar({ content }: NavbarProps) {
                     <button
                         onClick={() => setIsOpen(!isOpen)}
                         aria-label={isOpen ? "Close menu" : "Open menu"}
-                        className="md:hidden w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex flex-col items-center justify-center gap-1.5 transition-all active:scale-90"
+                        className="lg:hidden w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex flex-col items-center justify-center gap-1.5 transition-all active:scale-90"
                     >
                         <motion.div 
                             animate={isOpen ? { rotate: 45, y: 5 } : { rotate: 0, y: 0 }}
@@ -155,7 +155,7 @@ export function Navbar({ content }: NavbarProps) {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[90] bg-black/95 backdrop-blur-2xl md:hidden flex flex-col items-center justify-center gap-8 pt-20"
+                        className="fixed inset-0 z-[90] bg-black/95 backdrop-blur-2xl lg:hidden flex flex-col items-center justify-center gap-8 pt-20"
                     >
                         {navLinks.map((link, i) => (
                             <motion.a
