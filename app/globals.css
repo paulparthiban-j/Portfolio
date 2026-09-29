@@ -1047,7 +1047,7 @@ html {
    session (html.intro-seen, set by an inline script in app/layout.tsx)
    and reduced-motion users skip the curtain, so the hero starts at once. */
 :root {
-  --intro-offset: 0.95s;
+  --intro-offset: 0.6s;
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-curtain: cubic-bezier(0.76, 0, 0.24, 1);
 }
@@ -1065,7 +1065,7 @@ html.intro-seen {
   align-items: center;
   justify-content: center;
   /* Remove the layer once finished so it costs nothing afterwards */
-  animation: intro-done 0s linear 1.7s forwards;
+  animation: intro-done 0s linear 1.15s forwards;
 }
 
 html.intro-seen .intro-curtain {
@@ -1083,12 +1083,12 @@ html.intro-seen .intro-curtain {
 
 .intro-panel--top {
   top: 0;
-  animation: intro-panel-up 0.75s var(--ease-curtain) 0.95s forwards;
+  animation: intro-panel-up 0.55s var(--ease-curtain) 0.6s forwards;
 }
 
 .intro-panel--bottom {
   bottom: 0;
-  animation: intro-panel-down 0.75s var(--ease-curtain) 0.95s forwards;
+  animation: intro-panel-down 0.55s var(--ease-curtain) 0.6s forwards;
 }
 
 /* Glowing seam where the two halves meet, visible as they split */
@@ -1112,7 +1112,7 @@ html.intro-seen .intro-curtain {
   flex-direction: column;
   align-items: center;
   gap: 1.25rem;
-  animation: intro-mark-out 0.45s var(--ease-curtain) 0.8s forwards;
+  animation: intro-mark-out 0.35s var(--ease-curtain) 0.5s forwards;
 }
 
 .intro-name {
@@ -1129,8 +1129,8 @@ html.intro-seen .intro-curtain {
 .intro-letter {
   display: inline-block;
   transform: translateY(110%);
-  animation: intro-letter-in 0.6s var(--ease-expo) forwards;
-  animation-delay: calc(var(--i) * 25ms + 0.05s);
+  animation: intro-letter-in 0.45s var(--ease-expo) forwards;
+  animation-delay: calc(var(--i) * 18ms + 0.02s);
 }
 
 .intro-progress {
@@ -1139,7 +1139,7 @@ html.intro-seen .intro-curtain {
   background: linear-gradient(90deg, #7c3aed, #c4b5fd);
   transform: scaleX(0);
   transform-origin: left;
-  animation: intro-progress 0.75s var(--ease-expo) 0.1s forwards;
+  animation: intro-progress 0.5s var(--ease-expo) 0.05s forwards;
 }
 
 @keyframes intro-letter-in {
@@ -1175,8 +1175,8 @@ html.intro-seen .intro-curtain {
   color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
-  animation: hero-letter-in 1s var(--ease-expo) both;
-  animation-delay: calc(var(--intro-offset) + var(--i) * 40ms);
+  animation: hero-letter-in 0.8s var(--ease-expo) both;
+  animation-delay: calc(var(--intro-offset) + var(--i) * 30ms);
 }
 
 @keyframes hero-letter-in {
@@ -1284,21 +1284,21 @@ html.intro-seen .intro-curtain {
   }
 }
 
+/* Movement only - no opacity. Sections waiting below the fold used to sit
+   at 20% opacity, which accessibility checkers (rightly) read as
+   low-contrast text. */
 @keyframes section-enter {
   from {
-    opacity: 0.2;
     transform: translateY(40px) scale(0.97);
   }
 
   to {
-    opacity: 1;
     transform: none;
   }
 }
 
 @keyframes section-enter-desktop {
   from {
-    opacity: 0.2;
     transform: translateY(80px) scale(0.94);
     clip-path: inset(4% 5% 0 5% round 48px);
   }
@@ -1308,7 +1308,6 @@ html.intro-seen .intro-curtain {
   }
 
   to {
-    opacity: 1;
     transform: none;
     clip-path: none;
   }

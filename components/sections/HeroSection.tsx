@@ -117,8 +117,8 @@ function RotatingTitle({ title }: { title: string }) {
         <span
             className="relative block h-[1.5em] w-full overflow-hidden text-xs md:text-sm font-black tracking-[0.4em] text-slate-400 uppercase"
             style={{ fontFamily: "var(--font-space-grotesk)" }}
-            aria-label={parts.join(", ")}
         >
+            <span className="sr-only">{parts.join(", ")}</span>
             <AnimatePresence initial={false}>
                 <motion.span
                     key={index}

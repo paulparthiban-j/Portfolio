@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { MotionConfig } from "framer-motion";
 import { PortfolioContent } from "@/types/portfolio";
 import { HeroSection } from "@/components/sections/HeroSection";
@@ -28,16 +29,20 @@ export function HomePage({ content }: { content: PortfolioContent }) {
       <div className={`min-h-screen relative ${content.theme?.mode === "light" ? "bg-slate-50 text-slate-900" : "bg-[#0A0A0B] text-white"}`}>
         <IntroCurtain name={content.name} />
         <Navbar content={content} />
+        {/* Each below-the-fold section is its own Suspense boundary. Nothing here
+            suspends (the HTML is complete), but separate boundaries let React
+            hydrate section by section and yield to the browser in between,
+            instead of one long main-thread task (lower Total Blocking Time). */}
         <main className="relative z-10" role="main">
           <div id="hero" aria-label="Hero section"><HeroSection content={content} /></div>
-          <div id="about" className="scroll-mt-20 section-reveal" aria-label="About section"><AboutSection content={content} /></div>
-          <div id="skills" className="scroll-mt-20 section-reveal" aria-label="Skills section"><SkillsSection content={content} /></div>
-          <div id="projects" className="scroll-mt-20" aria-label="Projects section"><ProjectsSection content={content} /></div>
-          <div id="experience" className="scroll-mt-20 section-reveal" aria-label="Experience section"><ExperienceSection content={content} /></div>
-          <div id="credibility" className="scroll-mt-20 section-reveal" aria-label="Credibility section"><CredibilitySection content={content} /></div>
-          <div id="education" className="scroll-mt-20 section-reveal" aria-label="Education section"><EducationSection content={content} /></div>
-          <CustomSections content={content} />
-          <div id="contact" aria-label="Contact section"><Footer content={content} /></div>
+          <Suspense><div id="about" className="scroll-mt-20 section-reveal" aria-label="About section"><AboutSection content={content} /></div></Suspense>
+          <Suspense><div id="skills" className="scroll-mt-20 section-reveal" aria-label="Skills section"><SkillsSection content={content} /></div></Suspense>
+          <Suspense><div id="projects" className="scroll-mt-20" aria-label="Projects section"><ProjectsSection content={content} /></div></Suspense>
+          <Suspense><div id="experience" className="scroll-mt-20 section-reveal" aria-label="Experience section"><ExperienceSection content={content} /></div></Suspense>
+          <Suspense><div id="credibility" className="scroll-mt-20 section-reveal" aria-label="Credibility section"><CredibilitySection content={content} /></div></Suspense>
+          <Suspense><div id="education" className="scroll-mt-20 section-reveal" aria-label="Education section"><EducationSection content={content} /></div></Suspense>
+          <Suspense><CustomSections content={content} /></Suspense>
+          <Suspense><div id="contact" aria-label="Contact section"><Footer content={content} /></div></Suspense>
         </main>
       </div>
     </MotionConfig>

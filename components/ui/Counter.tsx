@@ -52,9 +52,9 @@ export function Counter({ target, suffix = "", className = "" }: CounterProps) {
       animate={isInView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.6, delay: 0.2 }}
       className={`tabular-nums whitespace-pre ${className}`}
-      aria-label={`${finalText}${suffix}`}
     >
-      {label}
+      <span className="sr-only">{`${finalText}${suffix}`}</span>
+      <span aria-hidden="true">{label}</span>
     </motion.span>
   );
 }

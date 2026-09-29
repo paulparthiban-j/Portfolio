@@ -285,7 +285,7 @@ export function Footer({ content }: FooterProps) {
                     <p className="text-sm text-slate-400 font-medium">
                         © {new Date().getFullYear()} {content.name} — All rights reserved.
                     </p>
-                    <p className="text-xs text-slate-500 font-mono">Built with Next.js + Framer Motion</p>
+                    <p className="text-xs text-slate-400 font-mono">Built with Next.js + Framer Motion</p>
                 </div>
             </div>
         </footer>
