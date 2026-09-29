@@ -72,6 +72,7 @@ export async function generateMetadata(): Promise<Metadata> {
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
+import { MotionProvider } from "@/components/providers/MotionProvider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 
@@ -91,19 +92,21 @@ export default function RootLayout({
       <body
         className={`${plusJakarta.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} font-sans antialiased noise-overlay`}
       >
-        <ScrollProgress />
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-violet-600 focus:text-white focus:rounded-lg focus:font-bold focus:transition-all"
-        >
-          Skip to main content
-        </a>
-        <SmoothScroll>
-          <CustomCursor />
-          <div id="main-content">
-            {children}
-          </div>
-        </SmoothScroll>
+        <MotionProvider>
+          <ScrollProgress />
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-violet-600 focus:text-white focus:rounded-lg focus:font-bold focus:transition-all"
+          >
+            Skip to main content
+          </a>
+          <SmoothScroll>
+            <CustomCursor />
+            <div id="main-content">
+              {children}
+            </div>
+          </SmoothScroll>
+        </MotionProvider>
         <SpeedInsights />
         <Analytics />
       </body>

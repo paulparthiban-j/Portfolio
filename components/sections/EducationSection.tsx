@@ -1,7 +1,7 @@
 "use client";
 
 import { PortfolioContent } from "@/types/portfolio";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { SectionHeading, SpotlightCard, staggerContainer, inViewOnce } from "@/components/ui/motion";
 
 interface EducationSectionProps {
@@ -25,7 +25,7 @@ export function EducationSection({ content }: EducationSectionProps) {
                 {education.length === 0 ? (
                     <p className="text-slate-400 text-center text-lg">No education listed yet.</p>
                 ) : (
-                    <motion.div
+                    <m.div
                         className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 [perspective:1200px]"
                         initial="hidden"
                         whileInView="show"
@@ -42,7 +42,7 @@ export function EducationSection({ content }: EducationSectionProps) {
                                 className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 md:p-8 hover:bg-white/[0.05] transition-colors duration-200 flex flex-col gap-4"
                             >
                                 {/* Year badge */}
-                                <motion.div
+                                <m.div
                                     className="absolute top-6 right-6"
                                     initial={{ scale: 0, rotate: -20 }}
                                     whileInView={{ scale: 1, rotate: 0 }}
@@ -52,7 +52,7 @@ export function EducationSection({ content }: EducationSectionProps) {
                                     <span className="text-xs font-black text-violet-400 bg-violet-500/10 border border-violet-500/20 px-3 py-1 rounded-full uppercase tracking-widest">
                                         {edu.year}
                                     </span>
-                                </motion.div>
+                                </m.div>
 
                                 {/* Degree */}
                                 <h3 className="text-xl md:text-2xl font-black text-white tracking-tight leading-snug pr-20">
@@ -77,7 +77,7 @@ export function EducationSection({ content }: EducationSectionProps) {
                                 </div>
                             </SpotlightCard>
                         ))}
-                    </motion.div>
+                    </m.div>
                 )}
             </div>
         </section>

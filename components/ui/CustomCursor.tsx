@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useSyncExternalStore } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { m, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 const QUERY = "(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)";
 
@@ -65,12 +65,12 @@ function Cursor() {
 
     return (
         <>
-            <motion.div
+            <m.div
                 aria-hidden="true"
                 className="fixed top-0 left-0 z-[9999] pointer-events-none w-9 h-9 -ml-[18px] -mt-[18px] rounded-full border border-violet-400/70 bg-violet-400/5"
                 style={{ x: ringX, y: ringY, scale: ringScale, opacity: ringOpacity }}
             />
-            <motion.div
+            <m.div
                 aria-hidden="true"
                 className="fixed top-0 left-0 z-[9999] pointer-events-none w-2 h-2 -ml-1 -mt-1 rounded-full bg-violet-300 shadow-[0_0_12px_rgba(167,139,250,0.8)]"
                 style={{ x: dotX, y: dotY, scale: dotScale }}

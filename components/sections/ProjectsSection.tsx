@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, useRef, useEffect, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
-import { motion, AnimatePresence, useMotionValue, useSpring, useMotionTemplate } from "framer-motion";
+import { m, AnimatePresence, useMotionValue, useSpring, useMotionTemplate } from "framer-motion";
 import { PortfolioContent, Project, Theme } from "@/types/portfolio";
 import { SectionHeading, staggerContainer, flipItem, inViewOnce, EASE_OUT_EXPO } from "@/components/ui/motion";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
@@ -50,7 +50,7 @@ function TiltCard({ children, className, onClick }: { children: React.ReactNode;
     const glare = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.12), transparent 55%)`;
 
     return (
-        <motion.div
+        <m.div
             ref={ref}
             style={{ rotateX, rotateY, transformPerspective: 1000 }}
             onMouseMove={handleMouseMove}
@@ -62,12 +62,12 @@ function TiltCard({ children, className, onClick }: { children: React.ReactNode;
             className={`relative ${className}`}
         >
             {children}
-            <motion.div
+            <m.div
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0 z-20 rounded-[inherit]"
                 style={{ background: glare, opacity: glareOpacity }}
             />
-        </motion.div>
+        </m.div>
     );
 }
 
@@ -95,7 +95,7 @@ export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSec
                     className="mb-16 md:mb-20"
                 />
 
-                <motion.div
+                <m.div
                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 relative [perspective:1200px]"
                     initial="hidden"
                     whileInView="show"
@@ -103,7 +103,7 @@ export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSec
                     variants={staggerContainer(0.12)}
                 >
                     {projects.map((project, index) => (
-                        <motion.div key={index} variants={flipItem} style={{ transformOrigin: "50% 100%" }}>
+                        <m.div key={index} variants={flipItem} style={{ transformOrigin: "50% 100%" }}>
                             <ProjectCard 
                                 project={project} 
                                 index={index} 
@@ -111,7 +111,7 @@ export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSec
                                 theme={content.theme}
                                 onClick={() => setSelectedProject(project)} 
                             />
-                        </motion.div>
+                        </m.div>
                     ))}
 
                     {projects.length === 0 && (
@@ -119,7 +119,7 @@ export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSec
                             <p className="text-slate-400 font-bold tracking-widest uppercase text-sm">No projects yet.</p>
                         </div>
                     )}
-                </motion.div>
+                </m.div>
             </div>
 
             {/* Portalled to <body>: inside <main> (a z-10 stacking context) the
@@ -143,7 +143,7 @@ export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSec
 function ProjectCard({ project, index, isMobile, theme, onClick }: { project: Project; index: number; isMobile: boolean; theme: Theme; onClick: () => void }) {
     const techStack = useMemo(() => (project.tech || "").split(',').map(s => s.trim()), [project.tech]);
 
-    const CardComponent = isMobile ? motion.div : TiltCard;
+    const CardComponent = isMobile ? m.div : TiltCard;
 
     return (
         <CardComponent
@@ -211,7 +211,7 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
     }, [handleKeyDown]);
 
     return (
-        <motion.div 
+        <m.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -221,7 +221,7 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
             className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-8 backdrop-blur-2xl bg-black/80"
             onClick={onClose}
         >
-            <motion.div 
+            <m.div 
                 initial={{ scale: 0.9, opacity: 0, y: 30 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.9, opacity: 0, y: 30 }}
@@ -230,7 +230,7 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                 onClick={e => e.stopPropagation()}
             >
                 <div className="w-full md:w-[60%] relative h-64 md:h-auto overflow-hidden bg-slate-900 border-b md:border-b-0 md:border-r border-white/10">
-                    <motion.div
+                    <m.div
                         className="absolute inset-0"
                         initial={{ scale: 1.25 }}
                         animate={{ scale: 1 }}
@@ -245,10 +245,10 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                         loading="lazy"
                         quality={80}
                     />
-                    </motion.div>
+                    </m.div>
                 </div>
 
-                <motion.div
+                <m.div
                     className="w-full md:w-[40%] p-10 md:p-14 md:py-20 flex flex-col bg-slate-950/20 overflow-y-auto"
                     initial="hidden"
                     animate="show"
@@ -264,31 +264,31 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                     </div>
 
                     <div className="space-y-12">
-                        <motion.section variants={modalItem}>
+                        <m.section variants={modalItem}>
                             <h2 className="text-4xl md:text-5xl font-black text-white mb-6 uppercase tracking-tighter leading-none" style={{ fontFamily: 'var(--font-space-grotesk)' }}>
                                 {project.title}
                             </h2>
                             <p className="text-slate-400 text-lg leading-relaxed font-medium">
                                 {project.description}
                             </p>
-                        </motion.section>
+                        </m.section>
 
                         {project.problem && (
-                            <motion.section variants={modalItem} className="p-6 bg-red-500/5 border border-red-500/10 rounded-2xl">
+                            <m.section variants={modalItem} className="p-6 bg-red-500/5 border border-red-500/10 rounded-2xl">
                                 <h4 className="text-[11px] font-black tracking-widest text-red-400 uppercase mb-3">The Problem</h4>
                                 <p className="text-slate-300 text-sm leading-relaxed">{project.problem}</p>
-                            </motion.section>
+                            </m.section>
                         )}
 
                         {project.solution && (
-                            <motion.section variants={modalItem} className="p-6 bg-violet-500/5 border border-violet-500/10 rounded-2xl">
+                            <m.section variants={modalItem} className="p-6 bg-violet-500/5 border border-violet-500/10 rounded-2xl">
                                 <h4 className="text-[11px] font-black tracking-widest text-violet-400 uppercase mb-3">The Solution</h4>
                                 <p className="text-slate-300 text-sm leading-relaxed">{project.solution}</p>
-                            </motion.section>
+                            </m.section>
                         )}
 
                         {project.impact && project.impact.length > 0 && (
-                            <motion.section variants={modalItem}>
+                            <m.section variants={modalItem}>
                                 <h4 className="text-[11px] font-black tracking-widest text-fuchsia-500 uppercase mb-4">Core Impact</h4>
                                 <ul className="space-y-3">
                                     {project.impact.map((item, i) => (
@@ -298,10 +298,10 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                                         </li>
                                     ))}
                                 </ul>
-                            </motion.section>
+                            </m.section>
                         )}
 
-                        <motion.section variants={modalItem} className="pt-10 border-t border-white/5">
+                        <m.section variants={modalItem} className="pt-10 border-t border-white/5">
                             <h4 className="text-[11px] font-black tracking-widest text-slate-400 uppercase mb-6">Technical Architecture</h4>
                             
                             <div className="space-y-8">
@@ -320,10 +320,10 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                                     </div>
                                 )}
                             </div>
-                        </motion.section>
+                        </m.section>
                     </div>
 
-                    <motion.div variants={modalItem} className="mt-12 flex flex-col sm:flex-row gap-4 pt-10 border-t border-white/5">
+                    <m.div variants={modalItem} className="mt-12 flex flex-col sm:flex-row gap-4 pt-10 border-t border-white/5">
                         {project.link && (
                             <a href={project.link} target="_blank" rel="noopener noreferrer" className="flex-1 py-4 bg-fuchsia-600 hover:bg-fuchsia-500 rounded-2xl text-center text-white text-sm font-black transition-all shadow-xl shadow-fuchsia-500/20 active:scale-95">
                                 Live Preview
@@ -334,10 +334,10 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                                 View Source
                             </a>
                         )}
-                    </motion.div>
-                </motion.div>
-            </motion.div>
-        </motion.div>
+                    </m.div>
+                </m.div>
+            </m.div>
+        </m.div>
     );
 }
 

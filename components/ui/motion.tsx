@@ -1,13 +1,7 @@
 "use client";
 
 import { ReactNode, useRef } from "react";
-import {
-    motion,
-    useMotionTemplate,
-    useMotionValue,
-    useSpring,
-    type Variants,
-} from "framer-motion";
+import { m, useMotionTemplate, useMotionValue, useSpring, type Variants } from "framer-motion";
 
 // Shared Framer Motion building blocks for the page sections. Everything
 // animates transform/opacity only (compositor friendly), reveals once, and
@@ -63,7 +57,7 @@ export function SectionHeading({ title, subtitle, className = "", size = "lg" }:
     const sizeClass = size === "lg" ? "text-4xl md:text-6xl" : "text-3xl md:text-5xl";
 
     return (
-        <motion.div
+        <m.div
             className={`text-center ${className}`}
             initial="hidden"
             whileInView="show"
@@ -77,7 +71,7 @@ export function SectionHeading({ title, subtitle, className = "", size = "lg" }:
             >
                 {words.map((word, i) => (
                     <span key={i} aria-hidden="true" className="inline-block overflow-hidden align-bottom pb-[0.08em] -mb-[0.08em]">
-                        <motion.span
+                        <m.span
                             className="inline-block"
                             variants={{
                                 hidden: { y: "110%", rotate: 4 },
@@ -85,13 +79,13 @@ export function SectionHeading({ title, subtitle, className = "", size = "lg" }:
                             }}
                         >
                             {word}
-                        </motion.span>
+                        </m.span>
                         {i < words.length - 1 && " "}
                     </span>
                 ))}
             </h2>
             {subtitle && (
-                <motion.p
+                <m.p
                     className="text-slate-400 text-sm md:text-lg mt-4 max-w-2xl mx-auto font-medium"
                     variants={{
                         hidden: { opacity: 0, y: 12 },
@@ -99,16 +93,16 @@ export function SectionHeading({ title, subtitle, className = "", size = "lg" }:
                     }}
                 >
                     {subtitle}
-                </motion.p>
+                </m.p>
             )}
-            <motion.div
+            <m.div
                 className="h-1 w-24 rounded-full mt-6 mx-auto bg-gradient-to-r from-violet-500 via-fuchsia-400 to-violet-500"
                 variants={{
                     hidden: { scaleX: 0, opacity: 0 },
                     show: { scaleX: 1, opacity: 1, transition: { duration: 0.9, ease: EASE_OUT_EXPO } },
                 }}
             />
-        </motion.div>
+        </m.div>
     );
 }
 
@@ -170,7 +164,7 @@ export function SpotlightCard({ children, className = "", color = "139, 92, 246"
     };
 
     return (
-        <motion.div
+        <m.div
             ref={ref}
             variants={variants}
             onPointerMove={handleMove}
@@ -184,17 +178,17 @@ export function SpotlightCard({ children, className = "", color = "139, 92, 246"
             className={`relative group ${className}`}
         >
             {/* Border highlight: a gradient masked down to a 1px ring */}
-            <motion.div
+            <m.div
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0 rounded-[inherit] p-px [mask:linear-gradient(#000_0_0)_content-box_exclude,linear-gradient(#000_0_0)] [-webkit-mask-composite:xor]"
                 style={{ background: ring, opacity: lit }}
             />
-            <motion.div
+            <m.div
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0 rounded-[inherit]"
                 style={{ background: glow, opacity: lit }}
             />
             {children}
-        </motion.div>
+        </m.div>
     );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring, type MotionValue } from "framer-motion";
+import { m, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring, type MotionValue } from "framer-motion";
 import { PortfolioContent } from "@/types/portfolio";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { Particles } from "@/components/ui/Particles";
@@ -15,7 +15,7 @@ interface HeroSectionProps {
 
 // Magnetic Button Component
 function MagneticButton({ children, className, as = "button", ...props }: any) {
-    const Component = as === "a" ? motion.a : motion.button;
+    const Component = as === "a" ? m.a : m.button;
     const ref = useRef<HTMLButtonElement | HTMLAnchorElement>(null);
     const x = useMotionValue(0);
     const y = useMotionValue(0);
@@ -75,7 +75,7 @@ function GradientLetters({ text, gradient, startIndex, className = "" }: {
                         {letters.map(({ char, i }) => (
                             // Outer span owns the hover spring; the inner one owns the CSS
                             // entrance (a running CSS animation would override Framer's transform)
-                            <motion.span
+                            <m.span
                                 key={i}
                                 className="inline-block"
                                 whileHover={{ y: "-0.12em", rotate: i % 2 ? 4 : -4, transition: { type: "spring", stiffness: 500, damping: 12 } }}
@@ -92,7 +92,7 @@ function GradientLetters({ text, gradient, startIndex, className = "" }: {
                                 >
                                     {char}
                                 </span>
-                            </motion.span>
+                            </m.span>
                         ))}
                     </span>
                 </Fragment>
@@ -120,7 +120,7 @@ function RotatingTitle({ title }: { title: string }) {
         >
             <span className="sr-only">{parts.join(", ")}</span>
             <AnimatePresence initial={false}>
-                <motion.span
+                <m.span
                     key={index}
                     aria-hidden="true"
                     className="absolute inset-x-0 top-0 whitespace-nowrap"
@@ -130,7 +130,7 @@ function RotatingTitle({ title }: { title: string }) {
                     transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 >
                     {parts[index]}
-                </motion.span>
+                </m.span>
             </AnimatePresence>
         </span>
     );
@@ -147,12 +147,12 @@ function AuroraOrb({ px, py, depth, className, color }: {
     const x = useTransform(px, (v) => v * depth);
     const y = useTransform(py, (v) => v * depth);
     return (
-        <motion.div aria-hidden="true" className={`absolute pointer-events-none ${className}`} style={{ x, y }}>
+        <m.div aria-hidden="true" className={`absolute pointer-events-none ${className}`} style={{ x, y }}>
             <div
                 className="w-full h-full rounded-full animate-orb-float"
                 style={{ background: `radial-gradient(closest-side, ${color}, transparent)` }}
             />
-        </motion.div>
+        </m.div>
     );
 }
 
@@ -170,7 +170,7 @@ function FloatingBadge({ label, pos, depth, delay, px, py, index }: {
     const x = useTransform(px, (v) => v * depth);
     const y = useTransform(py, (v) => v * depth);
     return (
-        <motion.div aria-hidden="true" className={`absolute hidden xl:block pointer-events-none ${pos}`} style={{ x, y }}>
+        <m.div aria-hidden="true" className={`absolute hidden xl:block pointer-events-none ${pos}`} style={{ x, y }}>
             <div className="hero-fade" style={{ ["--d" as string]: `${0.9 + index * 0.12}s` }}>
                 <div
                     className="animate-badge-float px-4 py-2 rounded-2xl border border-white/10 bg-white/[0.04] text-xs font-black uppercase tracking-widest text-slate-300 shadow-lg shadow-violet-500/10"
@@ -180,7 +180,7 @@ function FloatingBadge({ label, pos, depth, delay, px, py, index }: {
                     {label}
                 </div>
             </div>
-        </motion.div>
+        </m.div>
     );
 }
 
@@ -332,7 +332,7 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                 <FloatingBadge key={b.label} {...b} index={i} px={px} py={py} />
             ))}
 
-            <motion.div
+            <m.div
                 style={mounted ? { y, opacity } : {}}
                 className="container mx-auto px-4 sm:px-6 md:px-8 relative z-10 text-center"
             >
@@ -358,7 +358,7 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
 
                 {/* Name - letters rise in one by one. Each letter carries its slice
                     of the line's gradient so the per-letter transforms don't break it. */}
-                <motion.div className="relative" style={mounted ? { rotateX: tiltX, rotateY: tiltY, transformPerspective: 1200 } : {}}>
+                <m.div className="relative" style={mounted ? { rotateX: tiltX, rotateY: tiltY, transformPerspective: 1200 } : {}}>
                 {/* Static glow behind the name - replaces a 40px drop-shadow filter that
                     was re-rasterised every frame (the single biggest hero cost) */}
                 <div aria-hidden="true" className="hidden md:block absolute inset-x-[10%] top-[5%] bottom-[20%] pointer-events-none bg-[radial-gradient(closest-side,rgba(139,92,246,0.28),transparent)]" />
@@ -367,26 +367,26 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                     className="relative text-[clamp(2.5rem,min(12vw,13vh),10rem)] font-black mb-[clamp(1rem,3.5vh,2rem)] tracking-tighter leading-[0.85]"
                     style={{ fontFamily: 'var(--font-space-grotesk)' }}
                 >
-                    <motion.span className="block" style={{ x: line1X }}>
+                    <m.span className="block" style={{ x: line1X }}>
                         <GradientLetters
                             text={firstName}
                             gradient="linear-gradient(90deg, #ffffff, #e2e8f0, #a78bfa)"
                             startIndex={0}
                         />
-                    </motion.span>
-                    <motion.span className="block mt-2" style={{ x: line2X }}>
+                    </m.span>
+                    <m.span className="block mt-2" style={{ x: line2X }}>
                         <GradientLetters
                             text={lastName}
                             gradient="linear-gradient(90deg, #a78bfa, #c4b5fd, #ffffff)"
                             startIndex={firstName.length}
                         />
-                    </motion.span>
+                    </m.span>
                     <span
                         aria-hidden="true"
                         className="hero-underline block h-[3px] w-32 md:w-48 mx-auto mt-5 md:mt-6 rounded-full bg-gradient-to-r from-transparent via-violet-400 to-transparent"
                     />
                 </h1>
-                </motion.div>
+                </m.div>
 
                 {/* Subtitle */}
                 <p
@@ -422,7 +422,7 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                         Download Resume
                     </MagneticButton>
                 </div>
-            </motion.div>
+            </m.div>
 
             {/* Scroll Indicator */}
             <div

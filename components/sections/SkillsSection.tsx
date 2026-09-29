@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence, LazyMotion } from "framer-motion";
 import { PortfolioContent, Skill } from "@/types/portfolio";
 import { SectionHeading, staggerContainer, inViewOnce, EASE_OUT_EXPO } from "@/components/ui/motion";
 import { TechIcon } from "@/components/ui/TechIcon";
@@ -24,6 +24,10 @@ const skillCategories = {
     "Tools": ["JWT", "OAuth 2.0", "RBAC", "Device Fingerprinting", "Linux (Ubuntu)", "Sentry", "Swagger", "WinSCP"],
 };
 
+// Layout animations (the filter reflow and sliding pill) need Framer's layout
+// engine, which the rest of the site doesn't - so only this section loads it
+const loadLayoutFeatures = () => import("@/components/providers/motion-features").then((mod) => mod.default);
+
 export function SkillsSection({ content }: SkillsSectionProps) {
     const [activeCategory, setActiveCategory] = useState<string>("All");
     
@@ -40,6 +44,7 @@ export function SkillsSection({ content }: SkillsSectionProps) {
         });
 
     return (
+        <LazyMotion features={loadLayoutFeatures} strict>
         <section className="w-full bg-[#0A0A0B] py-16 md:py-24 px-4 sm:px-6 md:px-8 relative overflow-hidden">
             {/* Background accent */}
             <div className="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-500/[0.04] rounded-full blur-[120px] pointer-events-none" />
@@ -52,7 +57,7 @@ export function SkillsSection({ content }: SkillsSectionProps) {
                 />
 
                 {/* Category Filter - the active pill slides between tabs (shared layoutId) */}
-                <motion.div
+                <m.div
                     className="mb-12 flex flex-wrap justify-center gap-2 md:gap-3"
                     initial="hidden"
                     whileInView="show"
@@ -62,7 +67,7 @@ export function SkillsSection({ content }: SkillsSectionProps) {
                     {categories.map((category) => {
                         const active = activeCategory === category;
                         return (
-                            <motion.button
+                            <m.button
                                 key={category}
                                 onClick={() => setActiveCategory(category)}
                                 variants={{
@@ -77,21 +82,21 @@ export function SkillsSection({ content }: SkillsSectionProps) {
                                 }`}
                             >
                                 {active && (
-                                    <motion.span
+                                    <m.span
                                         layoutId="skills-active-pill"
                                         className="absolute inset-0 rounded-full bg-violet-600 shadow-lg shadow-violet-500/30"
                                         transition={{ type: "spring", stiffness: 400, damping: 32 }}
                                     />
                                 )}
                                 <span className="relative">{category}</span>
-                            </motion.button>
+                            </m.button>
                         );
                     })}
-                </motion.div>
+                </m.div>
 
                 {/* Skills grid - items keep their identity across filters, so the
                     ones that stay glide to their new slots while the rest pop out */}
-                <motion.div
+                <m.div
                     layout
                     className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4 md:gap-6 lg:gap-8"
                 >
@@ -101,7 +106,7 @@ export function SkillsSection({ content }: SkillsSectionProps) {
                             const icon = typeof skill === "string" ? "" : (skill.icon || "");
 
                             return (
-                                <motion.div
+                                <m.div
                                     key={name}
                                     layout
                                     initial={{ opacity: 0, scale: 0.6, y: 24 }}
@@ -116,7 +121,7 @@ export function SkillsSection({ content }: SkillsSectionProps) {
                                     }}
                                     className="flex flex-col items-center gap-4 group cursor-default"
                                 >
-                                    <motion.div
+                                    <m.div
                                         whileHover={{ y: -8, rotate: -4, scale: 1.08 }}
                                         whileTap={{ scale: 0.92 }}
                                         transition={{ type: "spring", stiffness: 400, damping: 15 }}
@@ -129,26 +134,27 @@ export function SkillsSection({ content }: SkillsSectionProps) {
                                             icon={icon}
                                             className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12"
                                         />
-                                    </motion.div>
+                                    </m.div>
                                     <span className="text-[11px] sm:text-xs md:text-sm font-semibold text-slate-400 group-hover:text-violet-400 uppercase tracking-wider text-center transition-colors duration-200 leading-tight">
                                         {name}
                                     </span>
-                                </motion.div>
+                                </m.div>
                             );
                         })}
                     </AnimatePresence>
-                </motion.div>
+                </m.div>
 
                 {filteredSkills.length === 0 && (
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         className="text-center py-20"
                     >
                         <p className="text-slate-400 text-lg">No skills in this category.</p>
-                    </motion.div>
+                    </m.div>
                 )}
             </div>
         </section>
+        </LazyMotion>
     );
 }

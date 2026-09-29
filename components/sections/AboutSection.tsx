@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { PortfolioContent } from "@/types/portfolio";
 import { SectionHeading, SpotlightCard, staggerContainer, riseItem, inViewOnce, EASE_OUT_EXPO } from "@/components/ui/motion";
 import { Counter } from "@/components/ui/Counter";
@@ -33,7 +33,7 @@ export function AboutSection({ content }: AboutSectionProps) {
 
                 <div className="grid lg:grid-cols-4 gap-6 lg:gap-8">
                     {/* Main description card - spans 2 columns */}
-                    <motion.div
+                    <m.div
                         className="lg:col-span-2 w-full"
                         initial={{ opacity: 0, x: -60, rotate: -2 }}
                         whileInView={{ opacity: 1, x: 0, rotate: 0 }}
@@ -52,38 +52,38 @@ export function AboutSection({ content }: AboutSectionProps) {
                                     {content.description}
                                 </p>
                                 
-                                <motion.div
+                                <m.div
                                     className="space-y-6 pt-10 border-t border-white/10 mt-auto"
                                     initial="hidden"
                                     whileInView="show"
                                     viewport={inViewOnce}
                                     variants={staggerContainer(0.15, 0.3)}
                                 >
-                                    <motion.div variants={riseItem} className="flex items-start gap-4">
-                                        <motion.div whileHover={{ rotate: -10, scale: 1.1 }} className="w-12 h-12 rounded-2xl bg-violet-500/10 flex items-center justify-center border border-violet-500/20 shrink-0">
+                                    <m.div variants={riseItem} className="flex items-start gap-4">
+                                        <m.div whileHover={{ rotate: -10, scale: 1.1 }} className="w-12 h-12 rounded-2xl bg-violet-500/10 flex items-center justify-center border border-violet-500/20 shrink-0">
                                             <svg className="w-6 h-6 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                                        </motion.div>
+                                        </m.div>
                                         <div>
                                             <h4 className="text-sm font-black text-white uppercase tracking-widest mb-1">Impact-First Thinking</h4>
                                             <p className="text-slate-400 text-sm font-medium">I don't just write code; I solve bottlenecks that cost businesses time and money.</p>
                                         </div>
-                                    </motion.div>
-                                    <motion.div variants={riseItem} className="flex items-start gap-4">
-                                        <motion.div whileHover={{ rotate: 10, scale: 1.1 }} className="w-12 h-12 rounded-2xl bg-fuchsia-500/10 flex items-center justify-center border border-fuchsia-500/20 shrink-0">
+                                    </m.div>
+                                    <m.div variants={riseItem} className="flex items-start gap-4">
+                                        <m.div whileHover={{ rotate: 10, scale: 1.1 }} className="w-12 h-12 rounded-2xl bg-fuchsia-500/10 flex items-center justify-center border border-fuchsia-500/20 shrink-0">
                                             <svg className="w-6 h-6 text-fuchsia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
-                                        </motion.div>
+                                        </m.div>
                                         <div>
                                             <h4 className="text-sm font-black text-white uppercase tracking-widest mb-1">Architecture Depth</h4>
                                             <p className="text-slate-400 text-sm font-medium">Expertise in SAP integrations and microservices ensures your systems are as robust as they are fast.</p>
                                         </div>
-                                    </motion.div>
-                                </motion.div>
+                                    </m.div>
+                                </m.div>
                             </div>
                         </SpotlightCard>
-                    </motion.div>
+                    </m.div>
 
                     {/* Stats grid - bento style */}
-                    <motion.div
+                    <m.div
                         className="lg:col-span-2 w-full grid grid-cols-2 gap-4 md:gap-6"
                         initial="hidden"
                         whileInView="show"
@@ -114,7 +114,7 @@ export function AboutSection({ content }: AboutSectionProps) {
                                 </div>
                             </SpotlightCard>
                         ))}
-                    </motion.div>
+                    </m.div>
                 </div>
             </div>
         </section>

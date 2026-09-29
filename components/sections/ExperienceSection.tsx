@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { m, useScroll, useSpring } from "framer-motion";
 import { PortfolioContent, Experience } from "@/types/portfolio";
 import { SectionHeading, SpotlightCard, EASE_OUT_EXPO } from "@/components/ui/motion";
 
@@ -39,7 +39,7 @@ function ExperienceTimeline({ content, experience }: { content: PortfolioContent
                     <div ref={listRef} className="relative space-y-8 md:space-y-12 w-full">
                         {/* Track + scroll-driven fill */}
                         <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-white/10" />
-                        <motion.div
+                        <m.div
                             aria-hidden="true"
                             className="absolute left-0 top-0 bottom-0 w-[2px] origin-top bg-gradient-to-b from-violet-400 via-fuchsia-500 to-violet-600 shadow-[0_0_12px_rgba(139,92,246,0.8)]"
                             style={{ scaleY: progress }}
@@ -56,14 +56,14 @@ function ExperienceTimeline({ content, experience }: { content: PortfolioContent
 
 function ExperienceItem({ exp, index }: { exp: Experience; index: number }) {
     return (
-        <motion.div
+        <m.div
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "0px 0px -80px 0px" }}
             className="group relative pl-8 md:pl-12 pb-8 md:pb-12 last:pb-0"
         >
             {/* Timeline dot pops in when the entry is reached */}
-            <motion.div
+            <m.div
                 className="absolute top-0 left-[-7px] w-4 h-4"
                 variants={{
                     hidden: { scale: 0 },
@@ -72,9 +72,9 @@ function ExperienceItem({ exp, index }: { exp: Experience; index: number }) {
             >
                 <span className="absolute inset-0 rounded-full bg-violet-500/40 animate-ping [animation-duration:2.5s]" />
                 <span className="relative block w-4 h-4 rounded-full bg-[#0A0A0B] border-2 border-violet-400 group-hover:bg-violet-500 transition-colors duration-300" />
-            </motion.div>
+            </m.div>
 
-            <motion.div
+            <m.div
                 className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6"
                 variants={{
                     hidden: { opacity: 0, x: -40 },
@@ -89,7 +89,7 @@ function ExperienceItem({ exp, index }: { exp: Experience; index: number }) {
                         {exp.company}
                     </h3>
                     <div className="flex items-center gap-3 mt-4">
-                        <motion.div
+                        <m.div
                             className="w-1.5 h-6 bg-violet-500 rounded-full origin-bottom"
                             variants={{ hidden: { scaleY: 0 }, show: { scaleY: 1, transition: { duration: 0.6, delay: 0.4, ease: EASE_OUT_EXPO } } }}
                         />
@@ -98,7 +98,7 @@ function ExperienceItem({ exp, index }: { exp: Experience; index: number }) {
                         </h4>
                     </div>
                 </div>
-                <motion.div
+                <m.div
                     className="shrink-0 flex items-start"
                     variants={{
                         hidden: { opacity: 0, scale: 0.6, rotate: -8 },
@@ -108,8 +108,8 @@ function ExperienceItem({ exp, index }: { exp: Experience; index: number }) {
                     <span className="text-[11px] md:text-xs font-black text-violet-300 bg-violet-500/15 border border-violet-500/30 px-3 py-1 sm:px-4 sm:py-2 rounded-xl uppercase tracking-[0.2em] whitespace-nowrap">
                         {exp.duration}
                     </span>
-                </motion.div>
-            </motion.div>
+                </m.div>
+            </m.div>
 
             <SpotlightCard
                 className="rounded-[2rem]"
@@ -124,6 +124,6 @@ function ExperienceItem({ exp, index }: { exp: Experience; index: number }) {
                     </p>
                 </div>
             </SpotlightCard>
-        </motion.div>
+        </m.div>
     );
 }

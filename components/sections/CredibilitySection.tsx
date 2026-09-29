@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { PortfolioContent } from "@/types/portfolio";
 import { SectionHeading, SpotlightCard, staggerContainer, riseItem, inViewOnce, EASE_OUT_EXPO } from "@/components/ui/motion";
 import { GithubStats } from "@/components/ui/GithubStats";
@@ -28,7 +28,7 @@ export function CredibilitySection({ content }: CredibilitySectionProps) {
                     {/* Testimonials */}
                     <div className="lg:col-span-2 space-y-8">
                         <h3 className="text-xs font-black tracking-[0.3em] text-fuchsia-500 uppercase mb-8">Testimonials</h3>
-                        <motion.div
+                        <m.div
                             className="grid md:grid-cols-2 gap-6"
                             initial="hidden"
                             whileInView="show"
@@ -59,14 +59,14 @@ export function CredibilitySection({ content }: CredibilitySectionProps) {
                                     </div>
                                 </SpotlightCard>
                             ))}
-                        </motion.div>
+                        </m.div>
                     </div>
 
                     {/* Certifications & Activity */}
                     <div className="space-y-12">
                         <div>
                             <h3 className="text-xs font-black tracking-[0.3em] text-fuchsia-500 uppercase mb-8">Certifications</h3>
-                            <motion.div
+                            <m.div
                                 className="space-y-4"
                                 initial="hidden"
                                 whileInView="show"
@@ -74,7 +74,7 @@ export function CredibilitySection({ content }: CredibilitySectionProps) {
                                 variants={staggerContainer(0.1)}
                             >
                                 {content.certifications?.map((c, i) => (
-                                    <motion.div
+                                    <m.div
                                         key={i}
                                         variants={{
                                             hidden: { opacity: 0, x: 40 },
@@ -88,14 +88,14 @@ export function CredibilitySection({ content }: CredibilitySectionProps) {
                                             <p className="text-slate-400 text-[11px] font-black uppercase tracking-widest">{c.issuer}</p>
                                             <span className="text-fuchsia-400/80 text-[11px] font-black uppercase tracking-widest">{c.year}</span>
                                         </div>
-                                    </motion.div>
+                                    </m.div>
                                 ))}
-                            </motion.div>
+                            </m.div>
                         </div>
 
                         <div>
                             <h3 className="text-xs font-black tracking-[0.3em] text-violet-500 uppercase mb-8">GitHub Activity</h3>
-                            <motion.div
+                            <m.div
                                 initial={{ opacity: 0, scale: 0.9, y: 30 }}
                                 whileInView={{ opacity: 1, scale: 1, y: 0 }}
                                 viewport={inViewOnce}
@@ -127,7 +127,7 @@ export function CredibilitySection({ content }: CredibilitySectionProps) {
                                 >
                                     View GitHub <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                                 </a>
-                            </motion.div>
+                            </m.div>
                         </div>
                     </div>
                 </div>

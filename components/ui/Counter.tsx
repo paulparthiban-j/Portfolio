@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { m, useInView } from "framer-motion";
 
 interface CounterProps {
   target: number;
@@ -46,7 +46,7 @@ export function Counter({ target, suffix = "", className = "" }: CounterProps) {
   const label = `${count.toFixed(decimals).padStart(finalText.length, "\u2007")}${suffix}`;
 
   return (
-    <motion.span
+    <m.span
       ref={ref}
       initial={{ opacity: 0, scale: 0.5 }}
       animate={isInView ? { opacity: 1, scale: 1 } : {}}
@@ -55,6 +55,6 @@ export function Counter({ target, suffix = "", className = "" }: CounterProps) {
     >
       <span className="sr-only">{`${finalText}${suffix}`}</span>
       <span aria-hidden="true">{label}</span>
-    </motion.span>
+    </m.span>
   );
 }

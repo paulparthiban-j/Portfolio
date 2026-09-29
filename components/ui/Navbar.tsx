@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { m, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { PortfolioContent } from "@/types/portfolio";
 
 interface NavbarProps {
@@ -10,7 +10,7 @@ interface NavbarProps {
 
 // Magnetic Button Component
 function MagneticButton({ children, className, as = "button", ...props }: any) {
-    const Component = as === "a" ? motion.a : motion.button;
+    const Component = as === "a" ? m.a : m.button;
     const ref = useRef<HTMLButtonElement | HTMLAnchorElement>(null);
     const x = useMotionValue(0);
     const y = useMotionValue(0);
@@ -69,7 +69,7 @@ export function Navbar({ content }: NavbarProps) {
 
     return (
         <>
-            <motion.nav
+            <m.nav
                 initial={{ y: -100 }}
                 animate={{ y: 0 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -84,13 +84,13 @@ export function Navbar({ content }: NavbarProps) {
                 }`}>
                     {/* Logo */}
                     <a href="#" className="flex items-center gap-3 group">
-                        <motion.div
+                        <m.div
                             whileHover={{ scale: 1.1, rotate: 5 }}
                             transition={{ type: "spring", stiffness: 400, damping: 10 }}
                             className="w-10 h-10 shrink-0 rounded-xl bg-gradient-to-br from-violet-500 to-violet-600 flex items-center justify-center font-black text-white text-xl shadow-lg shadow-violet-500/30"
                         >
                             {content.name[0]}
-                        </motion.div>
+                        </m.div>
                         {/* Hidden from lg to xl: next to the full desktop link row there
                             isn't room, and it wrapped onto four lines, making the bar taller */}
                         <div className="hidden sm:block lg:hidden xl:block whitespace-nowrap">
@@ -132,33 +132,33 @@ export function Navbar({ content }: NavbarProps) {
                         aria-label={isOpen ? "Close menu" : "Open menu"}
                         className="lg:hidden w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex flex-col items-center justify-center gap-1.5 transition-all active:scale-90"
                     >
-                        <motion.div 
+                        <m.div 
                             animate={isOpen ? { rotate: 45, y: 5 } : { rotate: 0, y: 0 }}
                             className="w-5 h-0.5 bg-white rounded-full" 
                         />
-                        <motion.div 
+                        <m.div 
                             animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
                             className="w-5 h-0.5 bg-white rounded-full" 
                         />
-                        <motion.div 
+                        <m.div 
                             animate={isOpen ? { rotate: -45, y: -5 } : { rotate: 0, y: 0 }}
                             className="w-5 h-0.5 bg-white rounded-full" 
                         />
                     </button>
                 </div>
-            </motion.nav>
+            </m.nav>
 
             {/* Mobile Menu */}
             <AnimatePresence>
                 {isOpen && (
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         className="fixed inset-0 z-[90] bg-black/95 backdrop-blur-2xl lg:hidden flex flex-col items-center justify-center gap-8 pt-20"
                     >
                         {navLinks.map((link, i) => (
-                            <motion.a
+                            <m.a
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: i * 0.1 }}
@@ -169,9 +169,9 @@ export function Navbar({ content }: NavbarProps) {
                                 style={{ fontFamily: 'var(--font-space-grotesk)' }}
                             >
                                 {link.name}
-                            </motion.a>
+                            </m.a>
                         ))}
-                        <motion.a
+                        <m.a
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.5 }}
@@ -181,8 +181,8 @@ export function Navbar({ content }: NavbarProps) {
                             className="mt-4 px-12 py-5 bg-gradient-to-r from-violet-500 to-violet-600 rounded-2xl text-white font-black uppercase tracking-widest shadow-2xl shadow-violet-500/30"
                         >
                             Download Resume
-                        </motion.a>
-                    </motion.div>
+                        </m.a>
+                    </m.div>
                 )}
             </AnimatePresence>
         </>

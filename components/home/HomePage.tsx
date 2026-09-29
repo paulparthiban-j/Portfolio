@@ -1,7 +1,6 @@
 "use client";
 
 import { Suspense } from "react";
-import { MotionConfig } from "framer-motion";
 import { PortfolioContent } from "@/types/portfolio";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { Navbar } from "@/components/ui/Navbar";
@@ -25,7 +24,7 @@ import { Footer } from "@/components/sections/Footer";
 // client-side fetch.
 export function HomePage({ content }: { content: PortfolioContent }) {
   return (
-    <MotionConfig reducedMotion="user">
+    <>
       <div className={`min-h-screen relative ${content.theme?.mode === "light" ? "bg-slate-50 text-slate-900" : "bg-[#0A0A0B] text-white"}`}>
         <IntroCurtain name={content.name} />
         <Navbar content={content} />
@@ -45,6 +44,6 @@ export function HomePage({ content }: { content: PortfolioContent }) {
           <Suspense><div id="contact" aria-label="Contact section"><Footer content={content} /></div></Suspense>
         </main>
       </div>
-    </MotionConfig>
+    </>
   );
 }
