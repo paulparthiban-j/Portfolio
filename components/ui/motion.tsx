@@ -134,17 +134,39 @@ export function SpotlightCard({ children, className = "", color = "139, 92, 246"
     const y = useSpring(my, { stiffness: 300, damping: 30 });
     const glow = useMotionTemplate`radial-gradient(420px circle at ${x}px ${y}px, rgba(${color}, 0.14), transparent 70%)`;
     const ring = useMotionTemplate`radial-gradient(260px circle at ${x}px ${y}px, rgba(${color}, 0.65), transparent 70%)`;
+    // Glow visibility as a motion value (not :hover) so touch can drive it too
+    const lit = useSpring(0, { stiffness: 260, damping: 30 });
 
-    const handleMove = (e: React.PointerEvent) => {
-        if (e.pointerType !== "mouse" || !ref.current) return;
+    const place = (e: React.PointerEvent) => {
+        if (!ref.current) return;
         const rect = ref.current.getBoundingClientRect();
+        // Touch jumps straight to the finger; the mouse glides via the springs
+        if (e.pointerType !== "mouse") {
+            x.jump(e.clientX - rect.left);
+            y.jump(e.clientY - rect.top);
+        }
         mx.set(e.clientX - rect.left);
         my.set(e.clientY - rect.top);
     };
 
+    const handleMove = (e: React.PointerEvent) => {
+        if (e.pointerType !== "mouse") return;
+        place(e);
+        lit.set(1);
+    };
+
+    // Touch: the card lights up where the finger lands, then fades out
+    const handleDown = (e: React.PointerEvent) => {
+        if (e.pointerType === "mouse") return;
+        place(e);
+        lit.set(1);
+    };
+    const handleUp = (e: React.PointerEvent) => {
+        if (e.pointerType !== "mouse") lit.set(0);
+    };
+
     const handleLeave = () => {
-        mx.set(-400);
-        my.set(-400);
+        lit.set(0);
     };
 
     return (
@@ -153,20 +175,24 @@ export function SpotlightCard({ children, className = "", color = "139, 92, 246"
             variants={variants}
             onPointerMove={handleMove}
             onPointerLeave={handleLeave}
+            onPointerDown={handleDown}
+            onPointerUp={handleUp}
+            onPointerCancel={handleUp}
             onClick={onClick}
             whileHover={{ y: -6, transition: { type: "spring", stiffness: 300, damping: 20 } }}
+            whileTap={{ scale: 0.985, transition: { type: "spring", stiffness: 400, damping: 25 } }}
             className={`relative group ${className}`}
         >
             {/* Border highlight: a gradient masked down to a 1px ring */}
             <motion.div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-0 rounded-[inherit] p-px opacity-0 group-hover:opacity-100 transition-opacity duration-300 [mask:linear-gradient(#000_0_0)_content-box_exclude,linear-gradient(#000_0_0)] [-webkit-mask-composite:xor]"
-                style={{ background: ring }}
+                className="pointer-events-none absolute inset-0 rounded-[inherit] p-px [mask:linear-gradient(#000_0_0)_content-box_exclude,linear-gradient(#000_0_0)] [-webkit-mask-composite:xor]"
+                style={{ background: ring, opacity: lit }}
             />
             <motion.div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                style={{ background: glow }}
+                className="pointer-events-none absolute inset-0 rounded-[inherit]"
+                style={{ background: glow, opacity: lit }}
             />
             {children}
         </motion.div>

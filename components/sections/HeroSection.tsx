@@ -79,6 +79,7 @@ function GradientLetters({ text, gradient, startIndex, className = "" }: {
                                 key={i}
                                 className="inline-block"
                                 whileHover={{ y: "-0.12em", rotate: i % 2 ? 4 : -4, transition: { type: "spring", stiffness: 500, damping: 12 } }}
+                                whileTap={{ y: "-0.12em", rotate: i % 2 ? 4 : -4, scale: 1.08, transition: { type: "spring", stiffness: 500, damping: 12 } }}
                             >
                                 <span
                                     className="hero-letter"
@@ -208,6 +209,47 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
     const tiltX = useTransform(py, (v) => v * -8);
     const tiltY = useTransform(px, (v) => v * 10);
 
+    // Scroll parallax: the two lines of the name drift apart as the hero leaves
+    const line1X = useTransform(scrollYProgress, [0, 1], ["0%", "-14%"]);
+    const line2X = useTransform(scrollYProgress, [0, 1], ["0%", "14%"]);
+
+    // Pause the hero's ambient CSS loops (orbs, badges) while it's off screen.
+    // Toggled directly on the element: no React re-render.
+    useEffect(() => {
+        const el = containerRef.current;
+        if (!el) return;
+        const io = new IntersectionObserver(([entry]) => {
+            el.classList.toggle("hero-offscreen", !entry.isIntersecting);
+        });
+        io.observe(el);
+        return () => io.disconnect();
+    }, []);
+
+    // Phones have no pointer, so device tilt drives the same motion values
+    // (name tilt + aurora parallax). Android exposes it without a prompt; iOS
+    // needs a permission dialog, which we don't trigger - iOS keeps the scroll
+    // and ambient motion instead.
+    useEffect(() => {
+        const touch = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const DOE = window.DeviceOrientationEvent as unknown as { requestPermission?: unknown } | undefined;
+        if (!touch || reduced || !DOE || typeof DOE.requestPermission === "function") return;
+
+        let baseBeta: number | null = null;
+        const clamp = (v: number) => Math.max(-0.5, Math.min(0.5, v));
+        const onOrient = (e: DeviceOrientationEvent) => {
+            if (e.beta == null || e.gamma == null) return;
+            if (window.scrollY > window.innerHeight) return; // hero off screen
+            // Measure relative to how the phone was held when the page opened
+            if (baseBeta === null) baseBeta = e.beta;
+            // Rounded so sensor noise doesn't keep the springs busy
+            pointerX.set(Math.round(clamp(e.gamma / 40) * 50) / 50);
+            pointerY.set(Math.round(clamp((e.beta - baseBeta) / 40) * 50) / 50);
+        };
+        window.addEventListener("deviceorientation", onOrient);
+        return () => window.removeEventListener("deviceorientation", onOrient);
+    }, [pointerX, pointerY]);
+
     const handlePointerMove = (e: React.PointerEvent) => {
         if (e.pointerType !== "mouse" || !containerRef.current) return;
         const rect = containerRef.current.getBoundingClientRect();
@@ -255,7 +297,7 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
             ))}
 
             <motion.div
-                style={mounted && !isMobile ? { y, opacity } : {}}
+                style={mounted ? { y, opacity } : {}}
                 className="container mx-auto px-4 sm:px-6 md:px-8 relative z-10 text-center"
             >
                 {/* Status Badge */}
@@ -280,7 +322,7 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
 
                 {/* Name - letters rise in one by one. Each letter carries its slice
                     of the line's gradient so the per-letter transforms don't break it. */}
-                <motion.div className="relative" style={mounted && !isMobile ? { rotateX: tiltX, rotateY: tiltY, transformPerspective: 1200 } : {}}>
+                <motion.div className="relative" style={mounted ? { rotateX: tiltX, rotateY: tiltY, transformPerspective: 1200 } : {}}>
                 {/* Static glow behind the name - replaces a 40px drop-shadow filter that
                     was re-rasterised every frame (the single biggest hero cost) */}
                 <div aria-hidden="true" className="hidden md:block absolute inset-x-[10%] top-[5%] bottom-[20%] pointer-events-none bg-[radial-gradient(closest-side,rgba(139,92,246,0.28),transparent)]" />
@@ -289,17 +331,20 @@ export function HeroSection({ content, hideHeroContent, isActive, sectionIndex }
                     className="relative text-[clamp(2.5rem,min(12vw,13vh),10rem)] font-black mb-[clamp(1rem,3.5vh,2rem)] tracking-tighter leading-[0.85]"
                     style={{ fontFamily: 'var(--font-space-grotesk)' }}
                 >
-                    <GradientLetters
-                        text={firstName}
-                        gradient="linear-gradient(90deg, #ffffff, #e2e8f0, #a78bfa)"
-                        startIndex={0}
-                    />
-                    <GradientLetters
-                        text={lastName}
-                        gradient="linear-gradient(90deg, #a78bfa, #c4b5fd, #ffffff)"
-                        startIndex={firstName.length}
-                        className="mt-2"
-                    />
+                    <motion.span className="block" style={{ x: line1X }}>
+                        <GradientLetters
+                            text={firstName}
+                            gradient="linear-gradient(90deg, #ffffff, #e2e8f0, #a78bfa)"
+                            startIndex={0}
+                        />
+                    </motion.span>
+                    <motion.span className="block mt-2" style={{ x: line2X }}>
+                        <GradientLetters
+                            text={lastName}
+                            gradient="linear-gradient(90deg, #a78bfa, #c4b5fd, #ffffff)"
+                            startIndex={firstName.length}
+                        />
+                    </motion.span>
                     <span
                         aria-hidden="true"
                         className="hero-underline block h-[3px] w-32 md:w-48 mx-auto mt-5 md:mt-6 rounded-full bg-gradient-to-r from-transparent via-violet-400 to-transparent"

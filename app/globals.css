@@ -535,12 +535,24 @@ html {
   66% { transform: translate3d(-5%, 4%, 0); }
 }
 
-/* Desktop only, where the pointer parallax also moves them; phones keep the
-   orbs still (a full-screen moving gradient is costly on mobile GPUs) */
-@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+/* Slow ambient drift. Transform-only, so it's a compositor move of an
+   already-rasterised layer; phones get a slower pace and it pauses once the
+   hero is scrolled away (see .hero-offscreen). */
+@media (prefers-reduced-motion: no-preference) {
   .animate-orb-float {
     animation: orb-float 24s ease-in-out infinite;
   }
+}
+
+@media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+  .animate-orb-float {
+    animation-duration: 32s;
+  }
+}
+
+.hero-offscreen .animate-orb-float,
+.hero-offscreen .animate-badge-float {
+  animation-play-state: paused;
 }
 
 @keyframes badge-float {
