@@ -1064,8 +1064,6 @@ html.intro-seen {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Remove the layer once finished so it costs nothing afterwards */
-  animation: intro-done 0s linear 1.15s forwards;
 }
 
 html.intro-seen .intro-curtain {
@@ -1078,7 +1076,6 @@ html.intro-seen .intro-curtain {
   right: 0;
   height: 50.5%;
   background: #0a0a0b;
-  will-change: transform;
 }
 
 .intro-panel--top {
@@ -1165,10 +1162,6 @@ html.intro-seen .intro-curtain {
   to { transform: translateY(101%); }
 }
 
-@keyframes intro-done {
-  to { visibility: hidden; }
-}
-
 /* Hero name: each letter springs up and un-tilts, staggered left to right */
 .hero-letter {
   display: inline-block;
@@ -1179,14 +1172,16 @@ html.intro-seen .intro-curtain {
   animation-delay: calc(var(--intro-offset) + var(--i) * 30ms);
 }
 
+/* Transform only, no opacity fade: the curtain already does the reveal, and
+   text that starts at opacity 0 is not reliably recorded by the browser as
+   painted - Largest Contentful Paint then latched onto a later, smaller
+   element (the rotating title) and read ~3s late on real phones. */
 @keyframes hero-letter-in {
   from {
-    opacity: 0;
     transform: translateY(0.45em) rotate(8deg) scale(0.9);
   }
 
   to {
-    opacity: 1;
     transform: none;
   }
 }
@@ -1225,30 +1220,30 @@ html.intro-seen .intro-curtain {
   animation-delay: calc(var(--intro-offset) + var(--d, 0s));
 }
 
+/* No opacity in this one: the subtitle is the largest text in the hero and
+   must count as painted at first paint (it sits behind the intro curtain
+   anyway). Starting from opacity 0 meant the browser never recorded it, and
+   Largest Contentful Paint fell to the rotating title's first swap ~4s in. */
 @keyframes hero-focus-in {
   from {
-    opacity: 0;
     transform: translateY(16px);
   }
 
   to {
-    opacity: 1;
     transform: none;
   }
 }
 
 @media (min-width: 769px) {
+  /* Transform only (a blur filter here was the one animation the GPU
+     couldn't take over) */
   @keyframes hero-focus-in {
     from {
-      opacity: 0;
-      transform: translateY(16px);
-      filter: blur(10px);
+      transform: translateY(20px) scale(0.97);
     }
 
     to {
-      opacity: 1;
       transform: none;
-      filter: blur(0);
     }
   }
 }
@@ -1262,23 +1257,33 @@ html.intro-seen .intro-curtain {
 /* Scroll-driven section transitions                                    */
 /* ------------------------------------------------------------------ */
 
-/* Each section rises in like a card being dealt onto the table - its rounded
-   corners open up to full-bleed as it arrives - and gently recedes as it
-   scrolls away. Driven by the scroll position itself (no JS, runs off the
-   main thread where supported); browsers without scroll timelines just show
-   the sections normally. */
+/* Each section rises in as it arrives and gently recedes as it scrolls away.
+   Driven by the scroll position itself (no JS); browsers without scroll
+   timelines just show the sections normally.
+   Enter runs on the wrapper and exit on its child: two animations on the
+   same element's transform can't both run on the compositor, so they would
+   fall back to the main thread on every scroll frame. Transform/opacity only
+   for the same reason (an earlier clip-path "rounded card" effect was
+   main-thread work each frame). */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .section-reveal {
-      animation: section-enter linear both, section-exit linear forwards;
-      animation-timeline: view(), view();
-      animation-range: entry 0% entry 50vh, exit 35% exit 100%;
+      animation: section-enter linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 50vh;
       transform-origin: 50% 0%;
+    }
+
+    .section-reveal > * {
+      animation: section-exit linear forwards;
+      animation-timeline: view();
+      animation-range: exit 35% exit 100%;
+      transform-origin: 50% 100%;
     }
 
     @media (min-width: 769px) {
       .section-reveal {
-        animation-name: section-enter-desktop, section-exit;
+        animation-name: section-enter-desktop;
       }
     }
   }
@@ -1300,16 +1305,10 @@ html.intro-seen .intro-curtain {
 @keyframes section-enter-desktop {
   from {
     transform: translateY(80px) scale(0.94);
-    clip-path: inset(4% 5% 0 5% round 48px);
-  }
-
-  99.9% {
-    clip-path: inset(0 0 0 0 round 0);
   }
 
   to {
     transform: none;
-    clip-path: none;
   }
 }
 
