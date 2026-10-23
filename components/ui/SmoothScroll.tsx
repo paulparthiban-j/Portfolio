@@ -29,6 +29,8 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
         infinite: false,
       });
       lenis = instance;
+      // Expose Lenis globally so other components can pause/resume scrolling
+      ;(window as any).lenis = instance;
       const raf = (time: number) => {
         instance.raf(time);
         frame = requestAnimationFrame(raf);

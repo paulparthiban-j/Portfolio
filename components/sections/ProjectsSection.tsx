@@ -73,12 +73,18 @@ function TiltCard({ children, className, onClick }: { children: React.ReactNode;
 
 export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSectionProps) {
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+    const [projectScrollY, setProjectScrollY] = useState(0);
     const isMobile = useIsMobile();
     const isClient = useSyncExternalStore(noopSubscribe, () => true, () => false);
+    const projects = useMemo(() => content?.projects || [], [content?.projects]);
+    const openProject = (project: Project) => {
+        const lenis = (window as unknown as { lenis?: { stop: () => void } }).lenis;
+        if (lenis) lenis.stop();
+        setProjectScrollY(window.scrollY);
+        setSelectedProject(project);
+    };
 
     if (!content) return null;
-
-    const projects = useMemo(() => content.projects || [], [content.projects]);
 
     return (
         <AnimatedSection
@@ -109,7 +115,7 @@ export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSec
                                 index={index} 
                                 isMobile={isMobile}
                                 theme={content.theme}
-                                onClick={() => setSelectedProject(project)} 
+                                onClick={() => openProject(project)} 
                             />
                         </m.div>
                     ))}
@@ -129,6 +135,7 @@ export function ProjectsSection({ content, isActive, sectionIndex }: ProjectsSec
                     {selectedProject && (
                         <ProjectModal
                             project={selectedProject}
+                            scrollY={projectScrollY}
                             onClose={() => setSelectedProject(null)}
                             theme={content.theme}
                         />
@@ -193,7 +200,7 @@ function ProjectCard({ project, index, isMobile, theme, onClick }: { project: Pr
     );
 }
 
-function ProjectModal({ project, onClose, theme }: { project: Project; onClose: () => void; theme: Theme }) {
+function ProjectModal({ project, scrollY, onClose, theme }: { project: Project; scrollY: number; onClose: () => void; theme: Theme }) {
     const techStack = useMemo(() => (project.tech || "").split(',').map(s => s.trim()), [project.tech]);
 
     const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -202,12 +209,36 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
 
     useEffect(() => {
         document.addEventListener("keydown", handleKeyDown);
+        const body = document.body;
+        const previousBodyStyles = {
+            overflow: body.style.overflow,
+        };
+        const previousRootOverflow = document.documentElement.style.overflow;
+        const previousScrollBehavior = document.documentElement.style.scrollBehavior;
+
+        // Lock the document while leaving the modal's nested scroll region active.
+        document.documentElement.style.overflow = "hidden";
         document.body.style.overflow = "hidden";
+        document.documentElement.style.scrollBehavior = "auto";
+        const lenis = (window as unknown as { lenis?: {
+            stop: () => void;
+            start: () => void;
+            scrollTo: (target: number, options: { immediate: boolean }) => void;
+        } }).lenis;
+        if (lenis) lenis.stop();
         return () => {
             document.removeEventListener("keydown", handleKeyDown);
-            document.body.style.overflow = "";
+            Object.assign(body.style, previousBodyStyles);
+            document.documentElement.style.overflow = previousRootOverflow;
+            document.documentElement.style.scrollBehavior = previousScrollBehavior;
+            if (lenis) {
+                lenis.start();
+                lenis.scrollTo(scrollY, { immediate: true });
+            } else {
+                window.scrollTo(0, scrollY);
+            }
         };
-    }, [handleKeyDown]);
+    }, [handleKeyDown, scrollY]);
 
     return (
         <m.div 
@@ -225,7 +256,7 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.9, opacity: 0, y: 30 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                className="glass-premium border border-white/15 rounded-3xl md:rounded-5xl w-full max-w-6xl max-h-[92vh] overflow-hidden flex flex-col md:flex-row shadow-2xl shadow-violet-500/10"
+                className="glass-premium border border-white/15 rounded-3xl md:rounded-5xl w-full max-w-6xl h-[92dvh] max-h-[calc(100dvh-2rem)] md:max-h-[calc(100dvh-4rem)] overflow-hidden flex flex-col md:flex-row shadow-2xl shadow-violet-500/10"
                 onClick={e => e.stopPropagation()}
             >
                 <div className="w-full md:w-[60%] relative h-64 md:h-auto overflow-hidden bg-slate-900 border-b md:border-b-0 md:border-r border-white/10">
@@ -248,7 +279,10 @@ function ProjectModal({ project, onClose, theme }: { project: Project; onClose: 
                 </div>
 
                 <m.div
-                    className="w-full md:w-[40%] p-10 md:p-14 md:py-20 flex flex-col bg-slate-950/20 overflow-y-auto"
+                    tabIndex={0}
+                    aria-label={`${project.title} details`}
+                    data-lenis-prevent
+                    className="w-full md:w-[40%] flex-1 min-h-0 p-10 md:p-14 md:py-20 flex flex-col bg-slate-950/20 overflow-y-auto overscroll-y-contain"
                     initial="hidden"
                     animate="show"
                     variants={staggerContainer(0.07, 0.15)}
